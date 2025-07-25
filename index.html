@@ -272,7 +272,7 @@
             </div>
 
             <!-- 統計カード -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 card-hover">
                     <div class="flex items-center">
                         <div class="p-3 bg-blue-100 rounded-full">
@@ -305,6 +305,18 @@
                         <div class="ml-4">
                             <h3 class="text-sm font-medium text-gray-500" data-i18n="stats_avg_progress">平均進捗率</h3>
                             <p id="avgProgressCount" class="text-2xl font-bold text-gray-900">0%</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-red-100 rounded-full">
+                            <i class="fas fa-hourglass-half text-red-600 text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-sm font-medium text-gray-500" data-i18n="stats_remaining_days">残り日数</h3>
+                            <p id="remainingDaysCount" class="text-2xl font-bold text-gray-900">--</p>
                         </div>
                     </div>
                 </div>
@@ -811,6 +823,26 @@
             const quizCount = studyData.quizResults.length;
             document.getElementById('quizCount').textContent = quizCount;
             
+            // 残り日数
+            const remainingDays = calculateRemainingDays(studyData.examDate);
+            if (remainingDays !== null) {
+                document.getElementById('remainingDaysCount').textContent = `${remainingDays}日`;
+                // 残り日数によって色を変更
+                const element = document.getElementById('remainingDaysCount');
+                if (remainingDays <= 30) {
+                    element.classList.add('text-red-600');
+                    element.classList.remove('text-gray-900');
+                } else if (remainingDays <= 60) {
+                    element.classList.add('text-yellow-600');
+                    element.classList.remove('text-gray-900');
+                } else {
+                    element.classList.remove('text-red-600', 'text-yellow-600');
+                    element.classList.add('text-gray-900');
+                }
+            } else {
+                document.getElementById('remainingDaysCount').textContent = '--';
+            }
+            
             console.log('✅ 統計情報更新完了');
         }
         
@@ -924,6 +956,7 @@
             console.log(`📊 学習計画: ${diffDays}日間、1日${dailyHours}時間、科目あたり${hoursPerSubject.toFixed(1)}時間`);
             
             saveUserData();
+            updateStatistics(); // 統計情報を更新
             showNotification('成功', `${diffDays}日間の学習計画を作成しました！`, 'success');
         }
         
