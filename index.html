@@ -562,26 +562,22 @@
         </div>
     </div>
 
+    <!-- Core Application Scripts -->
+    <script src="js/core/AppState.js"></script>
+    <script src="js/services/StudyDataService.js"></script>
+    <script src="js/components/DashboardComponent.js"></script>
+    <script src="js/app.js"></script>
+    
+    <div id="errorContainer" class="hidden"></div>
+    <div id="messageContainer" class="fixed top-4 right-4 z-50"></div>
+
     <script>
-        // グローバル変数
+        // Legacy compatibility and page-specific initialization
         let currentLang = 'ja';
         let currentFontSize = 'base';
-        let studyData = {};
-        let progressChart;
         
-        // 初期化
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 中小企業診断士合格ロードマップ - 初期化開始');
-            
-            initializeApp();
-            loadUserData();
-            setupEventListeners();
-            updateCurrentDate();
-            renderSubjectProgress();
-            createProgressChart();
-            
-            console.log('✅ アプリケーション初期化完了');
-        });
+        // Page initialization is now handled by App class
+        // Legacy functions for backward compatibility
         
         // アプリケーション初期化
         function initializeApp() {
