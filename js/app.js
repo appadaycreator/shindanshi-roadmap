@@ -17,7 +17,7 @@ class App {
         if (this.initialized) return;
 
         try {
-            console.log('=€ -m:­ë<íüÉŞÃ× - ‹Ë');
+            console.log('ğŸš€ ä¸­å°ä¼æ¥­è¨ºæ–­å£«åˆæ ¼ãƒ­ãƒ¼ãƒ‰ãƒãƒƒãƒ— - åˆæœŸåŒ–é–‹å§‹');
 
             // Initialize core services
             this.appState = new AppState();
@@ -38,10 +38,10 @@ class App {
             this.setupGlobalListeners();
             
             this.initialized = true;
-            console.log(' ¢×ê±ü·çóŒ†');
+            console.log('âœ… ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³åˆæœŸåŒ–å®Œäº†');
             
         } catch (error) {
-            console.error('L ¢×ê±ü·çó¨éü:', error);
+            console.error('âŒ ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³åˆæœŸåŒ–ã‚¨ãƒ©ãƒ¼:', error);
             this.handleInitializationError(error);
         }
     }
@@ -75,7 +75,7 @@ class App {
         if ('serviceWorker' in navigator) {
             try {
                 const registration = await navigator.serviceWorker.register('/sw.js');
-                console.log(' Service Worker registered:', registration);
+                console.log('âœ… Service Worker registered:', registration);
                 
                 // Handle updates
                 registration.addEventListener('updatefound', () => {
@@ -83,7 +83,7 @@ class App {
                 });
                 
             } catch (error) {
-                console.error('L Service Worker registration failed:', error);
+                console.error('âŒ Service Worker registration failed:', error);
             }
         }
     }
@@ -97,8 +97,8 @@ class App {
         if (errorContainer) {
             errorContainer.innerHTML = `
                 <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-                    <strong>¨éü:</strong> ¢×ê±ü·çón­¼k1WW~W_
-                    Úü¸’­¼WfO`UD
+                    <strong>åˆæœŸåŒ–ã‚¨ãƒ©ãƒ¼:</strong> ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã®èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸã€‚
+                    ãƒšãƒ¼ã‚¸ã‚’å†èª­ã¿è¾¼ã¿ã—ã¦ãã ã•ã„ã€‚
                 </div>
             `;
             errorContainer.classList.remove('hidden');
