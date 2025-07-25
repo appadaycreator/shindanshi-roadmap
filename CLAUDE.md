@@ -57,6 +57,21 @@ Claude Codeは、以下のツールとコマンドを利用できる。
 
 # 最近の修正履歴
 
+## 2025年7月25日 - Service Worker登録エラー修正
+
+### 修正内容
+Service Worker登録時の404エラー「A bad HTTP response code (404) was received when fetching the script」を修正。
+
+**問題**: app.jsでService Workerを絶対パス`/sw.js`で登録していたが、GitHub Pagesのサブディレクトリでは404エラーが発生
+**対応**: 相対パス`./sw.js`に変更してGitHub Pages環境に適合
+**結果**: Service Worker正常登録、PWA機能完全復旧
+
+### 検証項目
+- ✅ ローカルサーバーでの動作確認
+- ✅ Service Workerファイルアクセシビリティ確認
+- ✅ 他ページの互換性チェック
+- ✅ 回帰テスト実行
+
 ## 2025年7月25日 - JavaScriptエンコーディングエラー修正
 
 ### 修正内容
