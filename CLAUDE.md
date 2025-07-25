@@ -55,6 +55,16 @@ Claude Codeは、以下のツールとコマンドを利用できる。
 *   **「think hard」や「ultrathink」などの拡張思考モード**を積極的に活用し、複雑な問題に対してより深い分析と解決策を提供すること。
 *   日本語の文字化け（mojibake）が発生した場合は、必ずUTF-8エンコーディングで修正すること。
 
+# 最近の修正履歴
+## 2024年1月 - Web Share APIコンソールエラー修正
+*   **問題**: Web Share API使用時にInvalidStateErrorとAbortErrorが発生
+*   **解決策**: 
+    *   重複実行防止フラグ(isSharing)を実装
+    *   Promise.catch()による適切なエラーハンドリング
+    *   AbortError（ユーザーキャンセル）を正常動作として処理
+    *   Web Share API非対応ブラウザ向けのクリップボードフォールバック機能を強化
+*   **結果**: コンソールエラーが解消され、全ブラウザで安定したシェア機能を提供
+
 # プロジェクト固有の情報
 *   **本番URL**: https://appadaycreator.github.io/shindanshi-roadmap/
 *   **GitHubリポジトリ**: https://github.com/appadaycreator/shindanshi-roadmap
