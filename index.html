@@ -357,8 +357,8 @@
                             </div>
                         </div>
                         
-                        <div>
-                            <canvas id="progressChart" style="height: 300px;"></canvas>
+                        <div class="relative" style="height: 300px;">
+                            <canvas id="progressChart"></canvas>
                         </div>
                     </div>
                 </div>
@@ -501,9 +501,11 @@
                                     <!-- 動的に生成 -->
                                 </div>
                             </div>
-                            <div>
+                            <div class="flex-1">
                                 <h3 class="text-lg font-semibold mb-4">進捗グラフ</h3>
-                                <canvas id="detailProgressChart" style="height: 300px;"></canvas>
+                                <div class="relative" style="height: 250px; max-height: 250px;">
+                                    <canvas id="detailProgressChart"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -519,7 +521,9 @@
                     <!-- 週次推移 -->
                     <div id="weeklyDetailTab" class="detail-tab-content hidden">
                         <h3 class="text-lg font-semibold mb-4">週次学習時間推移</h3>
-                        <canvas id="weeklyProgressChart" style="height: 300px;"></canvas>
+                        <div class="relative" style="height: 250px; max-height: 250px;">
+                            <canvas id="weeklyProgressChart"></canvas>
+                        </div>
                         <div class="mt-4">
                             <h4 class="font-semibold mb-2">週別サマリー</h4>
                             <div id="weeklySummaryList" class="space-y-2">
