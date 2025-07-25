@@ -127,7 +127,7 @@
     <!-- End Google Tag Manager (noscript) -->
 
     <!-- ヘッダー（PC用） -->
-    <header class="hidden lg:block bg-white shadow-sm border-b border-gray-200">
+    <header class="hidden lg:block fixed top-0 left-0 right-0 bg-white shadow-sm border-b border-gray-200 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
@@ -159,14 +159,14 @@
     </header>
 
     <!-- モバイルヘッダー -->
-    <header class="lg:hidden bg-white shadow-sm border-b border-gray-200">
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-white shadow-sm border-b border-gray-200 z-40">
         <div class="px-4 py-3">
             <div class="flex justify-between items-center">
                 <div class="flex items-center">
                     <i class="fas fa-road text-blue-600 text-xl mr-2"></i>
                     <h1 class="text-lg font-bold text-gray-900" data-i18n="app_title_short">診断士ロードマップ</h1>
                 </div>
-                <button id="mobileMenuBtn" class="p-2">
+                <button id="mobileMenuBtn" class="p-2 relative z-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <div class="w-6 h-6 flex flex-col justify-center space-y-1">
                         <div class="hamburger-line w-full h-0.5 bg-gray-600"></div>
                         <div class="hamburger-line w-full h-0.5 bg-gray-600"></div>
@@ -178,7 +178,7 @@
     </header>
 
     <!-- メインコンテナ -->
-    <div class="flex">
+    <div class="flex pt-16">
         <!-- 左サイドバー（PC用） -->
         <aside class="hidden lg:block w-64 bg-white shadow-sm min-h-screen">
             <div class="p-6">
@@ -205,7 +205,7 @@
         </aside>
 
         <!-- 右サイドバー（モバイル用） -->
-        <div id="mobileSidebar" class="lg:hidden fixed inset-y-0 right-0 w-80 bg-white shadow-lg z-50 transform translate-x-full sidebar-transition">
+        <div id="mobileSidebar" class="lg:hidden fixed top-16 bottom-0 right-0 w-80 bg-white shadow-lg z-50 transform translate-x-full sidebar-transition">
             <div class="p-6">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-lg font-semibold" data-i18n="menu_title">メニュー</h2>
@@ -252,7 +252,7 @@
         </div>
 
         <!-- モバイルサイドバー背景 -->
-        <div id="sidebarOverlay" class="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
+        <div id="sidebarOverlay" class="lg:hidden fixed top-16 bottom-0 left-0 right-0 bg-black bg-opacity-50 z-40 hidden"></div>
 
         <!-- メインコンテンツ -->
         <main class="flex-1 p-6 lg:ml-0">
