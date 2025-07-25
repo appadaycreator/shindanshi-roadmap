@@ -813,16 +813,103 @@
             showNotification('情報', '詳細進捗機能は開発中です', 'info');
         }
         
+        // シェア実行中フラグ
+        let isSharing = false;
+        
         function shareProgress() {
             console.log('📤 進捗をシェア');
+            
+            // 既にシェア実行中の場合は処理しない
+            if (isSharing) {
+                console.log('⚠️ 既にシェア実行中です');
+                return;
+            }
+            
             if (navigator.share) {
-                navigator.share({
+                isSharing = true;
+                
+                // 現在の進捗データを取得
+                const studyData = getStoredData();
+                const averageProgress = calculateAverageProgress(studyData);
+                const totalHours = calculateTotalHours(studyData);
+                
+                const shareData = {
                     title: '中小企業診断士合格ロードマップ',
-                    text: '学習進捗を共有します！',
+                    text: `学習進捗: ${averageProgress}% (総学習時間: ${totalHours}時間)\n効率的な学習で合格を目指しています！`,
                     url: window.location.href
-                });
+                };
+                
+                navigator.share(shareData)
+                    .then(() => {
+                        console.log('✅ シェア完了');
+                        showNotification('成功', '進捗を共有しました！', 'success');
+                    })
+                    .catch((error) => {
+                        console.log('ℹ️ シェア処理:', error.name);
+                        if (error.name === 'AbortError') {
+                            // ユーザーがキャンセルした場合は何もしない（正常な動作）
+                            console.log('👆 ユーザーがシェアをキャンセルしました');
+                        } else if (error.name === 'NotAllowedError') {
+                            showNotification('エラー', 'シェア機能の使用が許可されていません', 'error');
+                        } else {
+                            console.error('❌ シェアエラー:', error);
+                            showNotification('エラー', 'シェアに失敗しました', 'error');
+                        }
+                    })
+                    .finally(() => {
+                        isSharing = false;
+                    });
             } else {
-                showNotification('情報', 'シェア機能は開発中です', 'info');
+                // Web Share API非対応の場合はクリップボードにコピー
+                copyProgressToClipboard();
+            }
+        }
+        
+        // Web Share API非対応時のクリップボードコピー機能
+        function copyProgressToClipboard() {
+            const studyData = getStoredData();
+            const averageProgress = calculateAverageProgress(studyData);
+            const totalHours = calculateTotalHours(studyData);
+            
+            const shareText = `中小企業診断士合格ロードマップ\n学習進捗: ${averageProgress}% (総学習時間: ${totalHours}時間)\n効率的な学習で合格を目指しています！\n${window.location.href}`;
+            
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(shareText)
+                    .then(() => {
+                        showNotification('成功', '進捗情報をクリップボードにコピーしました！', 'success');
+                    })
+                    .catch((error) => {
+                        console.error('❌ クリップボードコピーエラー:', error);
+                        fallbackCopyToClipboard(shareText);
+                    });
+            } else {
+                fallbackCopyToClipboard(shareText);
+            }
+        }
+        
+        // クリップボードAPIが使えない場合のフォールバック
+        function fallbackCopyToClipboard(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            textArea.style.top = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                const result = document.execCommand('copy');
+                if (result) {
+                    showNotification('成功', '進捗情報をコピーしました！', 'success');
+                } else {
+                    showNotification('情報', 'テキストを手動でコピーしてください', 'info');
+                }
+            } catch (error) {
+                console.error('❌ フォールバックコピーエラー:', error);
+                showNotification('情報', 'シェア機能は現在利用できません', 'info');
+            } finally {
+                document.body.removeChild(textArea);
             }
         }
         
