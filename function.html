@@ -1,19 +1,163 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <!-- 共通メタタグとリソース -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="中小企業診断士合格ロードマップ">
+
     <title>機能仕様書 - 中小企業診断士合格ロードマップ</title>
+    <meta name="description" content="中小企業診断士合格ロードマップの機能仕様書。システム概要、実装済み機能、開発中機能、技術仕様、データ構造、UI/UX仕様、セキュリティ対策について詳細に記載。">
+    <meta name="keywords" content="中小企業診断士,機能仕様書,システム仕様,技術仕様,データ構造,セキュリティ">
+    
+    <!-- OGP設定 -->
+    <meta property="og:title" content="機能仕様書 - 中小企業診断士合格ロードマップ">
+    <meta property="og:description" content="中小企業診断士合格ロードマップの詳細な機能仕様書">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://appadaycreator.github.io/shindanshi-roadmap/function.html">
+    <meta property="og:site_name" content="中小企業診断士合格ロードマップ">
+    <meta property="og:image" content="https://appadaycreator.github.io/shindanshi-roadmap/assets/images/ogp.jpg">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="機能仕様書 - 中小企業診断士合格ロードマップ">
+    <meta name="twitter:description" content="中小企業診断士合格ロードマップの詳細な機能仕様書">
+    <meta name="twitter:image" content="https://appadaycreator.github.io/shindanshi-roadmap/assets/images/ogp.jpg">
+    
+    <!-- PWA設定 -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="診断士ロードマップ">
+    
+    <!-- ファビコン -->
+    <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+    
+    <!-- 外部ライブラリ -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- 共通CSS -->
+    <link rel="stylesheet" href="css/common.css">
+    
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TXQGZRF9');</script>
+    <!-- End Google Tag Manager -->
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-50 font-sans">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TXQGZRF9"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <!-- 共通ヘッダー -->
+    <!-- PC用ヘッダー -->
+    <header class="hidden lg:block bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center">
+                        <i class="fas fa-road text-blue-600 text-2xl mr-3"></i>
+                        <h1 class="text-xl font-bold text-gray-900" data-i18n="app_title">中小企業診断士合格ロードマップ</h1>
+                    </a>
+                </div>
+                <nav class="flex space-x-8">
+                    <a href="index.html" class="nav-link text-gray-500 hover:text-gray-900" data-i18n="nav_dashboard">ダッシュボード</a>
+                    <a href="lp.html" class="nav-link text-gray-500 hover:text-gray-900" data-i18n="nav_about">サービス紹介</a>
+                    <a href="usage.html" class="nav-link text-gray-500 hover:text-gray-900" data-i18n="nav_usage">使い方</a>
+                    <a href="contact.html" class="nav-link text-gray-500 hover:text-gray-900" data-i18n="nav_contact">お問い合わせ</a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <select id="langSelect" class="border border-gray-300 rounded px-2 py-1 text-sm">
+                        <option value="ja">日本語</option>
+                        <option value="en">English</option>
+                    </select>
+                    <select id="fontSizeSelect" class="border border-gray-300 rounded px-2 py-1 text-sm">
+                        <option value="xs">極小</option>
+                        <option value="sm">小</option>
+                        <option value="base" selected>標準</option>
+                        <option value="lg">大</option>
+                        <option value="xl">特大</option>
+                    </select>
+                    <button id="darkModeToggle" class="p-2 rounded hover:bg-gray-100">
+                        <i class="fas fa-moon text-gray-600"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- モバイル用ヘッダー -->
+    <header class="lg:hidden bg-white shadow-sm border-b border-gray-200">
+        <div class="px-4 sm:px-6">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center">
+                        <i class="fas fa-road text-blue-600 text-xl mr-2"></i>
+                        <h1 class="text-lg font-bold text-gray-900" data-i18n="app_title_short">診断士ロードマップ</h1>
+                    </a>
+                </div>
+                <button id="mobileMenuBtn" class="p-2 rounded hover:bg-gray-100">
+                    <div class="w-6 h-6 relative">
+                        <span class="hamburger-line absolute h-0.5 w-full bg-gray-600 rounded transform transition duration-300 ease-in-out" style="top: 5px"></span>
+                        <span class="hamburger-line absolute h-0.5 w-full bg-gray-600 rounded transform transition duration-300 ease-in-out" style="top: 11px"></span>
+                        <span class="hamburger-line absolute h-0.5 w-full bg-gray-600 rounded transform transition duration-300 ease-in-out" style="top: 17px"></span>
+                    </div>
+                </button>
+            </div>
+        </div>
+        
+        <!-- モバイルメニュー -->
+        <div id="mobileMenu" class="hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="index.html" class="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-home mr-3"></i><span data-i18n="nav_dashboard">ダッシュボード</span></a>
+                <a href="lp.html" class="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-info-circle mr-3"></i><span data-i18n="nav_about">サービス紹介</span></a>
+                <a href="usage.html" class="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-book mr-3"></i><span data-i18n="nav_usage">使い方</span></a>
+                <a href="contact.html" class="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-envelope mr-3"></i><span data-i18n="nav_contact">お問い合わせ</span></a>
+            </div>
+            <div class="border-t border-gray-200 px-4 py-3">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600" data-i18n="setting_language">言語</span>
+                        <select id="langSelectMobile" class="border border-gray-300 rounded px-2 py-1 text-sm">
+                            <option value="ja">日本語</option>
+                            <option value="en">English</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600" data-i18n="setting_fontSize">文字サイズ</span>
+                        <select id="fontSizeSelectMobile" class="border border-gray-300 rounded px-2 py-1 text-sm">
+                            <option value="xs">極小</option>
+                            <option value="sm">小</option>
+                            <option value="base" selected>標準</option>
+                            <option value="lg">大</option>
+                            <option value="xl">特大</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600" data-i18n="setting_darkMode">ダークモード</span>
+                        <button id="darkModeToggleMobile" class="p-2 rounded hover:bg-gray-100">
+                            <i class="fas fa-moon text-gray-600"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
     <div class="container mx-auto px-4 py-8 max-w-6xl">
-        <header class="mb-8">
+        <!-- ページヘッダー -->
+        <div class="mb-8">
             <h1 class="text-3xl font-bold text-gray-900 mb-4">機能仕様書</h1>
             <p class="text-gray-600">中小企業診断士合格ロードマップ v1.0.0</p>
             <p class="text-sm text-gray-500">最終更新: 2024年1月</p>
-        </header>
+        </div>
 
         <nav class="mb-8 p-4 bg-white rounded-lg shadow">
             <h2 class="font-semibold mb-3">目次</h2>
@@ -104,6 +248,8 @@
                                 <li>アニメーション効果（5種類）</li>
                                 <li>多言語対応（日本語/英語）</li>
                                 <li>アクセシビリティ対応</li>
+                                <li>共通ヘッダー・ナビゲーション</li>
+                                <li>フォントサイズ調整機能</li>
                             </ul>
                         </div>
                         
@@ -427,5 +573,6 @@
             </p>
         </footer>
     </div>
+    <script src="js/header.js"></script>
 </body>
 </html>

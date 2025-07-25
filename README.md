@@ -70,17 +70,21 @@ shindanshi-roadmap/
 ├── privacy.html            # プライバシーポリシー
 ├── contact.html            # 問い合わせフォーム
 ├── function.html           # 機能要件書
+├── includes/
+│   └── header.html         # 共通ヘッダーコンポーネント（参考用）
 ├── css/
 │   ├── style.css          # メインスタイル
 │   ├── responsive.css     # レスポンシブ対応
-│   └── themes.css         # テーマカラー設定
+│   ├── themes.css         # テーマカラー設定
+│   └── common.css         # 共通スタイル（ヘッダー、ダークモード等）
 ├── js/
 │   ├── app.js             # メインアプリケーション
 │   ├── storage.js         # localStorage管理
 │   ├── calendar.js        # 学習計画・進捗管理
 │   ├── quiz.js            # 過去問機能
 │   ├── i18n.js            # 多言語対応
-│   └── pwa.js             # PWA機能
+│   ├── pwa.js             # PWA機能
+│   └── header.js          # 共通ヘッダー機能
 ├── assets/
 │   ├── icons/             # SVGアイコン
 │   ├── images/            # OGP画像等

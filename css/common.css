@@ -1,0 +1,140 @@
+/* 共通スタイル */
+body {
+    font-family: 'Noto Sans JP', sans-serif;
+}
+
+/* 文字サイズ設定 */
+.text-xs-size { font-size: 0.6rem; }
+.text-sm-size { font-size: 0.8rem; }
+.text-base-size { font-size: 1rem; }
+.text-lg-size { font-size: 1.2rem; }
+.text-xl-size { font-size: 1.4rem; }
+
+/* アニメーション */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.progress-ring {
+    transform: rotate(-90deg);
+}
+
+.progress-ring-circle {
+    transition: stroke-dashoffset 0.5s ease;
+}
+
+/* サイドバー */
+.sidebar-transition {
+    transition: transform 0.3s ease-in-out;
+}
+
+/* カード hover効果 */
+.card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* モバイル用ハンバーガーメニュー */
+.hamburger-line {
+    transition: all 0.3s ease;
+}
+
+.hamburger-active .hamburger-line:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger-active .hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-active .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* 科目色分け */
+.subject-economics { border-left: 4px solid #ef4444; }
+.subject-finance { border-left: 4px solid #f97316; }
+.subject-management { border-left: 4px solid #eab308; }
+.subject-operations { border-left: 4px solid #22c55e; }
+.subject-legal { border-left: 4px solid #06b6d4; }
+.subject-it { border-left: 4px solid #3b82f6; }
+.subject-policy { border-left: 4px solid #8b5cf6; }
+
+/* ダークモード対応 */
+.dark {
+    background-color: #1a202c;
+    color: #e2e8f0;
+}
+
+.dark .bg-white {
+    background-color: #2d3748;
+}
+
+.dark .bg-gray-50 {
+    background-color: #1a202c;
+}
+
+.dark .text-gray-900 {
+    color: #e2e8f0;
+}
+
+.dark .text-gray-700 {
+    color: #cbd5e0;
+}
+
+.dark .text-gray-600 {
+    color: #a0aec0;
+}
+
+.dark .text-gray-500 {
+    color: #718096;
+}
+
+.dark .border-gray-200 {
+    border-color: #4a5568;
+}
+
+.dark .border-gray-300 {
+    border-color: #4a5568;
+}
+
+.dark .hover\:bg-gray-100:hover {
+    background-color: #4a5568;
+}
+
+.dark .hover\:bg-gray-50:hover {
+    background-color: #2d3748;
+}
+
+/* ページ固有のスタイル用クラス */
+.feature-card {
+    transition: transform 0.2s;
+}
+
+.feature-card:hover {
+    transform: translateY(-2px);
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.screenshot {
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
