@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regression Test Suite - 中小企業診断士合格ロードマップ</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+        .test-pass { color: green; }
+        .test-fail { color: red; }
+        .test-pending { color: orange; }
+        #results { margin-top: 20px; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Regression Test Suite</h1>
+    
+    <div class="test-section">
+        <h2>Test Controls</h2>
+        <button onclick="runAllTests()">Run All Tests</button>
+        <button onclick="clearResults()">Clear Results</button>
+        <button onclick="generateTestReport()">Generate Report</button>
+    </div>
+
+    <div id="results"></div>
+
+    <script>
+        class RegressionTestSuite {
+            constructor() {
+                this.tests = [];
+                this.results = [];
+                this.resultsContainer = document.getElementById('results');
+            }
+
+            addTest(name, testFunction, description = '') {
+                this.tests.push({ name, testFunction, description });
+            }
+
+            async runTest(test) {
+                const startTime = performance.now();
+                let result;
+                
+                try {
+                    const testResult = await test.testFunction();
+                    const endTime = performance.now();
+                    result = {
+                        name: test.name,
+                        description: test.description,
+                        status: testResult ? 'PASS' : 'FAIL',
+                        duration: Math.round(endTime - startTime),
+                        error: null
+                    };
+                } catch (error) {
+                    const endTime = performance.now();
+                    result = {
+                        name: test.name,
+                        description: test.description,
+                        status: 'ERROR',
+                        duration: Math.round(endTime - startTime),
+                        error: error.message
+                    };
+                }
+                
+                this.results.push(result);
+                this.displayResult(result);
+                return result;
+            }
+
+            displayResult(result) {
+                const div = document.createElement('div');
+                div.className = `test-section test-${result.status.toLowerCase()}`;
+                div.innerHTML = `
+                    <h3>${result.name} - ${result.status}</h3>
+                    <p><strong>Description:</strong> ${result.description}</p>
+                    <p><strong>Duration:</strong> ${result.duration}ms</p>
+                    ${result.error ? `<p><strong>Error:</strong> ${result.error}</p>` : ''}
+                `;
+                this.resultsContainer.appendChild(div);
+            }
+
+            async runAllTests() {
+                this.clearResults();
+                console.log(`Starting ${this.tests.length} tests...`);
+                
+                for (const test of this.tests) {
+                    await this.runTest(test);
+                    await new Promise(resolve => setTimeout(resolve, 100)); // Brief pause between tests
+                }
+                
+                this.generateSummary();
+            }
+
+            clearResults() {
+                this.results = [];
+                this.resultsContainer.innerHTML = '';
+            }
+
+            generateSummary() {
+                const summary = this.results.reduce((acc, result) => {
+                    acc[result.status] = (acc[result.status] || 0) + 1;
+                    return acc;
+                }, {});
+
+                const totalTime = this.results.reduce((sum, result) => sum + result.duration, 0);
+                
+                const summaryDiv = document.createElement('div');
+                summaryDiv.className = 'test-section';
+                summaryDiv.innerHTML = `
+                    <h2>Test Summary</h2>
+                    <p><strong>Total Tests:</strong> ${this.results.length}</p>
+                    <p><strong>Passed:</strong> ${summary.PASS || 0}</p>
+                    <p><strong>Failed:</strong> ${summary.FAIL || 0}</p>
+                    <p><strong>Errors:</strong> ${summary.ERROR || 0}</p>
+                    <p><strong>Total Time:</strong> ${totalTime}ms</p>
+                `;
+                this.resultsContainer.insertBefore(summaryDiv, this.resultsContainer.firstChild);
+            }
+
+            generateTestReport() {
+                const report = {
+                    timestamp: new Date().toISOString(),
+                    summary: this.results.reduce((acc, result) => {
+                        acc[result.status] = (acc[result.status] || 0) + 1;
+                        return acc;
+                    }, {}),
+                    tests: this.results
+                };
+                
+                const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `regression-test-report-${Date.now()}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+        }
+
+        // Initialize test suite
+        const testSuite = new RegressionTestSuite();
+
+        // Dashboard Tests
+        testSuite.addTest(
+            'Dashboard Page Load',
+            () => {
+                return new Promise((resolve) => {
+                    const iframe = document.createElement('iframe');
+                    iframe.src = '../index.html';
+                    iframe.style.display = 'none';
+                    iframe.onload = () => {
+                        const hasContent = iframe.contentDocument && iframe.contentDocument.body.children.length > 0;
+                        document.body.removeChild(iframe);
+                        resolve(hasContent);
+                    };
+                    iframe.onerror = () => {
+                        if (document.body.contains(iframe)) {
+                            document.body.removeChild(iframe);
+                        }
+                        resolve(false);
+                    };
+                    document.body.appendChild(iframe);
+                });
+            },
+            'Verify dashboard page loads successfully'
+        );
+
+        testSuite.addTest(
+            'LocalStorage Access',
+            () => {
+                try {
+                    localStorage.setItem('test_key', 'test_value');
+                    const value = localStorage.getItem('test_key');
+                    localStorage.removeItem('test_key');
+                    return value === 'test_value';
+                } catch (error) {
+                    return false;
+                }
+            },
+            'Verify localStorage is accessible and functional'
+        );
+
+        // Quiz System Tests
+        testSuite.addTest(
+            'Quiz Page Load',
+            () => {
+                return new Promise((resolve) => {
+                    const iframe = document.createElement('iframe');
+                    iframe.src = '../quiz.html';
+                    iframe.style.display = 'none';
+                    iframe.onload = () => {
+                        const hasContent = iframe.contentDocument && iframe.contentDocument.body.children.length > 0;
+                        document.body.removeChild(iframe);
+                        resolve(hasContent);
+                    };
+                    iframe.onerror = () => {
+                        if (document.body.contains(iframe)) {
+                            document.body.removeChild(iframe);
+                        }
+                        resolve(false);
+                    };
+                    document.body.appendChild(iframe);
+                });
+            },
+            'Verify quiz page loads successfully'
+        );
+
+        testSuite.addTest(
+            'Quiz Data Availability',
+            () => {
+                return new Promise((resolve) => {
+                    const script = document.createElement('script');
+                    script.src = '../js/quiz-data.js';
+                    script.onload = () => {
+                        const hasQuizData = typeof QUIZ_DATA !== 'undefined' && Object.keys(QUIZ_DATA).length > 0;
+                        resolve(hasQuizData);
+                    };
+                    script.onerror = () => resolve(false);
+                    document.head.appendChild(script);
+                });
+            },
+            'Verify quiz data is loaded and available'
+        );
+
+        // Navigation Tests
+        testSuite.addTest(
+            'Header Script Load',
+            () => {
+                return new Promise((resolve) => {
+                    const script = document.createElement('script');
+                    script.src = '../js/header.js';
+                    script.onload = () => resolve(true);
+                    script.onerror = () => resolve(false);
+                    document.head.appendChild(script);
+                });
+            },
+            'Verify header navigation script loads correctly'
+        );
+
+        // CSS Loading Tests
+        testSuite.addTest(
+            'CSS Resources Load',
+            async () => {
+                const cssFiles = [
+                    '../css/common.css',
+                    '../css/style.css',
+                    '../css/responsive.css',
+                    '../css/themes.css'
+                ];
+                
+                const results = await Promise.all(
+                    cssFiles.map(file => {
+                        return new Promise((resolve) => {
+                            const link = document.createElement('link');
+                            link.rel = 'stylesheet';
+                            link.href = file;
+                            link.onload = () => resolve(true);
+                            link.onerror = () => resolve(false);
+                            document.head.appendChild(link);
+                        });
+                    })
+                );
+                
+                return results.every(result => result === true);
+            },
+            'Verify all CSS files load successfully'
+        );
+
+        // PWA Tests
+        testSuite.addTest(
+            'Service Worker Registration',
+            () => {
+                return 'serviceWorker' in navigator;
+            },
+            'Verify Service Worker API is available'
+        );
+
+        testSuite.addTest(
+            'Manifest File Access',
+            () => {
+                return fetch('../manifest.json')
+                    .then(response => response.ok)
+                    .catch(() => false);
+            },
+            'Verify manifest.json is accessible'
+        );
+
+        // Responsive Design Tests
+        testSuite.addTest(
+            'Viewport Meta Tag',
+            () => {
+                return new Promise((resolve) => {
+                    const iframe = document.createElement('iframe');
+                    iframe.src = '../index.html';
+                    iframe.style.display = 'none';
+                    iframe.onload = () => {
+                        const viewportMeta = iframe.contentDocument.querySelector('meta[name="viewport"]');
+                        const hasViewport = viewportMeta && viewportMeta.content.includes('width=device-width');
+                        document.body.removeChild(iframe);
+                        resolve(hasViewport);
+                    };
+                    iframe.onerror = () => {
+                        if (document.body.contains(iframe)) {
+                            document.body.removeChild(iframe);
+                        }
+                        resolve(false);
+                    };
+                    document.body.appendChild(iframe);
+                });
+            },
+            'Verify responsive viewport meta tag is present'
+        );
+
+        // Performance Tests
+        testSuite.addTest(
+            'Page Load Performance',
+            () => {
+                return new Promise((resolve) => {
+                    const startTime = performance.now();
+                    const iframe = document.createElement('iframe');
+                    iframe.src = '../index.html';
+                    iframe.style.display = 'none';
+                    iframe.onload = () => {
+                        const loadTime = performance.now() - startTime;
+                        document.body.removeChild(iframe);
+                        resolve(loadTime < 5000); // Should load within 5 seconds
+                    };
+                    iframe.onerror = () => {
+                        if (document.body.contains(iframe)) {
+                            document.body.removeChild(iframe);
+                        }
+                        resolve(false);
+                    };
+                    document.body.appendChild(iframe);
+                });
+            },
+            'Verify page loads within acceptable time limit'
+        );
+
+        // Global functions for UI
+        function runAllTests() {
+            testSuite.runAllTests();
+        }
+
+        function clearResults() {
+            testSuite.clearResults();
+        }
+
+        function generateTestReport() {
+            testSuite.generateTestReport();
+        }
+
+        // Auto-run tests on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Regression test suite loaded. Click "Run All Tests" to begin.');
+        });
+    </script>
+</body>
+</html>

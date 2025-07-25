@@ -53,3 +53,7 @@ venv/
 # Local test screenshots
 screenshots/
 test-results/
+
+# Development server
+server.pid
+*.pid
