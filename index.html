@@ -26,6 +26,7 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#2563eb">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="診断士ロードマップ">
     
@@ -965,7 +966,7 @@
         // Service Worker登録（PWA対応）
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
+                navigator.serviceWorker.register('./sw.js')
                     .then(registration => {
                         console.log('✅ Service Worker登録成功:', registration.scope);
                     })
@@ -974,6 +975,28 @@
                     });
             });
         }
+        
+        // パフォーマンス向上のためのパッシブイベントリスナー設定
+        (function() {
+            // パッシブイベントリスナーのサポートをチェック
+            let supportsPassive = false;
+            try {
+                const opts = Object.defineProperty({}, 'passive', {
+                    get: function() {
+                        supportsPassive = true;
+                    }
+                });
+                window.addEventListener('testPassive', null, opts);
+                window.removeEventListener('testPassive', null, opts);
+            } catch (e) {}
+            
+            // Touch eventにパッシブオプションを追加
+            if (supportsPassive) {
+                document.addEventListener('touchstart', function() {}, { passive: true });
+                document.addEventListener('touchmove', function() {}, { passive: true });
+                document.addEventListener('wheel', function() {}, { passive: true });
+            }
+        })();
         
         console.log('🎉 中小企業診断士合格ロードマップ - スクリプト読み込み完了');
     </script>

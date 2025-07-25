@@ -34,7 +34,7 @@
 - **アイコン**: Font Awesome
 - **チャート**: Chart.js
 - **データ保存**: localStorage
-- **PWA対応**: Service Worker実装
+- **PWA完全対応**: Service Worker、Web App Manifest、オフライン機能
 
 ## セットアップ
 
@@ -92,8 +92,8 @@ shindanshi-roadmap/
 ├── tests/
 │   ├── test-suite.html    # 機能テスト
 │   └── ui-test.js         # Puppeteer UIテスト
-├── manifest.json          # PWAマニフェスト
-├── sw.js                  # Service Worker
+├── manifest.json          # PWAマニフェスト（完全実装）
+├── sw.js                  # Service Worker（オフライン対応）
 ├── sitemap.xml           # サイトマップ
 └── robots.txt            # robots.txt
 ```
