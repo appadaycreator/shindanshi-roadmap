@@ -1,22 +1,28 @@
 // Service Worker for 中小企業診断士合格ロードマップ
-const CACHE_NAME = 'shindanshi-roadmap-v1.0.0';
+const CACHE_NAME = 'shindanshi-roadmap-v1.0.2';
+
+// Essential files to cache (using relative paths)
 const urlsToCache = [
-    '/',
-    '/index.html',
-    '/usage.html',
-    '/function.html',
-    '/css/common.css',
-    '/css/style.css',
-    '/css/responsive.css',
-    '/css/themes.css',
-    '/js/header.js',
-    '/js/app.js',
-    '/js/storage.js',
-    '/js/calendar.js',
-    '/js/i18n.js',
-    '/js/pwa.js',
-    '/assets/icons/favicon.ico',
-    '/assets/icons/apple-touch-icon.png',
+    './',
+    './index.html',
+    './usage.html',
+    './function.html',
+    './css/common.css',
+    './css/style.css',
+    './css/responsive.css',
+    './css/themes.css',
+    './js/header.js',
+    './js/app.js',
+    './js/storage.js',
+    './js/calendar.js',
+    './js/i18n.js',
+    './js/pwa.js',
+    './assets/icons/favicon.ico',
+    './assets/icons/apple-touch-icon.png'
+];
+
+// External resources to cache
+const externalResources = [
     'https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css',
     'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css',
     'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap',
@@ -26,11 +32,36 @@ const urlsToCache = [
 // Install event - cache resources
 self.addEventListener('install', event => {
     console.log('🔧 Service Worker: インストール中...');
+    
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(cache => {
                 console.log('📦 Service Worker: キャッシュ中...');
-                return cache.addAll(urlsToCache);
+                
+                // Cache local resources
+                const localPromises = urlsToCache.map(url => {
+                    return cache.add(url).catch(error => {
+                        console.warn(`⚠️ Failed to cache local resource: ${url}`, error.message);
+                        return Promise.resolve();
+                    });
+                });
+                
+                // Cache external resources
+                const externalPromises = externalResources.map(url => {
+                    return fetch(url, { mode: 'cors' })
+                        .then(response => {
+                            if (response.ok) {
+                                return cache.put(url, response);
+                            }
+                            throw new Error(`Failed to fetch ${url}`);
+                        })
+                        .catch(error => {
+                            console.warn(`⚠️ Failed to cache external resource: ${url}`, error.message);
+                            return Promise.resolve();
+                        });
+                });
+                
+                return Promise.all([...localPromises, ...externalPromises]);
             })
             .then(() => {
                 console.log('✅ Service Worker: インストール完了');
@@ -79,16 +110,19 @@ self.addEventListener('fetch', event => {
             .then(response => {
                 // Return cached version if available
                 if (response) {
-                    console.log('💾 キャッシュから応答:', event.request.url);
                     return response;
                 }
 
                 // Otherwise, fetch from network
-                console.log('🌐 ネットワークから取得:', event.request.url);
                 return fetch(event.request).then(
                     response => {
-                        // Don't cache if not ok or not basic response
-                        if (!response || response.status !== 200 || response.type !== 'basic') {
+                        // Don't cache if not ok or opaque response (CORS)
+                        if (!response || response.status !== 200) {
+                            return response;
+                        }
+
+                        // Don't cache non-basic responses unless they're from our external resources
+                        if (response.type !== 'basic' && !externalResources.some(url => event.request.url.startsWith(url))) {
                             return response;
                         }
 
@@ -109,7 +143,7 @@ self.addEventListener('fetch', event => {
                 console.error('❌ Service Worker: Fetchエラー', error);
                 // Return a fallback response for navigation requests
                 if (event.request.destination === 'document') {
-                    return caches.match('/index.html');
+                    return caches.match('./index.html');
                 }
             })
     );
