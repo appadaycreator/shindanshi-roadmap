@@ -439,7 +439,7 @@
     </div>
 
     <!-- 詳細進捗モーダル -->
-    <div id="progressDetailModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50">
+    <div id="progressDetailModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50" onclick="if(event.target === this) closeProgressDetail()">
         <div class="flex items-center justify-center min-h-screen p-4">
             <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
                 <div class="p-6">
@@ -617,6 +617,16 @@
             // 学習記録追加
             document.getElementById('addStudyRecordBtn').addEventListener('click', addStudyRecord);
             
+            // ESCキーでモーダルを閉じる
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    const modal = document.getElementById('progressDetailModal');
+                    if (!modal.classList.contains('hidden')) {
+                        closeProgressDetail();
+                    }
+                }
+            });
+            
             console.log('✅ イベントリスナー設定完了');
         }
         
@@ -700,6 +710,73 @@
             console.log('💾 ユーザーデータを保存中...');
             localStorage.setItem('study_data', JSON.stringify(studyData));
             console.log('✅ ユーザーデータ保存完了');
+        }
+        
+        // 保存されたデータを取得（詳細進捗機能用）
+        function getStoredData() {
+            return studyData;
+        }
+        
+        // 総学習時間を計算
+        function calculateTotalHours(data) {
+            const records = data.studyRecords || [];
+            return records.reduce((sum, record) => sum + record.hours, 0).toFixed(1);
+        }
+        
+        // 平均進捗率を計算
+        function calculateAverageProgress(data) {
+            const subjects = Object.values(data.subjects || {});
+            if (subjects.length === 0) return 0;
+            const totalProgress = subjects.reduce((sum, subject) => sum + subject.progress, 0);
+            return Math.round(totalProgress / subjects.length);
+        }
+        
+        // 残り日数を計算
+        function calculateRemainingDays(examDate) {
+            if (!examDate) return null;
+            const today = new Date();
+            const exam = new Date(examDate);
+            const diffTime = exam - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays > 0 ? diffDays : 0;
+        }
+        
+        // 科目名を取得
+        function getSubjectName(key) {
+            const names = {
+                economics: '経済学・経済政策',
+                finance: '財務・会計',
+                management: '企業経営理論',
+                operations: '運営管理',
+                legal: '経営法務',
+                it: '経営情報システム',
+                policy: '中小企業経営・政策'
+            };
+            return names[key] || key;
+        }
+        
+        // 科目の色を取得
+        function getSubjectColor(key) {
+            const colors = {
+                economics: 'red',
+                finance: 'orange',
+                management: 'yellow',
+                operations: 'green',
+                legal: 'cyan',
+                it: 'blue',
+                policy: 'purple'
+            };
+            return colors[key] || 'gray';
+        }
+        
+        // 日付フォーマット
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}/${month}/${day}`;
         }
         
         // 統計情報の更新
