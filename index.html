@@ -439,17 +439,22 @@
     </div>
 
     <!-- 詳細進捗モーダル -->
-    <div id="progressDetailModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50" onclick="if(event.target === this) closeProgressDetail()">
-        <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-                <div class="p-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-2xl font-bold text-gray-900">詳細進捗分析</h2>
-                        <button onclick="closeProgressDetail()" class="text-gray-400 hover:text-gray-600">
-                            <i class="fas fa-times text-xl"></i>
-                        </button>
+    <div id="progressDetailModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50 overflow-y-auto" onclick="if(event.target === this) closeProgressDetail()">
+        <div class="flex items-start justify-center min-h-screen p-4 py-8 sm:py-16">
+            <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full relative my-auto">
+                <!-- スティッキーヘッダー -->
+                <div class="sticky top-0 bg-white border-b border-gray-200 rounded-t-lg z-10">
+                    <div class="p-6 pb-4">
+                        <div class="flex justify-between items-center">
+                            <h2 class="text-2xl font-bold text-gray-900">詳細進捗分析</h2>
+                            <button onclick="closeProgressDetail()" class="text-gray-400 hover:text-gray-600">
+                                <i class="fas fa-times text-xl"></i>
+                            </button>
+                        </div>
                     </div>
-                    
+                </div>
+                
+                <div class="p-6 pt-4">
                     <!-- 総合統計 -->
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                         <div class="bg-blue-50 rounded-lg p-4">
@@ -471,8 +476,9 @@
                     </div>
                     
                     <!-- タブ切り替え -->
-                    <div class="border-b border-gray-200 mb-4">
-                        <nav class="-mb-px flex space-x-8">
+                    <div class="sticky top-16 sm:top-20 bg-white z-10 -mx-6 px-6 pt-4 pb-4">
+                        <div class="border-b border-gray-200">
+                            <nav class="-mb-px flex space-x-8">
                             <button onclick="switchDetailTab('subject')" class="detail-tab-btn border-b-2 border-blue-500 py-2 px-1 text-sm font-medium text-blue-600" data-tab="subject">
                                 科目別分析
                             </button>
@@ -482,7 +488,8 @@
                             <button onclick="switchDetailTab('weekly')" class="detail-tab-btn border-b-2 border-transparent py-2 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="weekly">
                                 週次推移
                             </button>
-                        </nav>
+                            </nav>
+                        </div>
                     </div>
                     
                     <!-- 科目別分析 -->
@@ -979,17 +986,26 @@
             const modal = document.getElementById('progressDetailModal');
             modal.classList.remove('hidden');
             
+            // bodyのスクロールを無効化
+            document.body.style.overflow = 'hidden';
+            
             // データの取得と表示
             updateDetailedProgressData();
             
             // デフォルトで科目別分析タブを表示
             switchDetailTab('subject');
+            
+            // モーダルのスクロール位置をトップに
+            modal.scrollTop = 0;
         }
         
         // 詳細進捗モーダルを閉じる
         function closeProgressDetail() {
             const modal = document.getElementById('progressDetailModal');
             modal.classList.add('hidden');
+            
+            // bodyのスクロールを再有効化
+            document.body.style.overflow = '';
         }
         
         // 詳細進捗データの更新
