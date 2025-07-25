@@ -438,6 +438,93 @@
         </main>
     </div>
 
+    <!-- 詳細進捗モーダル -->
+    <div id="progressDetailModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-2xl font-bold text-gray-900">詳細進捗分析</h2>
+                        <button onclick="closeProgressDetail()" class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- 総合統計 -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                        <div class="bg-blue-50 rounded-lg p-4">
+                            <div class="text-sm font-medium text-blue-600">総学習時間</div>
+                            <div id="detailTotalHours" class="text-2xl font-bold text-blue-900">0時間</div>
+                        </div>
+                        <div class="bg-green-50 rounded-lg p-4">
+                            <div class="text-sm font-medium text-green-600">平均進捗率</div>
+                            <div id="detailAvgProgress" class="text-2xl font-bold text-green-900">0%</div>
+                        </div>
+                        <div class="bg-yellow-50 rounded-lg p-4">
+                            <div class="text-sm font-medium text-yellow-600">残り日数</div>
+                            <div id="detailRemainingDays" class="text-2xl font-bold text-yellow-900">--日</div>
+                        </div>
+                        <div class="bg-purple-50 rounded-lg p-4">
+                            <div class="text-sm font-medium text-purple-600">必要学習時間/日</div>
+                            <div id="detailRequiredHours" class="text-2xl font-bold text-purple-900">--時間</div>
+                        </div>
+                    </div>
+                    
+                    <!-- タブ切り替え -->
+                    <div class="border-b border-gray-200 mb-4">
+                        <nav class="-mb-px flex space-x-8">
+                            <button onclick="switchDetailTab('subject')" class="detail-tab-btn border-b-2 border-blue-500 py-2 px-1 text-sm font-medium text-blue-600" data-tab="subject">
+                                科目別分析
+                            </button>
+                            <button onclick="switchDetailTab('timeline')" class="detail-tab-btn border-b-2 border-transparent py-2 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="timeline">
+                                学習履歴
+                            </button>
+                            <button onclick="switchDetailTab('weekly')" class="detail-tab-btn border-b-2 border-transparent py-2 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="weekly">
+                                週次推移
+                            </button>
+                        </nav>
+                    </div>
+                    
+                    <!-- 科目別分析 -->
+                    <div id="subjectDetailTab" class="detail-tab-content">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="text-lg font-semibold mb-4">科目別進捗詳細</h3>
+                                <div id="subjectDetailList" class="space-y-3">
+                                    <!-- 動的に生成 -->
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold mb-4">進捗グラフ</h3>
+                                <canvas id="detailProgressChart" style="height: 300px;"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 学習履歴 -->
+                    <div id="timelineDetailTab" class="detail-tab-content hidden">
+                        <h3 class="text-lg font-semibold mb-4">最近の学習履歴</h3>
+                        <div id="studyTimelineList" class="space-y-2">
+                            <!-- 動的に生成 -->
+                        </div>
+                    </div>
+                    
+                    <!-- 週次推移 -->
+                    <div id="weeklyDetailTab" class="detail-tab-content hidden">
+                        <h3 class="text-lg font-semibold mb-4">週次学習時間推移</h3>
+                        <canvas id="weeklyProgressChart" style="height: 300px;"></canvas>
+                        <div class="mt-4">
+                            <h4 class="font-semibold mb-2">週別サマリー</h4>
+                            <div id="weeklySummaryList" class="space-y-2">
+                                <!-- 動的に生成 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- 通知・モーダル -->
     <div id="notification" class="fixed top-4 right-4 z-50 hidden">
         <div class="bg-white rounded-lg shadow-lg border p-4 max-w-sm">
@@ -809,9 +896,410 @@
             showNotification('情報', '過去問機能は開発中です', 'info');
         }
         
+        // 詳細進捗モーダルの表示
         function showProgressDetail() {
             console.log('📊 詳細進捗を表示');
-            showNotification('情報', '詳細進捗機能は開発中です', 'info');
+            const modal = document.getElementById('progressDetailModal');
+            modal.classList.remove('hidden');
+            
+            // データの取得と表示
+            updateDetailedProgressData();
+            
+            // デフォルトで科目別分析タブを表示
+            switchDetailTab('subject');
+        }
+        
+        // 詳細進捗モーダルを閉じる
+        function closeProgressDetail() {
+            const modal = document.getElementById('progressDetailModal');
+            modal.classList.add('hidden');
+        }
+        
+        // 詳細進捗データの更新
+        function updateDetailedProgressData() {
+            const studyData = getStoredData();
+            
+            // 総合統計の更新
+            const totalHours = calculateTotalHours(studyData);
+            const avgProgress = calculateAverageProgress(studyData);
+            const remainingDays = calculateRemainingDays(studyData.examDate);
+            const requiredHours = calculateRequiredHoursPerDay(studyData);
+            
+            document.getElementById('detailTotalHours').textContent = `${totalHours}時間`;
+            document.getElementById('detailAvgProgress').textContent = `${avgProgress}%`;
+            document.getElementById('detailRemainingDays').textContent = remainingDays !== null ? `${remainingDays}日` : '--日';
+            document.getElementById('detailRequiredHours').textContent = requiredHours !== null ? `${requiredHours.toFixed(1)}時間` : '--時間';
+            
+            // 科目別詳細リストの生成
+            updateSubjectDetailList(studyData);
+            
+            // 詳細進捗グラフの描画
+            drawDetailProgressChart(studyData);
+            
+            // 学習履歴の生成
+            updateStudyTimeline(studyData);
+            
+            // 週次推移グラフの描画
+            drawWeeklyProgressChart(studyData);
+        }
+        
+        // 科目別詳細リストの更新
+        function updateSubjectDetailList(studyData) {
+            const container = document.getElementById('subjectDetailList');
+            container.innerHTML = '';
+            
+            const subjects = studyData.subjects || {};
+            const subjectOrder = ['economics', 'finance', 'management', 'operations', 'legal', 'it', 'policy'];
+            
+            subjectOrder.forEach(key => {
+                const subject = subjects[key] || { progress: 0, hours: 0, lastStudied: null };
+                const targetHours = getTargetHours(key);
+                const completionRate = targetHours > 0 ? Math.round((subject.hours / targetHours) * 100) : 0;
+                
+                const subjectItem = document.createElement('div');
+                subjectItem.className = 'bg-gray-50 rounded-lg p-4';
+                subjectItem.innerHTML = `
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="font-semibold text-gray-900">${getSubjectName(key)}</h4>
+                        <span class="text-sm text-gray-600">${subject.progress}%</span>
+                    </div>
+                    <div class="mb-2">
+                        <div class="bg-gray-200 rounded-full h-2">
+                            <div class="bg-${getSubjectColor(key)}-500 h-2 rounded-full transition-all duration-300" style="width: ${subject.progress}%"></div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <div>
+                            <span class="text-gray-500">学習時間:</span>
+                            <span class="font-medium">${subject.hours.toFixed(1)}時間</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-500">目標達成率:</span>
+                            <span class="font-medium">${completionRate}%</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-500">最終学習:</span>
+                            <span class="font-medium">${subject.lastStudied ? formatDate(subject.lastStudied) : '未学習'}</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-500">残り時間:</span>
+                            <span class="font-medium">${Math.max(0, targetHours - subject.hours).toFixed(1)}時間</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(subjectItem);
+            });
+        }
+        
+        // 詳細進捗グラフの描画
+        function drawDetailProgressChart(studyData) {
+            const canvas = document.getElementById('detailProgressChart');
+            const ctx = canvas.getContext('2d');
+            
+            // 既存のチャートがあれば破棄
+            if (window.detailProgressChartInstance) {
+                window.detailProgressChartInstance.destroy();
+            }
+            
+            const subjects = studyData.subjects || {};
+            const labels = ['経済学', '財務会計', '企業経営', '運営管理', '経営法務', '情報システム', '中小企業政策'];
+            const progressData = [
+                subjects.economics?.progress || 0,
+                subjects.finance?.progress || 0,
+                subjects.management?.progress || 0,
+                subjects.operations?.progress || 0,
+                subjects.legal?.progress || 0,
+                subjects.it?.progress || 0,
+                subjects.policy?.progress || 0
+            ];
+            const hoursData = [
+                subjects.economics?.hours || 0,
+                subjects.finance?.hours || 0,
+                subjects.management?.hours || 0,
+                subjects.operations?.hours || 0,
+                subjects.legal?.hours || 0,
+                subjects.it?.hours || 0,
+                subjects.policy?.hours || 0
+            ];
+            
+            window.detailProgressChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '進捗率 (%)',
+                        data: progressData,
+                        backgroundColor: 'rgba(59, 130, 246, 0.5)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 1,
+                        yAxisID: 'y'
+                    }, {
+                        label: '学習時間 (h)',
+                        data: hoursData,
+                        type: 'line',
+                        borderColor: 'rgba(34, 197, 94, 1)',
+                        backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                        yAxisID: 'y1'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: '進捗率 (%)'
+                            },
+                            min: 0,
+                            max: 100
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: '学習時間 (h)'
+                            },
+                            grid: {
+                                drawOnChartArea: false,
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // 学習履歴の更新
+        function updateStudyTimeline(studyData) {
+            const container = document.getElementById('studyTimelineList');
+            container.innerHTML = '';
+            
+            const records = studyData.studyRecords || [];
+            const sortedRecords = [...records].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            const recentRecords = sortedRecords.slice(0, 20);
+            
+            if (recentRecords.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-center py-4">まだ学習記録がありません</p>';
+                return;
+            }
+            
+            recentRecords.forEach(record => {
+                const recordItem = document.createElement('div');
+                recordItem.className = 'flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors';
+                recordItem.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <div class="w-2 h-2 bg-${getSubjectColor(record.subject)}-500 rounded-full"></div>
+                        <div>
+                            <div class="font-medium text-gray-900">${getSubjectName(record.subject)}</div>
+                            <div class="text-sm text-gray-500">${formatDateTime(record.timestamp)}</div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="font-medium text-gray-900">${record.hours}時間</div>
+                        ${record.memo ? `<div class="text-sm text-gray-500 max-w-xs truncate">${record.memo}</div>` : ''}
+                    </div>
+                `;
+                container.appendChild(recordItem);
+            });
+        }
+        
+        // 週次推移グラフの描画
+        function drawWeeklyProgressChart(studyData) {
+            const canvas = document.getElementById('weeklyProgressChart');
+            const ctx = canvas.getContext('2d');
+            
+            // 既存のチャートがあれば破棄
+            if (window.weeklyProgressChartInstance) {
+                window.weeklyProgressChartInstance.destroy();
+            }
+            
+            const weeklyData = calculateWeeklyProgress(studyData);
+            
+            window.weeklyProgressChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: weeklyData.labels,
+                    datasets: [{
+                        label: '週間学習時間',
+                        data: weeklyData.hours,
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: '学習時間 (h)'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // 週別サマリーの更新
+            updateWeeklySummary(weeklyData);
+        }
+        
+        // 週別学習時間の計算
+        function calculateWeeklyProgress(studyData) {
+            const records = studyData.studyRecords || [];
+            const weeklyMap = new Map();
+            
+            records.forEach(record => {
+                const date = new Date(record.timestamp);
+                const weekStart = getWeekStart(date);
+                const weekKey = formatDate(weekStart);
+                
+                if (!weeklyMap.has(weekKey)) {
+                    weeklyMap.set(weekKey, { hours: 0, count: 0 });
+                }
+                
+                const week = weeklyMap.get(weekKey);
+                week.hours += record.hours;
+                week.count += 1;
+            });
+            
+            // 直近8週間のデータを生成
+            const labels = [];
+            const hours = [];
+            const summaryData = [];
+            
+            for (let i = 7; i >= 0; i--) {
+                const weekStart = new Date();
+                weekStart.setDate(weekStart.getDate() - (i * 7) - weekStart.getDay());
+                weekStart.setHours(0, 0, 0, 0);
+                
+                const weekKey = formatDate(weekStart);
+                const weekData = weeklyMap.get(weekKey) || { hours: 0, count: 0 };
+                
+                labels.push(`第${8-i}週`);
+                hours.push(weekData.hours);
+                summaryData.push({
+                    week: `第${8-i}週`,
+                    startDate: weekStart,
+                    hours: weekData.hours,
+                    count: weekData.count
+                });
+            }
+            
+            return { labels, hours, summaryData };
+        }
+        
+        // 週の開始日を取得
+        function getWeekStart(date) {
+            const d = new Date(date);
+            const day = d.getDay();
+            const diff = d.getDate() - day;
+            return new Date(d.setDate(diff));
+        }
+        
+        // 週別サマリーの更新
+        function updateWeeklySummary(weeklyData) {
+            const container = document.getElementById('weeklySummaryList');
+            container.innerHTML = '';
+            
+            weeklyData.summaryData.forEach(week => {
+                if (week.hours > 0) {
+                    const avgHours = week.count > 0 ? (week.hours / 7).toFixed(1) : 0;
+                    const summaryItem = document.createElement('div');
+                    summaryItem.className = 'flex justify-between items-center p-3 bg-gray-50 rounded-lg';
+                    summaryItem.innerHTML = `
+                        <div>
+                            <div class="font-medium text-gray-900">${week.week} (${formatDate(week.startDate)}〜)</div>
+                            <div class="text-sm text-gray-500">学習日数: ${week.count}日</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="font-medium text-gray-900">${week.hours.toFixed(1)}時間</div>
+                            <div class="text-sm text-gray-500">平均: ${avgHours}時間/日</div>
+                        </div>
+                    `;
+                    container.appendChild(summaryItem);
+                }
+            });
+            
+            if (container.innerHTML === '') {
+                container.innerHTML = '<p class="text-gray-500 text-center py-4">まだ週次データがありません</p>';
+            }
+        }
+        
+        // タブ切り替え
+        function switchDetailTab(tabName) {
+            // すべてのタブボタンとコンテンツを非アクティブに
+            document.querySelectorAll('.detail-tab-btn').forEach(btn => {
+                btn.classList.remove('border-blue-500', 'text-blue-600');
+                btn.classList.add('border-transparent', 'text-gray-500');
+            });
+            
+            document.querySelectorAll('.detail-tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // 選択されたタブをアクティブに
+            const activeBtn = document.querySelector(`[data-tab="${tabName}"]`);
+            activeBtn.classList.remove('border-transparent', 'text-gray-500');
+            activeBtn.classList.add('border-blue-500', 'text-blue-600');
+            
+            document.getElementById(`${tabName}DetailTab`).classList.remove('hidden');
+        }
+        
+        // 必要な学習時間/日の計算
+        function calculateRequiredHoursPerDay(studyData) {
+            if (!studyData.examDate) return null;
+            
+            const remainingDays = calculateRemainingDays(studyData.examDate);
+            if (remainingDays <= 0) return null;
+            
+            const totalTargetHours = 1000; // 仮の目標総学習時間
+            const completedHours = calculateTotalHours(studyData);
+            const remainingHours = Math.max(0, totalTargetHours - completedHours);
+            
+            return remainingHours / remainingDays;
+        }
+        
+        // 科目ごとの目標時間を取得
+        function getTargetHours(subject) {
+            const targetHours = {
+                economics: 150,
+                finance: 200,
+                management: 150,
+                operations: 120,
+                legal: 120,
+                it: 120,
+                policy: 140
+            };
+            return targetHours[subject] || 0;
+        }
+        
+        // 日付時刻のフォーマット
+        function formatDateTime(timestamp) {
+            const date = new Date(timestamp);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            return `${year}/${month}/${day} ${hours}:${minutes}`;
         }
         
         // シェア実行中フラグ
