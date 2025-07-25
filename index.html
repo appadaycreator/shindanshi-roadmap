@@ -418,7 +418,7 @@
 
             <!-- クイックアクション -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 card-hover cursor-pointer" onclick="startQuiz()">
+                <a href="quiz.html" class="block bg-white rounded-lg shadow-sm border border-gray-200 p-6 card-hover cursor-pointer">
                     <div class="text-center">
                         <div class="p-4 bg-red-100 rounded-full inline-block mb-4">
                             <i class="fas fa-question-circle text-red-600 text-2xl"></i>
@@ -426,7 +426,7 @@
                         <h3 class="text-lg font-semibold text-gray-900 mb-2" data-i18n="quick_quiz_title">過去問演習</h3>
                         <p class="text-gray-600 text-sm" data-i18n="quick_quiz_desc">ランダムに問題を出題</p>
                     </div>
-                </div>
+                </a>
                 
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 card-hover cursor-pointer" onclick="showProgressDetail()">
                     <div class="text-center">
@@ -1009,10 +1009,7 @@
         }
         
         // クイックアクション機能
-        function startQuiz() {
-            console.log('🎯 過去問演習を開始');
-            showNotification('情報', '過去問機能は開発中です', 'info');
-        }
+        // Quiz navigation now handled by direct link
         
         // 詳細進捗モーダルの表示
         function showProgressDetail() {
