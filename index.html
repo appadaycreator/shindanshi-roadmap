@@ -255,7 +255,7 @@
         <div id="sidebarOverlay" class="lg:hidden fixed top-16 bottom-0 left-0 right-0 bg-black bg-opacity-50 z-40 hidden"></div>
 
         <!-- メインコンテンツ -->
-        <main class="flex-1 p-6 lg:ml-0">
+        <main id="dashboard" class="flex-1 p-6 lg:ml-0">
             <!-- ウェルカムセクション -->
             <div class="mb-8 fade-in">
                 <div class="bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg shadow-sm p-6 text-white">
@@ -1612,6 +1612,14 @@
                 document.addEventListener('wheel', function() {}, { passive: true });
             }
         })();
+        
+        // Initialize current date display
+        updateCurrentDate();
+        
+        // Ensure date is updated even if initial call fails
+        setTimeout(function() {
+            updateCurrentDate();
+        }, 100);
         
         console.log('🎉 中小企業診断士合格ロードマップ - スクリプト読み込み完了');
     </script>
