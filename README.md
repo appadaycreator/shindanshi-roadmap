@@ -70,7 +70,7 @@ mainブランチへのプッシュで自動的にデプロイされます。
 ```
 shindanshi-roadmap/
 ├── index.html              # メインページ（ダッシュボード）
-├── lp.html                 # ランディングページ
+├── lp.html                 # ランディングページ（サービス紹介）
 ├── usage.html              # 使い方ページ
 ├── terms.html              # 利用規約・免責事項
 ├── privacy.html            # プライバシーポリシー
