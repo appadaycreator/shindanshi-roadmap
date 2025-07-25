@@ -3,37 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>-m:��<������ - fҡ�÷����</title>
-    <meta name="description" content="-m:��f<n_�n�fҡ����f�K��W_f�;n��7��n2W�N�O�_��Л���olocalStoragek�XU��h!�g)(��">
-    <meta name="keywords" content="-m:��,f�V,f�;,2W�,N�O,!�,:��,�<">
-    <meta name="author" content="-m:��<������">
+    <title>中小企業診断士合格ロードマップ - 学習管理ダッシュボード</title>
+    <meta name="description" content="中小企業診断士試験合格のための総合学習管理システム。試験日から逆算した学習計画の自動生成、7科目の進捗可視化、過去問演習機能を提供。データはlocalStorageに保存され、完全無料で利用可能。">
+    <meta name="keywords" content="中小企業診断士,試験対策,学習計画,進捗管理,過去問,無料,診断士,資格">
+    <meta name="author" content="中小企業診断士合格ロードマップ">
     
-    <!-- OGP-� -->
-    <meta property="og:title" content="-m:��<������">
-    <meta property="og:description" content="f�K��W_f�;n��g��j<��]F">
+    <!-- OGP設定 -->
+    <meta property="og:title" content="中小企業診断士合格ロードマップ">
+    <meta property="og:description" content="試験日から逆算した学習計画の自動生成で確実な合格を目指そう">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://appadaycreator.github.io/shindanshi-roadmap/">
     <meta property="og:image" content="https://appadaycreator.github.io/shindanshi-roadmap/assets/images/ogp.jpg">
-    <meta property="og:site_name" content="-m:��<������">
+    <meta property="og:site_name" content="中小企業診断士合格ロードマップ">
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="-m:��<������">
-    <meta name="twitter:description" content="f�K��W_f�;n��g��j<��]F">
+    <meta name="twitter:title" content="中小企業診断士合格ロードマップ">
+    <meta name="twitter:description" content="試験日から逆算した学習計画の自動生成で確実な合格を目指そう">
     <meta name="twitter:image" content="https://appadaycreator.github.io/shindanshi-roadmap/assets/images/ogp.jpg">
     
-    <!-- PWA-� -->
+    <!-- PWA設定 -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#2563eb">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content=":��������">
+    <meta name="apple-mobile-web-app-title" content="診断士ロードマップ">
     
-    <!-- աӳ� -->
+    <!-- ファビコン -->
     <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
     <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
     
-    <!--����� -->
+    <!--外部ライブラリ -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
@@ -48,19 +48,19 @@
     <!-- End Google Tag Manager -->
     
     <style>
-        /* ����CSS */
+        /* カスタムCSS */
         body {
             font-family: 'Noto Sans JP', sans-serif;
         }
         
-        /* �W���-� */
+        /* 文字サイズ設定 */
         .text-xs-size { font-size: 0.6rem; }
         .text-sm-size { font-size: 0.8rem; }
         .text-base-size { font-size: 1rem; }
         .text-lg-size { font-size: 1.2rem; }
         .text-xl-size { font-size: 1.4rem; }
         
-        /* ������� */
+        /* アニメーション */
         .fade-in {
             animation: fadeIn 0.5s ease-in;
         }
@@ -78,18 +78,18 @@
             transition: stroke-dashoffset 0.5s ease;
         }
         
-        /* ����� */
+        /* サイドバー */
         .sidebar-transition {
             transition: transform 0.3s ease-in-out;
         }
         
-        /* ��� hover�� */
+        /* カード hover効果 */
         .card-hover:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
         
-        /* �Ф�(���������� */
+        /* モバイル用ハンバーガーメニュー */
         .hamburger-line {
             transition: all 0.3s ease;
         }
@@ -106,7 +106,7 @@
             transform: rotate(-45deg) translate(7px, -6px);
         }
         
-        /* ��rQ */
+        /* 科目色分け */
         .subject-economics { border-left: 4px solid #ef4444; }
         .subject-finance { border-left: 4px solid #f97316; }
         .subject-management { border-left: 4px solid #eab308; }
@@ -122,44 +122,44 @@
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
-    <!-- ����PC(	 -->
+    <!-- ヘッダー（PC用） -->
     <header class="hidden lg:block bg-white shadow-sm border-b border-gray-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
                     <i class="fas fa-road text-blue-600 text-2xl mr-3"></i>
-                    <h1 class="text-xl font-bold text-gray-900" data-i18n="app_title">-m:��<������</h1>
+                    <h1 class="text-xl font-bold text-gray-900" data-i18n="app_title">中小企業診断士合格ロードマップ</h1>
                 </div>
                 <nav class="flex space-x-8">
-                    <a href="index.html" class="text-blue-600 font-medium" data-i18n="nav_dashboard">�÷����</a>
-                    <a href="lp.html" class="text-gray-500 hover:text-gray-900" data-i18n="nav_about">��ӹ9�</a>
-                    <a href="usage.html" class="text-gray-500 hover:text-gray-900" data-i18n="nav_usage">D�</a>
-                    <a href="contact.html" class="text-gray-500 hover:text-gray-900" data-i18n="nav_contact">JOD�[</a>
+                    <a href="index.html" class="text-blue-600 font-medium" data-i18n="nav_dashboard">ダッシュボード</a>
+                    <a href="lp.html" class="text-gray-500 hover:text-gray-900" data-i18n="nav_about">サービス紹介</a>
+                    <a href="usage.html" class="text-gray-500 hover:text-gray-900" data-i18n="nav_usage">使い方</a>
+                    <a href="contact.html" class="text-gray-500 hover:text-gray-900" data-i18n="nav_contact">お問い合わせ</a>
                 </nav>
                 <div class="flex items-center space-x-4">
                     <select id="langSelect" class="border border-gray-300 rounded px-2 py-1 text-sm">
-                        <option value="ja">�,�</option>
+                        <option value="ja">日本語</option>
                         <option value="en">English</option>
                     </select>
                     <select id="fontSizeSelect" class="border border-gray-300 rounded px-2 py-1 text-sm">
-                        <option value="xs">u</option>
-                        <option value="sm"></option>
-                        <option value="base" selected>�</option>
-                        <option value="lg">'</option>
-                        <option value="xl">y'</option>
+                        <option value="xs">極小</option>
+                        <option value="sm">小</option>
+                        <option value="base" selected>標準</option>
+                        <option value="lg">大</option>
+                        <option value="xl">特大</option>
                     </select>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- �Ф����� -->
+    <!-- モバイルヘッダー -->
     <header class="lg:hidden bg-white shadow-sm border-b border-gray-200">
         <div class="px-4 py-3">
             <div class="flex justify-between items-center">
                 <div class="flex items-center">
                     <i class="fas fa-road text-blue-600 text-xl mr-2"></i>
-                    <h1 class="text-lg font-bold text-gray-900" data-i18n="app_title_short">:��������</h1>
+                    <h1 class="text-lg font-bold text-gray-900" data-i18n="app_title_short">診断士ロードマップ</h1>
                 </div>
                 <button id="mobileMenuBtn" class="p-2">
                     <div class="w-6 h-6 flex flex-col justify-center space-y-1">
@@ -172,38 +172,38 @@
         </div>
     </header>
 
-    <!-- ����� -->
+    <!-- メインコンテナ -->
     <div class="flex">
-        <!-- 浤���PC(	 -->
+        <!-- 左サイドバー（PC用） -->
         <aside class="hidden lg:block w-64 bg-white shadow-sm min-h-screen">
             <div class="p-6">
                 <nav class="space-y-4">
                     <div>
-                        <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3" data-i18n="nav_study">fҡ</h3>
+                        <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3" data-i18n="nav_study">学習管理</h3>
                         <ul class="space-y-2">
-                            <li><a href="#dashboard" class="flex items-center px-3 py-2 text-blue-600 bg-blue-50 rounded-md"><i class="fas fa-tachometer-alt mr-3"></i><span data-i18n="nav_dashboard">�÷����</span></a></li>
-                            <li><a href="#schedule" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-calendar-alt mr-3"></i><span data-i18n="nav_schedule">f�;</span></a></li>
-                            <li><a href="#progress" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-chart-line mr-3"></i><span data-i18n="nav_progress">2W��</span></a></li>
-                            <li><a href="#quiz" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-question-circle mr-3"></i><span data-i18n="nav_quiz">N�O�</span></a></li>
+                            <li><a href="#dashboard" class="flex items-center px-3 py-2 text-blue-600 bg-blue-50 rounded-md"><i class="fas fa-tachometer-alt mr-3"></i><span data-i18n="nav_dashboard">ダッシュボード</span></a></li>
+                            <li><a href="#schedule" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-calendar-alt mr-3"></i><span data-i18n="nav_schedule">学習計画</span></a></li>
+                            <li><a href="#progress" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-chart-line mr-3"></i><span data-i18n="nav_progress">進捗状況</span></a></li>
+                            <li><a href="#quiz" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-question-circle mr-3"></i><span data-i18n="nav_quiz">過去問演習</span></a></li>
                         </ul>
                     </div>
                     <div>
-                        <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3" data-i18n="nav_data">����</h3>
+                        <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3" data-i18n="nav_data">データ管理</h3>
                         <ul class="space-y-2">
-                            <li><a href="#export" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-download mr-3"></i><span data-i18n="nav_export">������</span></a></li>
-                            <li><a href="#import" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-upload mr-3"></i><span data-i18n="nav_import">�����</span></a></li>
-                            <li><a href="#backup" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-shield-alt mr-3"></i><span data-i18n="nav_backup">�ï���</span></a></li>
+                            <li><a href="#export" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-download mr-3"></i><span data-i18n="nav_export">エクスポート</span></a></li>
+                            <li><a href="#import" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-upload mr-3"></i><span data-i18n="nav_import">インポート</span></a></li>
+                            <li><a href="#backup" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-shield-alt mr-3"></i><span data-i18n="nav_backup">バックアップ</span></a></li>
                         </ul>
                     </div>
                 </nav>
             </div>
         </aside>
 
-        <!-- �����Ф�(	 -->
+        <!-- 右サイドバー（モバイル用） -->
         <div id="mobileSidebar" class="lg:hidden fixed inset-y-0 right-0 w-80 bg-white shadow-lg z-50 transform translate-x-full sidebar-transition">
             <div class="p-6">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-lg font-semibold" data-i18n="menu_title">����</h2>
+                    <h2 class="text-lg font-semibold" data-i18n="menu_title">メニュー</h2>
                     <button id="closeSidebarBtn" class="p-2">
                         <i class="fas fa-times text-gray-500"></i>
                     </button>
@@ -211,33 +211,33 @@
                 
                 <div class="space-y-6">
                     <div>
-                        <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3" data-i18n="nav_pages">���</h3>
+                        <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3" data-i18n="nav_pages">ページ</h3>
                         <ul class="space-y-2">
-                            <li><a href="index.html" class="block px-3 py-2 text-blue-600 bg-blue-50 rounded-md"><i class="fas fa-home mr-3"></i><span data-i18n="nav_home">���</span></a></li>
-                            <li><a href="lp.html" class="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-info-circle mr-3"></i><span data-i18n="nav_about">��ӹ9�</span></a></li>
-                            <li><a href="usage.html" class="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-book mr-3"></i><span data-i18n="nav_usage">D�</span></a></li>
-                            <li><a href="contact.html" class="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-envelope mr-3"></i><span data-i18n="nav_contact">JOD�[</span></a></li>
+                            <li><a href="index.html" class="block px-3 py-2 text-blue-600 bg-blue-50 rounded-md"><i class="fas fa-home mr-3"></i><span data-i18n="nav_home">ホーム</span></a></li>
+                            <li><a href="lp.html" class="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-info-circle mr-3"></i><span data-i18n="nav_about">サービス紹介</span></a></li>
+                            <li><a href="usage.html" class="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-book mr-3"></i><span data-i18n="nav_usage">使い方</span></a></li>
+                            <li><a href="contact.html" class="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-envelope mr-3"></i><span data-i18n="nav_contact">お問い合わせ</span></a></li>
                         </ul>
                     </div>
                     
                     <div>
-                        <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3" data-i18n="nav_settings">-�</h3>
+                        <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3" data-i18n="nav_settings">設定</h3>
                         <div class="space-y-3">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1" data-i18n="setting_language"> �</label>
+                                <label class="block text-sm font-medium text-gray-700 mb-1" data-i18n="setting_language">言語</label>
                                 <select id="mobileLangSelect" class="w-full border border-gray-300 rounded px-3 py-2">
-                                    <option value="ja">�,�</option>
+                                    <option value="ja">日本語</option>
                                     <option value="en">English</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1" data-i18n="setting_font_size">�W���</label>
+                                <label class="block text-sm font-medium text-gray-700 mb-1" data-i18n="setting_font_size">文字サイズ</label>
                                 <select id="mobileFontSizeSelect" class="w-full border border-gray-300 rounded px-3 py-2">
-                                    <option value="xs">u</option>
-                                    <option value="sm"></option>
-                                    <option value="base" selected>�</option>
-                                    <option value="lg">'</option>
-                                    <option value="xl">y'</option>
+                                    <option value="xs">極小</option>
+                                    <option value="sm">小</option>
+                                    <option value="base" selected>標準</option>
+                                    <option value="lg">大</option>
+                                    <option value="xl">特大</option>
                                 </select>
                             </div>
                         </div>
@@ -246,28 +246,28 @@
             </div>
         </div>
 
-        <!-- �Ф뵤����o -->
+        <!-- モバイルサイドバー背景 -->
         <div id="sidebarOverlay" class="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
 
-        <!-- ������ -->
+        <!-- メインコンテンツ -->
         <main class="flex-1 p-6 lg:ml-0">
-            <!-- ���໯��� -->
+            <!-- ウェルカムセクション -->
             <div class="mb-8 fade-in">
                 <div class="bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg shadow-sm p-6 text-white">
                     <div class="flex items-center justify-between">
                         <div>
-                            <h2 class="text-2xl font-bold mb-2" data-i18n="welcome_title">f��÷����</h2>
-                            <p class="text-blue-100" data-i18n="welcome_message">��<kQf5�~W�F</p>
+                            <h2 class="text-2xl font-bold mb-2" data-i18n="welcome_title">学習ダッシュボード</h2>
+                            <p class="text-blue-100" data-i18n="welcome_message">今日も合格に向けて頑張りましょう！</p>
                         </div>
                         <div class="text-right">
-                            <div class="text-sm text-blue-200" data-i18n="today_date">��n��</div>
+                            <div class="text-sm text-blue-200" data-i18n="today_date">今日の日付</div>
                             <div id="currentDate" class="text-xl font-semibold"></div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- q��� -->
+            <!-- 統計カード -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 card-hover">
                     <div class="flex items-center">
@@ -275,7 +275,7 @@
                             <i class="fas fa-calendar-check text-blue-600 text-xl"></i>
                         </div>
                         <div class="ml-4">
-                            <h3 class="text-sm font-medium text-gray-500" data-i18n="stats_study_days">f��p</h3>
+                            <h3 class="text-sm font-medium text-gray-500" data-i18n="stats_study_days">学習日数</h3>
                             <p id="studyDaysCount" class="text-2xl font-bold text-gray-900">0</p>
                         </div>
                     </div>
@@ -287,7 +287,7 @@
                             <i class="fas fa-clock text-green-600 text-xl"></i>
                         </div>
                         <div class="ml-4">
-                            <h3 class="text-sm font-medium text-gray-500" data-i18n="stats_total_hours">�f�B�</h3>
+                            <h3 class="text-sm font-medium text-gray-500" data-i18n="stats_total_hours">総学習時間</h3>
                             <p id="totalHoursCount" class="text-2xl font-bold text-gray-900">0h</p>
                         </div>
                     </div>
@@ -299,7 +299,7 @@
                             <i class="fas fa-chart-line text-yellow-600 text-xl"></i>
                         </div>
                         <div class="ml-4">
-                            <h3 class="text-sm font-medium text-gray-500" data-i18n="stats_avg_progress">sG2W�</h3>
+                            <h3 class="text-sm font-medium text-gray-500" data-i18n="stats_avg_progress">平均進捗率</h3>
                             <p id="avgProgressCount" class="text-2xl font-bold text-gray-900">0%</p>
                         </div>
                     </div>
@@ -311,45 +311,45 @@
                             <i class="fas fa-question-circle text-purple-600 text-xl"></i>
                         </div>
                         <div class="ml-4">
-                            <h3 class="text-sm font-medium text-gray-500" data-i18n="stats_quiz_count">�TOLp</h3>
+                            <h3 class="text-sm font-medium text-gray-500" data-i18n="stats_quiz_count">解答問題数</h3>
                             <p id="quizCount" class="text-2xl font-bold text-gray-900">0</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- f�;\����� -->
+            <!-- 学習計画作成セクション -->
             <div class="mb-8">
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4" data-i18n="plan_title">f�;\</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4" data-i18n="plan_title">学習計画作成</h3>
                     
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="exam_date_label">f�</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="exam_date_label">試験日</label>
                             <input type="date" id="examDate" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
                         
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="daily_hours_label">1�nf�B�B�	</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="daily_hours_label">1日の学習時間（時間）</label>
                             <input type="number" id="dailyHours" min="0.5" max="12" step="0.5" value="2" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
                     </div>
                     
                     <button id="createPlanBtn" class="mt-4 bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors">
-                        <i class="fas fa-plus mr-2"></i><span data-i18n="create_plan_btn">f�;�\</span>
+                        <i class="fas fa-plus mr-2"></i><span data-i18n="create_plan_btn">学習計画を作成</span>
                     </button>
                 </div>
             </div>
 
-            <!-- ��%2W -->
+            <!-- 科目別進捗 -->
             <div class="mb-8">
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-6" data-i18n="subject_progress_title">��%2W��</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-6" data-i18n="subject_progress_title">科目別進捗状況</h3>
                     
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div>
                             <div class="space-y-4" id="subjectProgressList">
-                                <!-- ��2WLՄkU�� -->
+                                <!-- 科目進捗が動的に生成される -->
                             </div>
                         </div>
                         
@@ -360,54 +360,54 @@
                 </div>
             </div>
 
-            <!-- ��nf�2 -->
+            <!-- 今日の学習記録 -->
             <div class="mb-8">
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4" data-i18n="today_study_title">��nf�2</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4" data-i18n="today_study_title">今日の学習記録</h3>
                     
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="study_subject_label">��</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="study_subject_label">科目</label>
                             <select id="studySubject" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <option value="">��x�</option>
-                                <option value="economics" data-i18n="subject_economics">Lf�L?V</option>
-                                <option value="finance" data-i18n="subject_finance">���</option>
-                                <option value="management" data-i18n="subject_management">mL��</option>
-                                <option value="operations" data-i18n="subject_operations">K��</option>
-                                <option value="legal" data-i18n="subject_legal">L���</option>
-                                <option value="it" data-i18n="subject_it">L��1����</option>
-                                <option value="policy" data-i18n="subject_policy">-mL��?V</option>
+                                <option value="">科目を選択</option>
+                                <option value="economics" data-i18n="subject_economics">経済学・経済政策</option>
+                                <option value="finance" data-i18n="subject_finance">財務・会計</option>
+                                <option value="management" data-i18n="subject_management">企業経営理論</option>
+                                <option value="operations" data-i18n="subject_operations">運営管理</option>
+                                <option value="legal" data-i18n="subject_legal">経営法務</option>
+                                <option value="it" data-i18n="subject_it">経営情報システム</option>
+                                <option value="policy" data-i18n="subject_policy">中小企業経営・政策</option>
                             </select>
                         </div>
                         
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="study_hours_label">f�B�B�	</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="study_hours_label">学習時間（時間）</label>
                             <input type="number" id="studyHours" min="0.1" max="12" step="0.1" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
                         
                         <div class="flex items-end">
                             <button id="addStudyRecordBtn" class="w-full bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors">
-                                <i class="fas fa-plus mr-2"></i><span data-i18n="add_record_btn">2��</span>
+                                <i class="fas fa-plus mr-2"></i><span data-i18n="add_record_btn">記録追加</span>
                             </button>
                         </div>
                     </div>
                     
                     <div class="mt-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="study_memo_label">��</label>
-                        <textarea id="studyMemo" rows="3" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="��nf҅��eM�2W~W�F"></textarea>
+                        <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="study_memo_label">メモ</label>
+                        <textarea id="studyMemo" rows="3" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="今日の学習内容や気づきを記録しましょう"></textarea>
                     </div>
                 </div>
             </div>
 
-            <!-- ��ï����� -->
+            <!-- クイックアクション -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 card-hover cursor-pointer" onclick="startQuiz()">
                     <div class="text-center">
                         <div class="p-4 bg-red-100 rounded-full inline-block mb-4">
                             <i class="fas fa-question-circle text-red-600 text-2xl"></i>
                         </div>
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2" data-i18n="quick_quiz_title">N�O�</h3>
-                        <p class="text-gray-600 text-sm" data-i18n="quick_quiz_desc">����kOL��L</p>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2" data-i18n="quick_quiz_title">過去問演習</h3>
+                        <p class="text-gray-600 text-sm" data-i18n="quick_quiz_desc">ランダムに問題を出題</p>
                     </div>
                 </div>
                 
@@ -416,8 +416,8 @@
                         <div class="p-4 bg-blue-100 rounded-full inline-block mb-4">
                             <i class="fas fa-chart-line text-blue-600 text-2xl"></i>
                         </div>
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2" data-i18n="progress_detail_title">s02W</h3>
-                        <p class="text-gray-600 text-sm" data-i18n="progress_detail_desc">��%ns0�</p>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2" data-i18n="progress_detail_title">詳細進捗</h3>
+                        <p class="text-gray-600 text-sm" data-i18n="progress_detail_desc">科目別の詳細分析</p>
                     </div>
                 </div>
                 
@@ -426,15 +426,15 @@
                         <div class="p-4 bg-green-100 rounded-full inline-block mb-4">
                             <i class="fas fa-share-alt text-green-600 text-2xl"></i>
                         </div>
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2" data-i18n="share_progress_title">2W����</h3>
-                        <p class="text-gray-600 text-sm" data-i18n="share_progress_desc">SNSgfҶ��q	</p>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2" data-i18n="share_progress_title">進捗をシェア</h3>
+                        <p class="text-gray-600 text-sm" data-i18n="share_progress_desc">SNSで学習状況を共有</p>
                     </div>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- ������ -->
+    <!-- 通知・モーダル -->
     <div id="notification" class="fixed top-4 right-4 z-50 hidden">
         <div class="bg-white rounded-lg shadow-lg border p-4 max-w-sm">
             <div class="flex items-center">
@@ -448,15 +448,15 @@
     </div>
 
     <script>
-        // �����	p
+        // グローバル変数
         let currentLang = 'ja';
         let currentFontSize = 'base';
         let studyData = {};
         let progressChart;
         
-        // 
+        // 初期化
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('=� -m:��<������ - ��');
+            console.log('🚀 中小企業診断士合格ロードマップ - 初期化開始');
             
             initializeApp();
             loadUserData();
@@ -465,21 +465,21 @@
             renderSubjectProgress();
             createProgressChart();
             
-            console.log(' ���������');
+            console.log('✅ アプリケーション初期化完了');
         });
         
-        // �������
+        // アプリケーション初期化
         function initializeApp() {
-            console.log('=� �������-...');
+            console.log('📱 アプリケーション初期化中...');
             
-            // ��������K�-����
+            // ローカルストレージから設定を読み込み
             const savedLang = localStorage.getItem('app_language') || 'ja';
             const savedFontSize = localStorage.getItem('app_font_size') || 'base';
             
             setLanguage(savedLang);
             setFontSize(savedFontSize);
             
-            // ���-�
+            // 初期データ設定
             if (!localStorage.getItem('study_data')) {
                 studyData = {
                     examDate: null,
@@ -500,11 +500,11 @@
             }
         }
         
-        // �������-�
+        // イベントリスナー設定
         function setupEventListeners() {
-            console.log('= �������-�-...');
+            console.log('🔗 イベントリスナー設定中...');
             
-            // �Ф�����
+            // モバイルメニュー
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
             const mobileSidebar = document.getElementById('mobileSidebar');
             const sidebarOverlay = document.getElementById('sidebarOverlay');
@@ -514,24 +514,24 @@
             closeSidebarBtn.addEventListener('click', closeMobileSidebar);
             sidebarOverlay.addEventListener('click', closeMobileSidebar);
             
-            //  ��թ�ȵ��	�
+            // 言語・フォントサイズ変更
             document.getElementById('langSelect').addEventListener('change', (e) => setLanguage(e.target.value));
             document.getElementById('mobileLangSelect').addEventListener('change', (e) => setLanguage(e.target.value));
             document.getElementById('fontSizeSelect').addEventListener('change', (e) => setFontSize(e.target.value));
             document.getElementById('mobileFontSizeSelect').addEventListener('change', (e) => setFontSize(e.target.value));
             
-            // f�;\
+            // 学習計画作成
             document.getElementById('createPlanBtn').addEventListener('click', createStudyPlan);
             
-            // f�2��
+            // 学習記録追加
             document.getElementById('addStudyRecordBtn').addEventListener('click', addStudyRecord);
             
-            console.log(' �������-���');
+            console.log('✅ イベントリスナー設定完了');
         }
         
-        // �Ф뵤����\
+        // モバイルサイドバー操作
         function openMobileSidebar() {
-            console.log('=� �Ф뵤�����O');
+            console.log('📱 モバイルサイドバーを開く');
             const sidebar = document.getElementById('mobileSidebar');
             const overlay = document.getElementById('sidebarOverlay');
             const menuBtn = document.getElementById('mobileMenuBtn');
@@ -542,7 +542,7 @@
         }
         
         function closeMobileSidebar() {
-            console.log('=� �Ф뵤�����X�');
+            console.log('📱 モバイルサイドバーを閉じる');
             const sidebar = document.getElementById('mobileSidebar');
             const overlay = document.getElementById('sidebarOverlay');
             const menuBtn = document.getElementById('mobileMenuBtn');
@@ -552,36 +552,36 @@
             menuBtn.classList.remove('hamburger-active');
         }
         
-        //  �-�
+        // 言語設定
         function setLanguage(lang) {
-            console.log('<  ��	�:', lang);
+            console.log('🌐 言語を変更:', lang);
             currentLang = lang;
             localStorage.setItem('app_language', lang);
             
-            // ����ï�n$�
+            // セレクトボックスの値を同期
             document.getElementById('langSelect').value = lang;
             document.getElementById('mobileLangSelect').value = lang;
             
-            //  ���n��!H	
+            // 多言語対応の実装（簡易版）
             updateTexts();
         }
         
-        // թ�ȵ��-�
+        // フォントサイズ設定
         function setFontSize(size) {
-            console.log('=$ թ�ȵ���	�:', size);
+            console.log('🔤 フォントサイズを変更:', size);
             currentFontSize = size;
             localStorage.setItem('app_font_size', size);
             
-            // ����ï�n$�
+            // セレクトボックスの値を同期
             document.getElementById('fontSizeSelect').value = size;
             document.getElementById('mobileFontSizeSelect').value = size;
             
-            // bodyk�鹒i(
+            // bodyにクラスを適用
             document.body.className = document.body.className.replace(/text-\w+-size/g, '');
             document.body.classList.add(`text-${size}-size`);
         }
         
-        // �(��nh:
+        // 現在日付の表示
         function updateCurrentDate() {
             const now = new Date();
             const dateStr = now.toLocaleDateString('ja-JP', {
@@ -593,61 +593,61 @@
             document.getElementById('currentDate').textContent = dateStr;
         }
         
-        // �������n��
+        // ユーザーデータの読み込み
         function loadUserData() {
-            console.log('=� ����������-...');
+            console.log('💾 ユーザーデータを読み込み中...');
             const savedData = localStorage.getItem('study_data');
             if (savedData) {
                 studyData = JSON.parse(savedData);
-                console.log(' �����������:', studyData);
+                console.log('✅ ユーザーデータ読み込み完了:', studyData);
                 updateStatistics();
             }
         }
         
-        // �������n�X
+        // ユーザーデータの保存
         function saveUserData() {
-            console.log('=� ���������X-...');
+            console.log('💾 ユーザーデータを保存中...');
             localStorage.setItem('study_data', JSON.stringify(studyData));
-            console.log(' ��������X��');
+            console.log('✅ ユーザーデータ保存完了');
         }
         
-        // q�1n��
+        // 統計情報の更新
         function updateStatistics() {
-            console.log('=� q�1���-...');
+            console.log('📊 統計情報を更新中...');
             
-            // f��p
+            // 学習日数
             const uniqueDates = [...new Set(studyData.studyRecords.map(record => record.date))];
             document.getElementById('studyDaysCount').textContent = uniqueDates.length;
             
-            // �f�B�
+            // 総学習時間
             const totalHours = studyData.studyRecords.reduce((sum, record) => sum + record.hours, 0);
             document.getElementById('totalHoursCount').textContent = `${totalHours.toFixed(1)}h`;
             
-            // sG2W�
+            // 平均進捗率
             const subjects = Object.values(studyData.subjects);
             const avgProgress = subjects.reduce((sum, subject) => sum + subject.progress, 0) / subjects.length;
             document.getElementById('avgProgressCount').textContent = `${Math.round(avgProgress)}%`;
             
-            // �TOLp
+            // 解答問題数
             const quizCount = studyData.quizResults.length;
             document.getElementById('quizCount').textContent = quizCount;
             
-            console.log(' q�1����');
+            console.log('✅ 統計情報更新完了');
         }
         
-        // ��%2Wnh:
+        // 科目別進捗の表示
         function renderSubjectProgress() {
-            console.log('=� ��%2W�h:-...');
+            console.log('📈 科目別進捗を表示中...');
             const container = document.getElementById('subjectProgressList');
             
             const subjects = [
-                { key: 'economics', name: 'Lf�L?V', color: 'red' },
-                { key: 'finance', name: '���', color: 'orange' },
-                { key: 'management', name: 'mL��', color: 'yellow' },
-                { key: 'operations', name: 'K��', color: 'green' },
-                { key: 'legal', name: 'L���', color: 'cyan' },
-                { key: 'it', name: 'L��1����', color: 'blue' },
-                { key: 'policy', name: '-mL��?V', color: 'purple' }
+                { key: 'economics', name: '経済学・経済政策', color: 'red' },
+                { key: 'finance', name: '財務・会計', color: 'orange' },
+                { key: 'management', name: '企業経営理論', color: 'yellow' },
+                { key: 'operations', name: '運営管理', color: 'green' },
+                { key: 'legal', name: '経営法務', color: 'cyan' },
+                { key: 'it', name: '経営情報システム', color: 'blue' },
+                { key: 'policy', name: '中小企業経営・政策', color: 'purple' }
             ];
             
             container.innerHTML = subjects.map(subject => {
@@ -665,15 +665,15 @@
                 `;
             }).join('');
             
-            console.log(' ��%2Wh:��');
+            console.log('✅ 科目別進捗表示完了');
         }
         
-        // 2W����n\
+        // 進捗チャートの作成
         function createProgressChart() {
-            console.log('=� 2W���Ȓ\-...');
+            console.log('📊 進捗チャートを作成中...');
             const ctx = document.getElementById('progressChart').getContext('2d');
             
-            const subjects = ['Lf', '��', 'mL�', 'K��', 'L���', '�1����', '-m'];
+            const subjects = ['経済学', '財務', '企業経営', '運営管理', '経営法務', '情報システム', '中小企業'];
             const progressData = Object.values(studyData.subjects).map(subject => subject.progress);
             
             progressChart = new Chart(ctx, {
@@ -681,7 +681,7 @@
                 data: {
                     labels: subjects,
                     datasets: [{
-                        label: '2W� (%)',
+                        label: '進捗率 (%)',
                         data: progressData,
                         borderColor: '#3b82f6',
                         backgroundColor: 'rgba(59, 130, 246, 0.1)',
@@ -712,17 +712,17 @@
                 }
             });
             
-            console.log(' 2W����\��');
+            console.log('✅ 進捗チャート作成完了');
         }
         
-        // f�;\
+        // 学習計画作成
         function createStudyPlan() {
-            console.log('=� f�;�\-...');
+            console.log('📅 学習計画を作成中...');
             const examDate = document.getElementById('examDate').value;
             const dailyHours = parseFloat(document.getElementById('dailyHours').value);
             
             if (!examDate) {
-                showNotification('���', 'f�e�WfO`UD', 'error');
+                showNotification('エラー', '試験日を入力してください', 'error');
                 return;
             }
             
@@ -732,7 +732,7 @@
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
             
             if (diffDays <= 0) {
-                showNotification('���', 'f�o�刊�n�ؒx�WfO`UD', 'error');
+                showNotification('エラー', '試験日は今日より後の日付を選択してください', 'error');
                 return;
             }
             
@@ -742,21 +742,21 @@
             const totalHours = diffDays * dailyHours;
             const hoursPerSubject = totalHours / 7;
             
-            console.log(`=� f�;: ${diffDays}�1�${dailyHours}B���B_�${hoursPerSubject.toFixed(1)}B�`);
+            console.log(`📊 学習計画: ${diffDays}日間、1日${dailyHours}時間、科目あたり${hoursPerSubject.toFixed(1)}時間`);
             
             saveUserData();
-            showNotification('�', `${diffDays}�nf�;�\W~W_`, 'success');
+            showNotification('成功', `${diffDays}日間の学習計画を作成しました！`, 'success');
         }
         
-        // f�2��
+        // 学習記録追加
         function addStudyRecord() {
-            console.log('=� f�2���-...');
+            console.log('📝 学習記録を追加中...');
             const subject = document.getElementById('studySubject').value;
             const hours = parseFloat(document.getElementById('studyHours').value);
             const memo = document.getElementById('studyMemo').value;
             
             if (!subject || !hours) {
-                showNotification('���', '��hf�B��e�WfO`UD', 'error');
+                showNotification('エラー', '科目と学習時間を入力してください', 'error');
                 return;
             }
             
@@ -773,7 +773,7 @@
             studyData.subjects[subject].hours += hours;
             studyData.subjects[subject].lastStudied = today;
             
-            // 2W�n��!�	
+            // 進捗率の更新（簡易計算）
             if (studyData.examDate) {
                 const totalTargetHours = studyData.dailyHours * 
                     Math.ceil((new Date(studyData.examDate) - new Date()) / (1000 * 60 * 60 * 24)) / 7;
@@ -790,42 +790,42 @@
                 progressChart.update();
             }
             
-            // թ�����
+            // フォームリセット
             document.getElementById('studySubject').value = '';
             document.getElementById('studyHours').value = '';
             document.getElementById('studyMemo').value = '';
             
-            showNotification('�', 'f�2���W~W_', 'success');
-            console.log(' f�2����:', record);
+            showNotification('成功', '学習記録を追加しました！', 'success');
+            console.log('✅ 学習記録追加完了:', record);
         }
         
-        // ��ï�����_�
+        // クイックアクション機能
         function startQuiz() {
-            console.log('<� N�OҒ��');
-            showNotification('�1', 'N�O_�o�z-gY', 'info');
+            console.log('🎯 過去問演習を開始');
+            showNotification('情報', '過去問機能は開発中です', 'info');
         }
         
         function showProgressDetail() {
-            console.log('=� s02W�h:');
-            showNotification('�1', 's02W_�o�z-gY', 'info');
+            console.log('📊 詳細進捗を表示');
+            showNotification('情報', '詳細進捗機能は開発中です', 'info');
         }
         
         function shareProgress() {
-            console.log('=� 2W����');
+            console.log('📤 進捗をシェア');
             if (navigator.share) {
                 navigator.share({
-                    title: '-m:��<������',
-                    text: 'f�2W�q	W~Y',
+                    title: '中小企業診断士合格ロードマップ',
+                    text: '学習進捗を共有します！',
                     url: window.location.href
                 });
             } else {
-                showNotification('�1', '���_�o�z-gY', 'info');
+                showNotification('情報', 'シェア機能は開発中です', 'info');
             }
         }
         
-        // �h:
+        // 通知表示
         function showNotification(title, message, type = 'info') {
-            console.log(`= �: ${type} - ${title}: ${message}`);
+            console.log(`🔔 通知: ${type} - ${title}: ${message}`);
             
             const notification = document.getElementById('notification');
             const icon = document.getElementById('notificationIcon');
@@ -849,12 +849,12 @@
             }, 5000);
         }
         
-        //  ���!H	
+        // 多言語対応（簡易版）
         function updateTexts() {
             const texts = {
                 ja: {
-                    welcome_title: 'f��÷����',
-                    welcome_message: '��<kQf5�~W�F'
+                    welcome_title: '学習ダッシュボード',
+                    welcome_message: '今日も合格に向けて頑張りましょう！'
                 },
                 en: {
                     welcome_title: 'Learning Dashboard',
@@ -872,20 +872,20 @@
             });
         }
         
-        // Service Worker{2PWA��	
+        // Service Worker登録（PWA対応）
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js')
                     .then(registration => {
-                        console.log(' Service Worker{2�:', registration.scope);
+                        console.log('✅ Service Worker登録成功:', registration.scope);
                     })
                     .catch(error => {
-                        console.log('L Service Worker{21W:', error);
+                        console.log('❌ Service Worker登録失敗:', error);
                     });
             });
         }
         
-        console.log('<� -m:��<������ - ����ȭ���');
+        console.log('🎉 中小企業診断士合格ロードマップ - スクリプト読み込み完了');
     </script>
 </body>
 </html>
