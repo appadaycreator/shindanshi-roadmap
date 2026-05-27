@@ -19,9 +19,10 @@
     <meta name="author" content="中小企業診断士合格ロードマップ">
     
     <!-- OGP設定 -->
-    <meta property="og:title" content="中小企業診断士【合格ロードマップ】独学スケジュール・勉強時間の目安">
+    <meta property="og:title" content="中小企業診断士 独学合格ロードマップ【無料】科目別スケジュール・勉強時間">
     <meta property="og:description" content="中小企業診断士の合格に必要な勉強時間・スケジュール・科目別対策を完全解説。1次試験・2次試験の攻略法と独学での効率的な学習ロードマップを無料提供。">
     <meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP" />
     <meta property="og:url" content="https://appadaycreator.com/shindanshi-roadmap/">
     <meta property="og:image" content="https://appadaycreator.com/shindanshi-roadmap/assets/images/ogp.jpg">
     <meta property="og:site_name" content="中小企業診断士合格ロードマップ">
@@ -145,6 +146,16 @@ button, .btn, .btn-primary, .option-btn, [role="button"] { min-height: 48px; min
   body { font-size: 16px; }
   .max-w-lg { padding-left: 1rem; padding-right: 1rem; }
 }
+
+@media print{
+  header,footer,nav,button,.no-print,
+  [class*="share"],[class*="affiliate"],[id*="share"],
+  [id*="affiliate"],[id*="banner"],
+  script,noscript{display:none!important}
+  body{background:#fff!important;color:#000!important;font-size:12pt}
+  [id*="result"],[id*="output"],[id*="advice"],[id*="diagnosis"],[class*="result"]{display:block!important}
+  a[href]::after{content:none!important}
+}
 </style>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "中小企業診断士合格ロードマップ - 学習管理ダッシュボード", "url": "https://appadaycreator.com/shindanshi-roadmap/", "description": "中小企業診断士試験合格のための総合学習管理システム。試験日から逆算した学習計画の自動生成、7科目の進捗可視化、過去問演習機能を提供。データはlocalStorageに保存され、完全無料で利用可能。", "operatingSystem": "Any", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "JPY"}, "aggregateRating": {"@type": "AggregateRating", "ratingValue": "4.7", "reviewCount": "201", "bestRating": "5", "worstRating": "1"}, "applicationCategory": "UtilityApplication"}</script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://appadaycreator.com/"}, {"@type": "ListItem", "position": 2, "name": "中小企業診断士合格ロードマップ - 学習管理ダッシュボード", "item": "https://appadaycreator.com/shindanshi-roadmap/"}]}</script>
@@ -165,8 +176,8 @@ button, .btn, .btn-primary, .option-btn, [role="button"] { min-height: 48px; min
   "@type": "WebPage",
   "mainEntity": {
     "@type": "Article",
-    "headline": "診断ツール",
-    "description": "無料の診断ツール。簡単な質問にお答えいただくだけで、最適なアドバイスを提供します。",
+    "headline": "中小企業診断士 独学合格ロードマップ【無料】科目別スケジュール・勉強時間",
+    "description": "中小企業診断士の合格まで何をすべきかを完全ロードマップで解説。科目別勉強法・おすすめテキスト・模試スケジュールを無料で確認できます。",
     "datePublished": "2026-05-23",
     "dateModified": "2026-05-23",
     "author": {
@@ -1762,7 +1773,7 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
     <div style="background:#f0f7ff;border:1px solid #bfdbfe;border-radius:12px;padding:16px;margin:12px;text-align:center;">
         <p style="font-size:0.85em;font-weight:bold;color:#1e40af;margin-bottom:8px;">💼 合格後のコンサルキャリアを相談する（無料）</p>
         <p style="font-size:0.78em;color:#475569;margin-bottom:10px;">コンサル・管理職特化の転職エージェント MyVision（完全無料）</p>
-        <a href="https://px.a8.net/svt/ejp?a8mat=4B3TF5+8COZ2Y+5B0Y+63WO1" rel="nofollow" target="_blank"
+        <a href="https://px.a8.net/svt/ejp?a8mat=4B3TF5+8COZ2Y+5B0Y+63WO1" rel="nofollow noopener noreferrer" target="_blank"
            class="js-track-affiliate" data-platform="MyVision" data-item-name="転職エージェント" data-link-type="a8net">
             <img border="0" width="300" height="250" alt="MyVision コンサル特化転職エージェント" src="https://www29.a8.net/svt/bgt?aid=260518577505&wid=050&eno=01&mid=s00000024757001026000&mc=1" style="max-width:100%;border-radius:8px;" loading="lazy">
         </a>
@@ -1945,6 +1956,24 @@ function init(){
   }).observe(document.body,{childList:true,subtree:true});
 }
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init):init();
+})();
+</script>
+
+<script>
+// P4(横展開#26): CTA後インラインフィードバック
+(function() {
+    try {
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.js-track-affiliate')) return;
+            setTimeout(function() {
+                try {
+                    if (typeof showToast === 'function') {
+                        showToast('🛒 ページを開きました！内容をご確認ください', 'success');
+                    }
+                } catch(e2) {}
+            }, 500);
+        });
+    } catch(e) {}
 })();
 </script>
 </body>
