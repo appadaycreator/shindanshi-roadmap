@@ -483,7 +483,7 @@
             <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
                 <div>
                     <i class="fas fa-users text-4xl mb-2"></i>
-                    <p class="font-bold">10,000+</p>
+                    <p class="font-bold" id="lp-user-count">10,000+</p>
                     <p class="text-sm opacity-75">利用者数</p>
                 </div>
                 <div>
@@ -591,6 +591,18 @@
         mobileMenuBtn.addEventListener('click', () => {
             alert('モバイルメニューは実装予定です');
         });
+    </script>
+    <!-- P31横展開: 社会的証明カウンター -->
+    <script>
+    (function(){
+        var BASE = 10000;
+        var count = parseInt(localStorage.getItem('sdr_session_count') || '0', 10);
+        var total = BASE + count;
+        var el = document.getElementById('lp-user-count');
+        if (el && total > BASE) {
+            el.textContent = total.toLocaleString() + '+';
+        }
+    })();
     </script>
 </body>
 </html>
