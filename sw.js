@@ -1,5 +1,5 @@
 // Service Worker for 中小企業診断士合格ロードマップ
-const CACHE_NAME = 'shindanshi-roadmap-v1.1.0';
+const CACHE_NAME = 'shindanshi-roadmap-v1.1.1';
 
 // Essential files to cache (using relative paths)
 const urlsToCache = [
