@@ -1929,7 +1929,7 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
 'use strict';
 function init(){
   // ローディング状態
-  document.querySelectorAll('button:not([type=reset]):not([data-ux]):not(.option-btn):not(#prev-btn):not(#next-btn),input[type=submit]').forEach(function(b){
+  document.querySelectorAll('button:not([type=reset]):not([data-ux]):not(.option-btn):not(#prevBtn):not(#nextBtn),input[type=submit]').forEach(function(b){
     b.dataset.ux='1';
     var orig=b.tagName==='BUTTON'?b.textContent:(b.value||'実行');
     b.addEventListener('click',function(){
