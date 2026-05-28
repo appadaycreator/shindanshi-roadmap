@@ -35,12 +35,10 @@ const externalResources = [
 
 // Install event - cache resources
 self.addEventListener('install', event => {
-    console.log('🔧 Service Worker: インストール中...');
     
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(cache => {
-                console.log('📦 Service Worker: キャッシュ中...');
                 
                 // Cache local resources
                 const localPromises = urlsToCache.map(url => {
@@ -68,7 +66,6 @@ self.addEventListener('install', event => {
                 return Promise.all([...localPromises, ...externalPromises]);
             })
             .then(() => {
-                console.log('✅ Service Worker: インストール完了');
                 return self.skipWaiting();
             })
             .catch(error => {
@@ -79,19 +76,16 @@ self.addEventListener('install', event => {
 
 // Activate event - clean up old caches
 self.addEventListener('activate', event => {
-    console.log('🚀 Service Worker: アクティベート中...');
     event.waitUntil(
         caches.keys().then(cacheNames => {
             return Promise.all(
                 cacheNames.map(cacheName => {
                     if (cacheName !== CACHE_NAME) {
-                        console.log('🗑️ Service Worker: 古いキャッシュ削除', cacheName);
                         return caches.delete(cacheName);
                     }
                 })
             );
         }).then(() => {
-            console.log('✅ Service Worker: アクティベート完了');
             return self.clients.claim();
         })
     );
@@ -156,7 +150,6 @@ self.addEventListener('fetch', event => {
 // Background sync for offline functionality
 self.addEventListener('sync', event => {
     if (event.tag === 'study-data-sync') {
-        console.log('🔄 Service Worker: データ同期中...');
         // Here you could implement background sync for study data
         // For now, just log the event
     }
@@ -164,7 +157,6 @@ self.addEventListener('sync', event => {
 
 // Push notifications (for future implementation)
 self.addEventListener('push', event => {
-    console.log('📱 Service Worker: プッシュ通知受信');
     // Future implementation for study reminders
 });
 
