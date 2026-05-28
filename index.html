@@ -11,7 +11,7 @@
     <title>中小企業診断士 独学合格ロードマップ【無料】科目別スケジュール・勉強時間</title>
 <!-- phase8-favicon -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#6366F1">
     <meta name="description" content="中小企業診断士の合格まで何をすべきかを完全ロードマップで解説。科目別勉強法・おすすめテキスト・模試スケジュールを無料で確認できます。">
@@ -43,7 +43,6 @@
             
     <!--外部ライブラリ -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
@@ -220,7 +219,7 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
-                    <i class="fas fa-road text-blue-600 text-2xl mr-3"></i>
+                    <span class="text-blue-600 text-2xl mr-3">🛣️</span>
                     <h1 class="text-xl font-bold text-gray-900" data-i18n="app_title">中小企業診断士合格ロードマップ</h1>
                 </div>
                 <nav class="flex space-x-8">
@@ -252,7 +251,7 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
         <div class="px-4 py-3">
             <div class="flex justify-between items-center">
                 <div class="flex items-center">
-                    <i class="fas fa-road text-blue-600 text-xl mr-2"></i>
+                    <span class="text-blue-600 text-xl mr-2">🛣️</span>
                     <h1 class="text-lg font-bold text-gray-900" data-i18n="app_title_short">診断士ロードマップ</h1>
                 </div>
                 <button id="mobileMenuBtn" class="p-2 relative z-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -275,18 +274,18 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                     <div>
                         <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3" data-i18n="nav_study">学習管理</h3>
                         <ul class="space-y-2">
-                            <li><a href="#dashboard" class="flex items-center px-3 py-2 text-blue-600 bg-blue-50 rounded-md"><i class="fas fa-tachometer-alt mr-3"></i><span data-i18n="nav_dashboard">ダッシュボード</span></a></li>
-                            <li><a href="#schedule" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-calendar-alt mr-3"></i><span data-i18n="nav_schedule">学習計画</span></a></li>
-                            <li><a href="#progress" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-chart-line mr-3"></i><span data-i18n="nav_progress">進捗状況</span></a></li>
-                            <li><a href="quiz.html" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-question-circle mr-3"></i><span data-i18n="nav_quiz">過去問演習</span></a></li>
+                            <li><a href="#dashboard" class="flex items-center px-3 py-2 text-blue-600 bg-blue-50 rounded-md"><span class="mr-3">📊</span><span data-i18n="nav_dashboard">ダッシュボード</span></a></li>
+                            <li><a href="#schedule" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><span class="mr-3">📅</span><span data-i18n="nav_schedule">学習計画</span></a></li>
+                            <li><a href="#progress" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><span class="mr-3">📈</span><span data-i18n="nav_progress">進捗状況</span></a></li>
+                            <li><a href="quiz.html" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><span class="mr-3">❓</span><span data-i18n="nav_quiz">過去問演習</span></a></li>
                         </ul>
                     </div>
                     <div>
                         <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3" data-i18n="nav_data">データ管理</h3>
                         <ul class="space-y-2">
-                            <li><a href="#export" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-download mr-3"></i><span data-i18n="nav_export">エクスポート</span></a></li>
-                            <li><a href="#import" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-upload mr-3"></i><span data-i18n="nav_import">インポート</span></a></li>
-                            <li><a href="#backup" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-shield-alt mr-3"></i><span data-i18n="nav_backup">バックアップ</span></a></li>
+                            <li><a href="#export" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><span class="mr-3">⬇️</span><span data-i18n="nav_export">エクスポート</span></a></li>
+                            <li><a href="#import" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><span class="mr-3">⬆️</span><span data-i18n="nav_import">インポート</span></a></li>
+                            <li><a href="#backup" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><span class="mr-3">🛡️</span><span data-i18n="nav_backup">バックアップ</span></a></li>
                         </ul>
                     </div>
                 </nav>
@@ -299,7 +298,7 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-lg font-semibold" data-i18n="menu_title">メニュー</h2>
                     <button id="closeSidebarBtn" class="p-2">
-                        <i class="fas fa-times text-gray-500"></i>
+                        <span class="text-gray-500">✕</span>
                     </button>
                 </div>
                 
@@ -307,10 +306,10 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                     <div>
                         <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3" data-i18n="nav_pages">ページ</h3>
                         <ul class="space-y-2">
-                            <li><a href="index.html" class="block px-3 py-2 text-blue-600 bg-blue-50 rounded-md"><i class="fas fa-home mr-3"></i><span data-i18n="nav_home">ホーム</span></a></li>
-                            <li><a href="lp.html" class="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-info-circle mr-3"></i><span data-i18n="nav_about">サービス紹介</span></a></li>
-                            <li><a href="usage.html" class="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-book mr-3"></i><span data-i18n="nav_usage">使い方</span></a></li>
-                            <li><a href="contact.html" class="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><i class="fas fa-envelope mr-3"></i><span data-i18n="nav_contact">お問い合わせ</span></a></li>
+                            <li><a href="index.html" class="block px-3 py-2 text-blue-600 bg-blue-50 rounded-md"><span class="mr-3">🏠</span><span data-i18n="nav_home">ホーム</span></a></li>
+                            <li><a href="lp.html" class="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><span class="mr-3">ℹ️</span><span data-i18n="nav_about">サービス紹介</span></a></li>
+                            <li><a href="usage.html" class="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><span class="mr-3">📚</span><span data-i18n="nav_usage">使い方</span></a></li>
+                            <li><a href="contact.html" class="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><span class="mr-3">✉️</span><span data-i18n="nav_contact">お問い合わせ</span></a></li>
                         </ul>
                     </div>
                     
@@ -366,7 +365,7 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 card-hover">
                     <div class="flex items-center">
                         <div class="p-3 bg-blue-100 rounded-full">
-                            <i class="fas fa-calendar-check text-blue-600 text-xl"></i>
+                            <span class="text-blue-600 text-xl">📅</span>
                         </div>
                         <div class="ml-4">
                             <h3 class="text-sm font-medium text-gray-500" data-i18n="stats_study_days">学習日数</h3>
@@ -378,7 +377,7 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 card-hover">
                     <div class="flex items-center">
                         <div class="p-3 bg-green-100 rounded-full">
-                            <i class="fas fa-clock text-green-600 text-xl"></i>
+                            <span class="text-green-600 text-xl">⏰</span>
                         </div>
                         <div class="ml-4">
                             <h3 class="text-sm font-medium text-gray-500" data-i18n="stats_total_hours">総学習時間</h3>
@@ -390,7 +389,7 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 card-hover">
                     <div class="flex items-center">
                         <div class="p-3 bg-yellow-100 rounded-full">
-                            <i class="fas fa-chart-line text-yellow-600 text-xl"></i>
+                            <span class="text-yellow-600 text-xl">📈</span>
                         </div>
                         <div class="ml-4">
                             <h3 class="text-sm font-medium text-gray-500" data-i18n="stats_avg_progress">平均進捗率</h3>
@@ -414,7 +413,7 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 card-hover">
                     <div class="flex items-center">
                         <div class="p-3 bg-purple-100 rounded-full">
-                            <i class="fas fa-question-circle text-purple-600 text-xl"></i>
+                            <span class="text-purple-600 text-xl">❓</span>
                         </div>
                         <div class="ml-4">
                             <h3 class="text-sm font-medium text-gray-500" data-i18n="stats_quiz_count">解答問題数</h3>
@@ -442,7 +441,7 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                     </div>
                     
                     <button id="createPlanBtn" class="mt-4 bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors">
-                        <i class="fas fa-plus mr-2"></i><span data-i18n="create_plan_btn">学習計画を作成</span>
+                        <span class="mr-2">+</span><span data-i18n="create_plan_btn">学習計画を作成</span>
                     </button>
                 </div>
             </div>
@@ -493,7 +492,7 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                         
                         <div class="flex items-end">
                             <button id="addStudyRecordBtn" class="w-full bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors">
-                                <i class="fas fa-plus mr-2"></i><span data-i18n="add_record_btn">記録追加</span>
+                                <span class="mr-2">+</span><span data-i18n="add_record_btn">記録追加</span>
                             </button>
                         </div>
                     </div>
@@ -510,7 +509,7 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                 <a href="quiz.html" class="block bg-white rounded-lg shadow-sm border border-gray-200 p-6 card-hover cursor-pointer">
                     <div class="text-center">
                         <div class="p-4 bg-red-100 rounded-full inline-block mb-4">
-                            <i class="fas fa-question-circle text-red-600 text-2xl"></i>
+                            <span class="text-red-600 text-2xl">❓</span>
                         </div>
                         <h3 class="text-lg font-semibold text-gray-900 mb-2" data-i18n="quick_quiz_title">過去問演習</h3>
                         <p class="text-gray-600 text-sm" data-i18n="quick_quiz_desc">ランダムに問題を出題</p>
@@ -520,7 +519,7 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 card-hover cursor-pointer" onclick="showProgressDetail()">
                     <div class="text-center">
                         <div class="p-4 bg-blue-100 rounded-full inline-block mb-4">
-                            <i class="fas fa-chart-line text-blue-600 text-2xl"></i>
+                            <span class="text-blue-600 text-2xl">📈</span>
                         </div>
                         <h3 class="text-lg font-semibold text-gray-900 mb-2" data-i18n="progress_detail_title">詳細進捗</h3>
                         <p class="text-gray-600 text-sm" data-i18n="progress_detail_desc">科目別の詳細分析</p>
@@ -530,7 +529,7 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 card-hover cursor-pointer" onclick="shareProgress()">
                     <div class="text-center">
                         <div class="p-4 bg-green-100 rounded-full inline-block mb-4">
-                            <i class="fas fa-share-alt text-green-600 text-2xl"></i>
+                            <span class="text-green-600 text-2xl">📤</span>
                         </div>
                         <h3 class="text-lg font-semibold text-gray-900 mb-2" data-i18n="share_progress_title">進捗をシェア</h3>
                         <p class="text-gray-600 text-sm" data-i18n="share_progress_desc">SNSで学習状況を共有</p>
@@ -601,7 +600,7 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                         <div class="flex justify-between items-center">
                             <h2 class="text-2xl font-bold text-gray-900">詳細進捗分析</h2>
                             <button onclick="closeProgressDetail()" class="text-gray-400 hover:text-gray-600">
-                                <i class="fas fa-times text-xl"></i>
+                                <span class="text-xl">✕</span>
                             </button>
                         </div>
                     </div>
@@ -1676,9 +1675,9 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
             const messageEl = document.getElementById('notificationMessage');
             
             const icons = {
-                success: '<i class="fas fa-check-circle text-green-600"></i>',
-                error: '<i class="fas fa-exclamation-circle text-red-600"></i>',
-                info: '<i class="fas fa-info-circle text-blue-600"></i>'
+                success: '<span class="text-green-600">✓</span>',
+                error: '<span class="text-red-600">❗</span>',
+                info: '<span class="text-blue-600">ℹ️</span>'
             };
             
             icon.innerHTML = icons[type] || icons.info;
