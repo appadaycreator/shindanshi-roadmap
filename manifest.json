@@ -4,7 +4,7 @@
   "description": "中小企業診断士試験合格のための総合学習管理システム",
   "start_url": "/shindanshi-roadmap/",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "background_color": "#2563eb",
   "theme_color": "#2563eb",
   "orientation": "portrait-primary",
   "scope": "/shindanshi-roadmap/",
