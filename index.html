@@ -12,7 +12,7 @@
 <!-- phase8-favicon -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
-<link rel="manifest" href="/manifest.json">
+<link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#7c3aed">
     <meta name="description" content="中小企業診断士の合格まで何をすべきかを完全ロードマップで解説。科目別勉強法・おすすめテキスト・模試スケジュールを無料で確認できます。">
     <meta name="keywords" content="中小企業診断士,試験対策,学習計画,進捗管理,過去問,無料,診断士,資格">
@@ -401,7 +401,7 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 card-hover">
                     <div class="flex items-center">
                         <div class="p-3 bg-red-100 rounded-full">
-                            <i class="fas fa-hourglass-half text-red-600 text-xl"></i>
+                            <span class="text-red-600 text-xl">⏳</span>
                         </div>
                         <div class="ml-4">
                             <h3 class="text-sm font-medium text-gray-500" data-i18n="stats_remaining_days">残り日数</h3>
@@ -1749,14 +1749,59 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
             }
         })();
         
-        // Initialize current date display
-        updateCurrentDate();
-        
-        // Ensure date is updated even if initial call fails
-        setTimeout(function() {
+        // アプリケーション初期化（ボタン配線・データ読み込み・進捗表示）
+        (function() {
+            if (typeof studyData === 'undefined') {
+                window.studyData = {
+                    examDate: null, dailyHours: 2,
+                    subjects: {
+                        economics: { progress: 0, hours: 0, lastStudied: null },
+                        finance: { progress: 0, hours: 0, lastStudied: null },
+                        management: { progress: 0, hours: 0, lastStudied: null },
+                        operations: { progress: 0, hours: 0, lastStudied: null },
+                        legal: { progress: 0, hours: 0, lastStudied: null },
+                        it: { progress: 0, hours: 0, lastStudied: null },
+                        policy: { progress: 0, hours: 0, lastStudied: null }
+                    },
+                    studyRecords: [], quizResults: []
+                };
+            }
+            loadUserData();
             updateCurrentDate();
-        }, 100);
-        
+            setTimeout(updateCurrentDate, 100);
+            renderSubjectProgress();
+
+            var createBtn = document.getElementById('createPlanBtn');
+            if (createBtn) createBtn.addEventListener('click', createStudyPlan);
+            var addBtn = document.getElementById('addStudyRecordBtn');
+            if (addBtn) addBtn.addEventListener('click', addStudyRecord);
+
+            var menuBtn = document.getElementById('mobileMenuBtn');
+            if (menuBtn) menuBtn.addEventListener('click', openMobileSidebar);
+            var closeBtn = document.getElementById('closeSidebarBtn');
+            if (closeBtn) closeBtn.addEventListener('click', closeMobileSidebar);
+            var sidebarOv = document.getElementById('sidebarOverlay');
+            if (sidebarOv) sidebarOv.addEventListener('click', closeMobileSidebar);
+
+            var langSel = document.getElementById('langSelect');
+            if (langSel) {
+                langSel.addEventListener('change', function(e) { setLanguage(e.target.value); });
+                var mLang = document.getElementById('mobileLangSelect');
+                if (mLang) mLang.addEventListener('change', function(e) { setLanguage(e.target.value); });
+                var fontSel = document.getElementById('fontSizeSelect');
+                if (fontSel) fontSel.addEventListener('change', function(e) { setFontSize(e.target.value); });
+                var mFont = document.getElementById('mobileFontSizeSelect');
+                if (mFont) mFont.addEventListener('change', function(e) { setFontSize(e.target.value); });
+            }
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    var modal = document.getElementById('progressDetailModal');
+                    if (modal && !modal.classList.contains('hidden')) closeProgressDetail();
+                }
+            });
+        })();
+
         console.log('🎉 中小企業診断士合格ロードマップ - スクリプト読み込み完了');
     </script>
     <script src="js/header.js"></script>
@@ -1967,7 +2012,7 @@ document.readyState==='loading'?document.addEventListener('DOMContentLoaded',ini
             setTimeout(function() {
                 try {
                     if (typeof showToast === 'function') {
-                        showToast('success', '🛒 ページを開きました！内容をご確認ください');
+                        showToast('🛒 ページを開きました！内容をご確認ください', 'success');
                     }
                 } catch(e2) {}
             }, 500);

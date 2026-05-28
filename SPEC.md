@@ -161,3 +161,15 @@
 - **パフォーマンス**: 要件内の応答時間
 - **UI**: 全デバイスで適切表示
 - **エラー**: コンソールエラーなし
+
+## 変更履歴
+
+### v1.2.0 (2026-05-29)
+- **バグ修正**: index.html の `setupEventListeners()` 未呼び出し問題を修正（学習計画・記録追加ボタンが無効だった）
+- **バグ修正**: index.html の科目別進捗リスト(`#subjectProgressList`)が初期表示で空だった問題を修正
+- **バグ修正**: index.html の Font Awesome アイコン未読込（`fas fa-hourglass-half`→⏳絵文字に変更）
+- **バグ修正**: index.html の `showToast` 引数順序修正（`('success', msg)` → `(msg, 'success')`）
+- **バグ修正**: index.html の manifest.json 絶対パス修正（`/manifest.json` → `./manifest.json`）
+- **改善**: quiz.html の theme-color をブランドカラー `#7c3aed` に統一
+- **改善**: quiz.html に canonical URL 追加（SEO対策）
+- **改善**: quiz.html の favicon を SVG に統一
