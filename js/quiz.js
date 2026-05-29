@@ -268,6 +268,9 @@ class QuizSystem {
         document.getElementById('quiz-setup').classList.add('hidden');
         document.getElementById('quiz-taking').classList.remove('hidden');
         document.getElementById('quiz-results').classList.add('hidden');
+        // モバイル固定ナビを表示
+        var mobileNav = document.getElementById('mobileQuizNav');
+        if (mobileNav) mobileNav.classList.remove('hidden');
     }
 
     // 現在の問題を表示
@@ -635,6 +638,10 @@ class QuizSystem {
         document.getElementById('quiz-setup').classList.remove('hidden');
         document.getElementById('quiz-taking').classList.add('hidden');
         document.getElementById('quiz-results').classList.add('hidden');
+
+        // モバイル固定ナビを非表示
+        var mobileNav = document.getElementById('mobileQuizNav');
+        if (mobileNav) mobileNav.classList.add('hidden');
 
         // 問題一覧モーダルを閉じる
         this.closeQuestionList();

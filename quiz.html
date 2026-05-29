@@ -387,11 +387,24 @@
             </div>
 
             <!-- 問題一覧（モバイル用） -->
-            <div class="mt-6 lg:hidden">
+            <div class="mt-6 lg:hidden pb-20">
                 <button id="show-question-list" class="w-full bg-gray-100 text-gray-700 px-4 py-3 rounded-lg hover:bg-gray-200 transition-colors">
                     <i class="fas fa-list mr-2"></i>問題一覧を表示
                 </button>
             </div>
+        </div>
+
+        <!-- モバイル固定ナビゲーション（演習中のみ表示） -->
+        <div id="mobileQuizNav" class="lg:hidden hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-30 flex items-center justify-between px-3 py-2">
+            <button onclick="document.getElementById('prev-question').click()" class="flex-1 mx-1 bg-gray-500 text-white py-3 px-2 rounded-lg text-sm font-medium">
+                ← 前の問題
+            </button>
+            <button onclick="document.getElementById('mark-question').click()" class="flex-shrink-0 mx-1 bg-yellow-500 text-white py-3 px-3 rounded-lg text-sm">
+                🔖
+            </button>
+            <button onclick="(function(){var s=document.getElementById('submit-quiz');if(s&&s.style.display!=='none'){s.click();}else{document.getElementById('next-question').click();}})()" class="flex-1 mx-1 bg-blue-600 text-white py-3 px-2 rounded-lg text-sm font-medium">
+                次の問題 →
+            </button>
         </div>
 
         <!-- 結果画面 -->
