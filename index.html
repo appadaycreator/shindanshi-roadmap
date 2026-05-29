@@ -233,6 +233,9 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                     <a href="contact.html" class="nav-link text-gray-500 hover:text-gray-900" data-i18n="nav_contact">お問い合わせ</a>
                 </nav>
                 <div class="flex items-center space-x-4">
+                    <button id="darkModeToggle" onclick="toggleDarkMode()" class="p-2 rounded-md hover:bg-gray-100 text-gray-500 hover:text-gray-900 transition-colors" title="ダークモード切替" aria-label="ダークモード切替">
+                        <span id="darkModeIcon">🌙</span>
+                    </button>
                     <select id="langSelect" class="border border-gray-300 rounded px-2 py-1 text-sm">
                         <option value="ja">日本語</option>
                         <option value="en">English</option>
@@ -257,6 +260,10 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                     <span class="text-blue-600 text-xl mr-2">🛣️</span>
                     <span class="text-lg font-bold text-gray-900" data-i18n="app_title_short">診断士ロードマップ</span>
                 </div>
+                <div class="flex items-center space-x-2">
+                    <button onclick="toggleDarkMode()" class="p-2 rounded-md hover:bg-gray-100 text-gray-500" title="ダークモード切替" aria-label="ダークモード切替">
+                        <span id="mobileDarkModeIcon">🌙</span>
+                    </button>
                 <button id="mobileMenuBtn" class="p-2 relative z-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <div class="w-6 h-6 flex flex-col justify-center space-y-1">
                         <div class="hamburger-line w-full h-0.5 bg-gray-600"></div>
@@ -264,6 +271,7 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                         <div class="hamburger-line w-full h-0.5 bg-gray-600"></div>
                     </div>
                 </button>
+                </div>
             </div>
         </div>
     </header>
@@ -286,9 +294,9 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                     <div>
                         <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3" data-i18n="nav_data">データ管理</h3>
                         <ul class="space-y-2">
-                            <li><a href="#export" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><span class="mr-3">⬇️</span><span data-i18n="nav_export">エクスポート</span></a></li>
-                            <li><a href="#import" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><span class="mr-3">⬆️</span><span data-i18n="nav_import">インポート</span></a></li>
-                            <li><a href="#backup" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><span class="mr-3">🛡️</span><span data-i18n="nav_backup">バックアップ</span></a></li>
+                            <li><button onclick="openExportModal()" class="w-full flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><span class="mr-3">⬇️</span><span>エクスポート</span></button></li>
+                            <li><button onclick="openImportModal()" class="w-full flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><span class="mr-3">⬆️</span><span>インポート</span></button></li>
+                            <li><button onclick="openExportModal()" class="w-full flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><span class="mr-3">🛡️</span><span>バックアップ</span></button></li>
                         </ul>
                     </div>
                 </nav>
@@ -378,7 +386,7 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
             </div>
 
             <!-- 統計カード -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 card-hover">
                     <div class="flex items-center">
                         <div class="p-3 bg-blue-100 rounded-full">
@@ -435,6 +443,19 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                         <div class="ml-4">
                             <h3 class="text-sm font-medium text-gray-500" data-i18n="stats_quiz_count">解答問題数</h3>
                             <p id="quizCount" class="text-2xl font-bold text-gray-900">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-orange-100 rounded-full">
+                            <span class="text-orange-600 text-xl">🔥</span>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-sm font-medium text-gray-500">連続学習日数</h3>
+                            <p id="streakCount" class="text-2xl font-bold text-gray-900">0<span class="text-sm font-normal text-gray-400">日</span></p>
                         </div>
                     </div>
                 </div>
@@ -718,6 +739,46 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
         </div>
     </div>
 
+    <!-- エクスポート/インポートモーダル -->
+    <div id="exportImportModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden" onclick="if(event.target===this)closeExportImportModal()">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md mx-4">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-900">データ管理</h2>
+                <button onclick="closeExportImportModal()" class="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
+            </div>
+
+            <!-- エクスポートパネル -->
+            <div id="exportPanel">
+                <div class="mb-4 p-4 bg-blue-50 rounded-lg">
+                    <h3 class="font-semibold text-blue-900 mb-2">📥 データのエクスポート</h3>
+                    <p class="text-sm text-blue-700">学習データをJSONファイルとして保存します。別のブラウザやデバイスに移行する際に使用してください。</p>
+                </div>
+                <button onclick="exportData()" class="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition-colors font-medium">
+                    JSONファイルをダウンロード
+                </button>
+                <button onclick="openImportModal()" class="w-full mt-3 border border-gray-300 text-gray-600 py-2 rounded-md hover:bg-gray-50 transition-colors text-sm">
+                    インポート（復元）はこちら →
+                </button>
+            </div>
+
+            <!-- インポートパネル -->
+            <div id="importPanel" class="hidden">
+                <div class="mb-4 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+                    <h3 class="font-semibold text-yellow-900 mb-2">⚠️ インポートの注意事項</h3>
+                    <p class="text-sm text-yellow-700">現在のデータは上書きされます。事前にエクスポートをお勧めします。</p>
+                </div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">バックアップJSONファイルを選択</label>
+                <input type="file" id="importFileInput" accept=".json" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm mb-4">
+                <button onclick="importData()" class="w-full bg-green-600 text-white py-3 rounded-md hover:bg-green-700 transition-colors font-medium">
+                    データをインポート（上書き）
+                </button>
+                <button onclick="openExportModal()" class="w-full mt-3 border border-gray-300 text-gray-600 py-2 rounded-md hover:bg-gray-50 transition-colors text-sm">
+                    ← エクスポートはこちら
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- 通知・モーダル -->
     <div id="notification" class="fixed top-4 right-4 z-50 hidden">
         <div class="bg-white rounded-lg shadow-lg border p-4 max-w-sm">
@@ -750,12 +811,12 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
         
         // アプリケーション初期化
         function initializeApp() {
-            console.log('📱 アプリケーション初期化中...');
-            
+            initDarkMode();
+
             // ローカルストレージから設定を読み込み
             const savedLang = localStorage.getItem('app_language') || 'ja';
             const savedFontSize = localStorage.getItem('app_font_size') || 'base';
-            
+
             setLanguage(savedLang);
             setFontSize(savedFontSize);
             
@@ -782,7 +843,6 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
         
         // イベントリスナー設定
         function setupEventListeners() {
-            console.log('🔗 イベントリスナー設定中...');
             
             // モバイルメニュー
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
@@ -816,12 +876,10 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                 }
             });
             
-            console.log('✅ イベントリスナー設定完了');
         }
         
         // モバイルサイドバー操作
         function openMobileSidebar() {
-            console.log('📱 モバイルサイドバーを開く');
             const sidebar = document.getElementById('mobileSidebar');
             const overlay = document.getElementById('sidebarOverlay');
             const menuBtn = document.getElementById('mobileMenuBtn');
@@ -832,7 +890,6 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
         }
         
         function closeMobileSidebar() {
-            console.log('📱 モバイルサイドバーを閉じる');
             const sidebar = document.getElementById('mobileSidebar');
             const overlay = document.getElementById('sidebarOverlay');
             const menuBtn = document.getElementById('mobileMenuBtn');
@@ -844,7 +901,6 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
         
         // 言語設定
         function setLanguage(lang) {
-            console.log('🌐 言語を変更:', lang);
             currentLang = lang;
             localStorage.setItem('app_language', lang);
             
@@ -858,7 +914,6 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
         
         // フォントサイズ設定
         function setFontSize(size) {
-            console.log('🔤 フォントサイズを変更:', size);
             currentFontSize = size;
             localStorage.setItem('app_font_size', size);
             
@@ -885,20 +940,16 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
         
         // ユーザーデータの読み込み
         function loadUserData() {
-            console.log('💾 ユーザーデータを読み込み中...');
             const savedData = localStorage.getItem('study_data');
             if (savedData) {
                 studyData = JSON.parse(savedData);
-                console.log('✅ ユーザーデータ読み込み完了:', studyData);
                 updateStatistics();
             }
         }
         
         // ユーザーデータの保存
         function saveUserData() {
-            console.log('💾 ユーザーデータを保存中...');
             localStorage.setItem('study_data', JSON.stringify(studyData));
-            console.log('✅ ユーザーデータ保存完了');
         }
         
         // 保存されたデータを取得（詳細進捗機能用）
@@ -968,9 +1019,117 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
             return `${year}/${month}/${day}`;
         }
         
+        // 連続学習日数（ストリーク）を計算
+        function calculateStreak(records) {
+            if (!records || records.length === 0) return 0;
+            const dates = [...new Set(records.map(r => r.date))].sort().reverse();
+            const today = new Date().toISOString().slice(0, 10);
+            const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+            if (dates[0] !== today && dates[0] !== yesterday) return 0;
+            let streak = 0;
+            let checkDate = dates[0] === today ? today : yesterday;
+            for (const d of dates) {
+                if (d === checkDate) {
+                    streak++;
+                    const prev = new Date(new Date(checkDate).getTime() - 86400000);
+                    checkDate = prev.toISOString().slice(0, 10);
+                } else {
+                    break;
+                }
+            }
+            return streak;
+        }
+
+        // ダークモード切替
+        function toggleDarkMode() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            const icon = isDark ? '☀️' : '🌙';
+            const el = document.getElementById('darkModeIcon');
+            const mel = document.getElementById('mobileDarkModeIcon');
+            if (el) el.textContent = icon;
+            if (mel) mel.textContent = icon;
+        }
+
+        // ダークモード初期化
+        function initDarkMode() {
+            const saved = localStorage.getItem('theme');
+            if (saved === 'dark') {
+                document.documentElement.classList.add('dark');
+                const el = document.getElementById('darkModeIcon');
+                const mel = document.getElementById('mobileDarkModeIcon');
+                if (el) el.textContent = '☀️';
+                if (mel) mel.textContent = '☀️';
+            }
+        }
+
+        // エクスポートモーダルを開く
+        function openExportModal() {
+            document.getElementById('exportImportModal').classList.remove('hidden');
+            document.getElementById('exportPanel').classList.remove('hidden');
+            document.getElementById('importPanel').classList.add('hidden');
+        }
+
+        // インポートモーダルを開く
+        function openImportModal() {
+            document.getElementById('exportImportModal').classList.remove('hidden');
+            document.getElementById('importPanel').classList.remove('hidden');
+            document.getElementById('exportPanel').classList.add('hidden');
+        }
+
+        // エクスポート/インポートモーダルを閉じる
+        function closeExportImportModal() {
+            document.getElementById('exportImportModal').classList.add('hidden');
+        }
+
+        // データをJSONでダウンロード
+        function exportData() {
+            const data = {
+                study_data: localStorage.getItem('study_data'),
+                quizHistory: localStorage.getItem('quizHistory'),
+                app_language: localStorage.getItem('app_language'),
+                app_font_size: localStorage.getItem('app_font_size'),
+                theme: localStorage.getItem('theme'),
+                exportDate: new Date().toISOString()
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `shindanshi-roadmap-backup-${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('success', 'エクスポート完了', 'データをダウンロードしました');
+        }
+
+        // JSONファイルからインポート
+        function importData() {
+            const fileInput = document.getElementById('importFileInput');
+            if (!fileInput.files.length) {
+                showToast('error', 'エラー', 'ファイルを選択してください');
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.study_data) localStorage.setItem('study_data', data.study_data);
+                    if (data.quizHistory) localStorage.setItem('quizHistory', data.quizHistory);
+                    if (data.app_language) localStorage.setItem('app_language', data.app_language);
+                    if (data.app_font_size) localStorage.setItem('app_font_size', data.app_font_size);
+                    if (data.theme) localStorage.setItem('theme', data.theme);
+                    closeExportImportModal();
+                    showToast('success', 'インポート完了', 'データを復元しました。ページを再読み込みします...');
+                    setTimeout(() => location.reload(), 1500);
+                } catch (err) {
+                    showToast('error', 'インポートエラー', '無効なファイル形式です');
+                }
+            };
+            reader.readAsText(fileInput.files[0]);
+        }
+
         // 統計情報の更新
         function updateStatistics() {
-            console.log('📊 統計情報を更新中...');
             
             // 学習日数
             const uniqueDates = [...new Set(studyData.studyRecords.map(record => record.date))];
@@ -988,7 +1147,14 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
             // 解答問題数
             const quizCount = studyData.quizResults.length;
             document.getElementById('quizCount').textContent = quizCount;
-            
+
+            // 連続学習日数（ストリーク）
+            const streakEl = document.getElementById('streakCount');
+            if (streakEl) {
+                const streak = calculateStreak(studyData.studyRecords);
+                streakEl.innerHTML = streak + '<span class="text-sm font-normal text-gray-400">日</span>';
+            }
+
             // 残り日数
             const remainingDays = calculateRemainingDays(studyData.examDate);
             if (remainingDays !== null) {
@@ -1009,12 +1175,10 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                 document.getElementById('remainingDaysCount').textContent = '--';
             }
             
-            console.log('✅ 統計情報更新完了');
         }
         
         // 科目別進捗の表示
         function renderSubjectProgress() {
-            console.log('📈 科目別進捗を表示中...');
             const container = document.getElementById('subjectProgressList');
             
             const subjects = [
@@ -1081,7 +1245,6 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
 
         // 進捗チャートの作成
         function createProgressChart() {
-            console.log('📊 進捗チャートを作成中...');
             const ctx = document.getElementById('progressChart').getContext('2d');
             
             const subjects = ['経済学', '財務', '企業経営', '運営管理', '経営法務', '情報システム', '中小企業'];
@@ -1123,7 +1286,6 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                 }
             });
             
-            console.log('✅ 進捗チャート作成完了');
         }
         
         // 今日の達成状況を更新
@@ -1235,7 +1397,6 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
 
         // 学習計画作成
         function createStudyPlan() {
-            console.log('📅 学習計画を作成中...');
             const examDate = document.getElementById('examDate').value;
             const dailyHours = parseFloat(document.getElementById('dailyHours').value);
             
@@ -1260,7 +1421,6 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
             const totalHours = diffDays * dailyHours;
             const hoursPerSubject = totalHours / 7;
             
-            console.log(`📊 学習計画: ${diffDays}日間、1日${dailyHours}時間、科目あたり${hoursPerSubject.toFixed(1)}時間`);
             
             saveUserData();
             updateStatistics();
@@ -1271,7 +1431,6 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
         
         // 学習記録追加
         function addStudyRecord() {
-            console.log('📝 学習記録を追加中...');
             const subject = document.getElementById('studySubject').value;
             const hours = parseFloat(document.getElementById('studyHours').value);
             const memo = document.getElementById('studyMemo').value;
@@ -1319,7 +1478,6 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
             document.getElementById('studyMemo').value = '';
 
             showNotification('成功', '学習記録を追加しました！', 'success');
-            console.log('✅ 学習記録追加完了:', record);
         }
         
         // クイックアクション機能
@@ -1327,7 +1485,6 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
         
         // 詳細進捗モーダルの表示
         function showProgressDetail() {
-            console.log('📊 詳細進捗を表示');
             const modal = document.getElementById('progressDetailModal');
             modal.classList.remove('hidden');
             
@@ -1744,11 +1901,9 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
         let isSharing = false;
         
         function shareProgress() {
-            console.log('📤 進捗をシェア');
             
             // 既にシェア実行中の場合は処理しない
             if (isSharing) {
-                console.log('⚠️ 既にシェア実行中です');
                 return;
             }
             
@@ -1768,14 +1923,11 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                 
                 navigator.share(shareData)
                     .then(() => {
-                        console.log('✅ シェア完了');
                         showNotification('成功', '進捗を共有しました！', 'success');
                     })
                     .catch((error) => {
-                        console.log('ℹ️ シェア処理:', error.name);
                         if (error.name === 'AbortError') {
                             // ユーザーがキャンセルした場合は何もしない（正常な動作）
-                            console.log('👆 ユーザーがシェアをキャンセルしました');
                         } else if (error.name === 'NotAllowedError') {
                             showNotification('エラー', 'シェア機能の使用が許可されていません', 'error');
                         } else {
@@ -1842,7 +1994,6 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
         
         // 通知表示
         function showNotification(title, message, type = 'info') {
-            console.log(`🔔 通知: ${type} - ${title}: ${message}`);
             
             const notification = document.getElementById('notification');
             const icon = document.getElementById('notificationIcon');
@@ -1894,10 +2045,8 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js')
                     .then(registration => {
-                        console.log('✅ Service Worker登録成功:', registration.scope);
                     })
                     .catch(error => {
-                        console.log('❌ Service Worker登録失敗:', error);
                     });
             });
         }
@@ -1980,7 +2129,6 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
             });
         })();
 
-        console.log('🎉 中小企業診断士合格ロードマップ - スクリプト読み込み完了');
     </script>
     <script src="js/header.js"></script>
 
@@ -2178,6 +2326,15 @@ function init(){
   }).observe(document.body,{childList:true,subtree:true});
 }
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init):init();
+})();
+</script>
+
+<script>
+// ダークモード初期化（ページロード直後に適用）
+(function() {
+    if (localStorage.getItem('theme') === 'dark') {
+        document.documentElement.classList.add('dark');
+    }
 })();
 </script>
 

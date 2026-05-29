@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /assets/icons/
+Disallow: /.git/
+
+Sitemap: https://appadaycreator.github.io/shindanshi-roadmap/sitemap.xml

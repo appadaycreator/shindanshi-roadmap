@@ -493,5 +493,42 @@
     <script src="js/quiz-data.js"></script>
     <script src="js/quiz.js"></script>
     <script src="js/header.js"></script>
+
+<script>
+// ダークモード機能
+(function() {
+    function applyTheme(isDark) {
+        if (isDark) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+        const moonIcon = '<i class="fas fa-sun text-yellow-500"></i>';
+        const sunIcon = '<i class="fas fa-moon text-gray-600"></i>';
+        const btn = document.getElementById('darkModeToggle');
+        const btnM = document.getElementById('darkModeToggleMobile');
+        if (btn) btn.innerHTML = isDark ? moonIcon : sunIcon;
+        if (btnM) btnM.innerHTML = isDark ? moonIcon : sunIcon;
+    }
+
+    // 初期化
+    const saved = localStorage.getItem('theme');
+    applyTheme(saved === 'dark');
+
+    function toggle() {
+        const isDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        applyTheme(isDark);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const btn = document.getElementById('darkModeToggle');
+        const btnM = document.getElementById('darkModeToggleMobile');
+        if (btn) btn.addEventListener('click', toggle);
+        if (btnM) btnM.addEventListener('click', toggle);
+        applyTheme(localStorage.getItem('theme') === 'dark');
+    });
+})();
+</script>
 </body>
 </html>
