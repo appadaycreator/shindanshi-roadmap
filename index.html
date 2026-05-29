@@ -346,7 +346,7 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
         <div id="sidebarOverlay" class="lg:hidden fixed top-16 bottom-0 left-0 right-0 bg-black bg-opacity-50 z-40 hidden"></div>
 
         <!-- メインコンテンツ -->
-        <main id="main" role="main" id="dashboard" class="flex-1 p-6 lg:ml-0">
+        <main id="main" role="main" class="flex-1 p-6 lg:ml-0">
             <!-- ウェルカムセクション -->
             <div class="mb-8 fade-in">
                 <div class="bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg shadow-sm p-6 text-white">
@@ -1006,18 +1006,43 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                     <div class="subject-${subject.key} bg-gray-50 rounded-lg p-4">
                         <div class="flex justify-between items-center mb-2">
                             <h4 class="font-medium text-gray-900">${subject.name}</h4>
-                            <span class="text-sm font-semibold text-gray-600">${progress}%</span>
+                            <span id="progress-label-${subject.key}" class="text-sm font-semibold text-gray-600">${progress}%</span>
                         </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2">
-                            <div class="bg-${subject.color}-500 h-2 rounded-full transition-all duration-500" style="width: ${progress}%"></div>
+                        <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                            <div id="progress-bar-${subject.key}" class="bg-${subject.color}-500 h-2 rounded-full transition-all duration-500" style="width: ${progress}%"></div>
                         </div>
+                        <input type="range" min="0" max="100" value="${progress}"
+                            class="w-full h-1 accent-blue-600 cursor-pointer"
+                            data-subject="${subject.key}"
+                            oninput="updateSubjectProgress('${subject.key}', this.value)">
                     </div>
                 `;
             }).join('');
             
-            console.log('✅ 科目別進捗表示完了');
         }
-        
+
+        // 科目別進捗率をスライダーで更新
+        function updateSubjectProgress(subjectKey, value) {
+            const progress = parseInt(value);
+            studyData.subjects[subjectKey].progress = progress;
+
+            // ラベルとバーを即時更新
+            const label = document.getElementById('progress-label-' + subjectKey);
+            const bar = document.getElementById('progress-bar-' + subjectKey);
+            if (label) label.textContent = progress + '%';
+            if (bar) bar.style.width = progress + '%';
+
+            // データ保存
+            saveUserData();
+
+            // チャートと統計を更新
+            updateStatistics();
+            if (window.progressChart) {
+                progressChart.data.datasets[0].data = Object.values(studyData.subjects).map(s => s.progress);
+                progressChart.update();
+            }
+        }
+
         // 進捗チャートの作成
         function createProgressChart() {
             console.log('📊 進捗チャートを作成中...');

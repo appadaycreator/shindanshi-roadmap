@@ -317,7 +317,7 @@
 
                     <!-- 開始ボタン -->
                     <div class="text-center">
-                        <button id="startQuiz" class="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-bold hover:bg-blue-700 transition-colors transform hover:scale-105">
+                        <button id="start-quiz" class="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-bold hover:bg-blue-700 transition-colors transform hover:scale-105">
                             <i class="fas fa-play mr-3"></i>演習を開始する
                         </button>
                     </div>
@@ -326,7 +326,7 @@
                 <!-- 過去の演習履歴 -->
                 <div class="bg-white rounded-lg shadow-lg p-8">
                     <h2 class="text-2xl font-bold text-gray-900 mb-6">演習履歴</h2>
-                    <div id="quizHistory" class="space-y-4">
+                    <div id="quiz-history" class="space-y-4">
                         <p class="text-gray-500 text-center py-8">まだ演習履歴がありません</p>
                     </div>
                 </div>
@@ -340,14 +340,14 @@
                 <div class="flex flex-col md:flex-row justify-between items-center">
                     <div class="flex items-center mb-4 md:mb-0">
                         <h2 class="text-xl font-bold text-gray-900 mr-6">過去問演習</h2>
-                        <span id="currentQuestion" class="text-lg text-gray-600">問題 1 / 10</span>
+                        <span class="text-lg text-gray-600">問題 <span id="question-number">1</span> / <span id="total-questions">10</span></span>
                     </div>
                     <div class="flex items-center space-x-4">
-                        <div id="timer" class="hidden text-lg font-mono text-red-600">
+                        <div id="timer-wrapper" class="hidden text-lg font-mono">
                             <i class="fas fa-clock mr-2"></i>
-                            <span id="timeRemaining">30:00</span>
+                            <span id="timer">30:00</span>
                         </div>
-                        <button id="quitQuiz" class="text-gray-500 hover:text-red-600 transition-colors">
+                        <button id="quit-quiz" class="text-gray-500 hover:text-red-600 transition-colors">
                             <i class="fas fa-times mr-2"></i>終了
                         </button>
                     </div>
@@ -355,37 +355,40 @@
                 <!-- 進捗バー -->
                 <div class="mt-4">
                     <div class="bg-gray-200 rounded-full h-2">
-                        <div id="progressBar" class="bg-blue-600 h-2 rounded-full progress-bar" style="width: 10%"></div>
+                        <div id="progress-bar" class="bg-blue-600 h-2 rounded-full progress-bar" style="width: 10%"></div>
                     </div>
                 </div>
             </div>
 
             <!-- 問題表示エリア -->
             <div class="bg-white rounded-lg shadow-lg p-8 mb-6">
-                <div id="questionContent">
+                <div id="current-question">
                     <!-- 問題内容がここに動的に挿入される -->
                 </div>
             </div>
 
             <!-- 操作ボタン -->
             <div class="flex justify-between items-center">
-                <button id="prevQuestion" class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                <button id="prev-question" class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                     <i class="fas fa-chevron-left mr-2"></i>前の問題
                 </button>
-                
+
                 <div class="flex space-x-4">
-                    <button id="markQuestion" class="bg-yellow-500 text-white px-6 py-3 rounded-lg hover:bg-yellow-600 transition-colors">
+                    <button id="mark-question" class="bg-yellow-500 text-white px-6 py-3 rounded-lg hover:bg-yellow-600 transition-colors">
                         <i class="fas fa-bookmark mr-2"></i>後で見直す
                     </button>
-                    <button id="nextQuestion" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                    <button id="next-question" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
                         次の問題<i class="fas fa-chevron-right ml-2"></i>
+                    </button>
+                    <button id="submit-quiz" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors" style="display:none">
+                        <i class="fas fa-check mr-2"></i>演習を終了する
                     </button>
                 </div>
             </div>
 
             <!-- 問題一覧（モバイル用） -->
             <div class="mt-6 lg:hidden">
-                <button id="showQuestionList" class="w-full bg-gray-100 text-gray-700 px-4 py-3 rounded-lg hover:bg-gray-200 transition-colors">
+                <button id="show-question-list" class="w-full bg-gray-100 text-gray-700 px-4 py-3 rounded-lg hover:bg-gray-200 transition-colors">
                     <i class="fas fa-list mr-2"></i>問題一覧を表示
                 </button>
             </div>
@@ -403,15 +406,17 @@
             <!-- 結果サマリー -->
             <div class="max-w-4xl mx-auto">
                 <div class="bg-white rounded-lg shadow-lg p-8 mb-6">
-                    <div id="resultsSummary">
-                        <!-- 結果サマリーがここに動的に挿入される -->
+                    <div class="text-center mb-6">
+                        <div class="text-6xl font-bold text-blue-600 mb-2" id="final-score">--</div>
+                        <div class="text-3xl font-bold text-gray-700 mb-2" id="final-percentage">--%</div>
+                        <div class="text-gray-500"><i class="fas fa-clock mr-1"></i><span id="time-spent">--</span></div>
                     </div>
                 </div>
 
                 <!-- 科目別結果 -->
                 <div class="bg-white rounded-lg shadow-lg p-8 mb-6">
                     <h3 class="text-xl font-bold text-gray-900 mb-6">科目別結果</h3>
-                    <div id="subjectResults">
+                    <div id="subject-results" class="space-y-3">
                         <!-- 科目別結果がここに動的に挿入される -->
                     </div>
                 </div>
@@ -419,17 +424,17 @@
                 <!-- 間違えた問題 -->
                 <div class="bg-white rounded-lg shadow-lg p-8 mb-6">
                     <h3 class="text-xl font-bold text-gray-900 mb-6">復習が必要な問題</h3>
-                    <div id="wrongAnswers">
+                    <div id="wrong-answers">
                         <!-- 間違えた問題がここに動的に挿入される -->
                     </div>
                 </div>
 
                 <!-- アクションボタン -->
-                <div class="text-center space-x-4">
-                    <button id="retryQuiz" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                <div class="text-center flex flex-col sm:flex-row justify-center gap-3">
+                    <button id="retry-quiz" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
                         <i class="fas fa-redo mr-2"></i>同じ設定で再挑戦
                     </button>
-                    <button id="newQuiz" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors">
+                    <button id="new-quiz" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors">
                         <i class="fas fa-plus mr-2"></i>新しい演習を開始
                     </button>
                     <a href="index.html" class="inline-block bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors">
@@ -441,17 +446,17 @@
     </div>
 
     <!-- 問題一覧モーダル（デスクトップ用） -->
-    <div id="questionListModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+    <div id="question-list-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
         <div class="flex items-center justify-center min-h-screen p-4">
             <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-96 overflow-y-auto">
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="text-lg font-bold text-gray-900">問題一覧</h3>
-                        <button id="closeQuestionList" class="text-gray-500 hover:text-gray-700">
+                        <button class="close-modal text-gray-500 hover:text-gray-700">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
-                    <div id="questionListContent" class="grid grid-cols-5 gap-2">
+                    <div id="question-list" class="space-y-2">
                         <!-- 問題一覧がここに動的に挿入される -->
                     </div>
                 </div>

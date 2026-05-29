@@ -68,7 +68,6 @@ class QuizSystem {
 
         // 問題一覧モーダル
         const showListButton = document.getElementById('show-question-list');
-        const questionModal = document.getElementById('question-list-modal');
         const closeModal = document.querySelector('.close-modal');
 
         if (showListButton) {
@@ -78,10 +77,39 @@ class QuizSystem {
             closeModal.addEventListener('click', () => this.closeQuestionList());
         }
 
-        // 新しいクイズボタン
+        // 演習終了ボタン
+        const quitButton = document.getElementById('quit-quiz');
+        if (quitButton) {
+            quitButton.addEventListener('click', () => {
+                if (confirm('演習を終了しますか？進捗は失われます。')) {
+                    this.resetQuiz();
+                }
+            });
+        }
+
+        // 新しいクイズ / 再挑戦ボタン
         const newQuizButton = document.getElementById('new-quiz');
         if (newQuizButton) {
             newQuizButton.addEventListener('click', () => this.resetQuiz());
+        }
+        const retryQuizButton = document.getElementById('retry-quiz');
+        if (retryQuizButton) {
+            retryQuizButton.addEventListener('click', () => {
+                if (this.currentQuiz) {
+                    // 同じ科目・設定で再度開始
+                    const savedQuiz = this.currentQuiz;
+                    this.currentQuestionIndex = 0;
+                    this.userAnswers = {};
+                    this.markedQuestions = new Set();
+                    this.startTime = Date.now();
+                    this.timeRemaining = savedQuiz.timeLimit * 60;
+                    this.showQuizInterface();
+                    this.displayCurrentQuestion();
+                    this.startTimer();
+                } else {
+                    this.resetQuiz();
+                }
+            });
         }
     }
 
@@ -143,13 +171,34 @@ class QuizSystem {
             return;
         }
 
-        const questionCount = parseInt(document.getElementById('question-count').value);
-        const questionMode = document.getElementById('question-mode').value;
-        const timeLimit = parseInt(document.getElementById('time-limit').value);
+        // ラジオボタンから問題数を取得
+        const questionCountEl = document.querySelector('input[name="questionCount"]:checked');
+        const rawCount = questionCountEl ? questionCountEl.value : '10';
+        const questionCount = rawCount === 'all' ? Infinity : parseInt(rawCount);
+
+        // ラジオボタンから出題モードを取得
+        const questionModeEl = document.querySelector('input[name="quizMode"]:checked');
+        const questionMode = questionModeEl ? questionModeEl.value : 'random';
+
+        // 制限時間の取得（チェックボックス+セレクト）
+        const timeLimitEnabled = document.getElementById('timeLimit') && document.getElementById('timeLimit').checked;
+        const timeLimit = timeLimitEnabled ? parseInt(document.getElementById('timeLimitSelect')?.value || '60') : 0;
 
         // 選択された科目から問題を取得
-        const allQuestions = this.getQuestionsFromSubjects(selectedSubjects);
-        
+        let allQuestions = this.getQuestionsFromSubjects(selectedSubjects);
+
+        // 間違えた問題モードのフィルタリング
+        if (questionMode === 'wrong') {
+            const wrongIds = new Set(
+                this.quizHistory.flatMap(h => (h.results?.wrongAnswers || []).map(w => w.question?.id))
+            );
+            allQuestions = allQuestions.filter(q => wrongIds.has(q.id));
+            if (allQuestions.length === 0) {
+                alert('間違えた問題の記録がありません。別のモードを選択してください。');
+                return;
+            }
+        }
+
         if (allQuestions.length === 0) {
             alert('選択された科目に問題がありません。');
             return;
@@ -164,7 +213,7 @@ class QuizSystem {
         }
 
         // 指定された問題数に制限
-        if (questionCount < questions.length) {
+        if (isFinite(questionCount) && questionCount < questions.length) {
             questions = questions.slice(0, questionCount);
         }
 
@@ -387,6 +436,11 @@ class QuizSystem {
     startTimer() {
         if (this.timeRemaining <= 0) return;
 
+        // タイマー表示を出す
+        const timerWrapper = document.getElementById('timer-wrapper');
+        if (timerWrapper) timerWrapper.classList.remove('hidden');
+
+        this.updateTimerDisplay();
         this.timer = setInterval(() => {
             this.timeRemaining--;
             this.updateTimerDisplay();
@@ -572,6 +626,10 @@ class QuizSystem {
         this.startTime = null;
         this.endTime = null;
         this.timeRemaining = 0;
+
+        // タイマー表示を隠す
+        const timerWrapper = document.getElementById('timer-wrapper');
+        if (timerWrapper) timerWrapper.classList.add('hidden');
 
         // UIをリセット
         document.getElementById('quiz-setup').classList.remove('hidden');
