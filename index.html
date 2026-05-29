@@ -156,6 +156,8 @@ button, .btn, .btn-primary, .option-btn, [role="button"] { min-height: 48px; min
   a[href]::after{content:none!important}
 }
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;}
+.related-link{padding:10px;text-align:center;border:1px solid #ddd;border-radius:4px;text-decoration:none;color:#333;display:block;transition:background 0.15s;}
+.related-link:hover{background:#f5f5f5;}
 </style>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "中小企業診断士合格ロードマップ - 学習管理ダッシュボード", "url": "https://appadaycreator.com/shindanshi-roadmap/", "description": "中小企業診断士試験合格のための総合学習管理システム。試験日から逆算した学習計画の自動生成、7科目の進捗可視化、過去問演習機能を提供。データはlocalStorageに保存され、完全無料で利用可能。", "operatingSystem": "Any", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "JPY"}, "aggregateRating": {"@type": "AggregateRating", "ratingValue": "4.7", "reviewCount": "201", "bestRating": "5", "worstRating": "1"}, "applicationCategory": "UtilityApplication"}</script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://appadaycreator.com/"}, {"@type": "ListItem", "position": 2, "name": "中小企業診断士合格ロードマップ - 学習管理ダッシュボード", "item": "https://appadaycreator.com/shindanshi-roadmap/"}]}</script>
@@ -1875,7 +1877,7 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
 .toast-info{background:#7c3aed;}
 .loading-overlay{position:fixed;inset:0;background:rgba(255,255,255,0.85);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9998;opacity:0;pointer-events:none;transition:opacity 0.2s;}
 .loading-overlay.active{opacity:1;pointer-events:all;}
-.loading-spinner{width:40px;height:40px;border:3px solid #e5e7eb;border-top-color:#10b981;border-radius:50%;animation:spin 0.7s linear infinite;}
+.loading-spinner{width:40px;height:40px;border:3px solid #fce7f3;border-top-color:#ff6b9d;border-radius:50%;animation:spin 0.7s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
 </style>
 <div class="toast-container" id="toastContainer"></div>
@@ -1917,10 +1919,10 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
 <section style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e0e0e0;">
   <h3 style="font-size: 18px; margin-bottom: 15px;">関連サービス</h3>
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;">
-    <a href="https://appadaycreator.com/crospuzz-daily/" style="padding: 10px; text-align: center; border: 1px solid #ddd; border-radius: 4px; text-decoration: none; color: #333; display: block; hover:background: #f5f5f5;">CrosPuzz（クロスパズ）</a>
-    <a href="https://appadaycreator.com/golf-iron-advisor/" style="padding: 10px; text-align: center; border: 1px solid #ddd; border-radius: 4px; text-decoration: none; color: #333; display: block; hover:background: #f5f5f5;">ゴルフアイアン適性診断システム</a>
-    <a href="https://appadaycreator.com/cosmetic-finder/" style="padding: 10px; text-align: center; border: 1px solid #ddd; border-radius: 4px; text-decoration: none; color: #333; display: block; hover:background: #f5f5f5;">パーソナル化粧品レコメンダー</a>
-    <a href="https://appadaycreator.com/goal-roadmap-maker/" style="padding: 10px; text-align: center; border: 1px solid #ddd; border-radius: 4px; text-decoration: none; color: #333; display: block; hover:background: #f5f5f5;">目標達成ロードマップ</a>
+    <a href="https://appadaycreator.com/crospuzz-daily/" class="related-link">CrosPuzz（クロスパズ）</a>
+    <a href="https://appadaycreator.com/golf-iron-advisor/" class="related-link">ゴルフアイアン適性診断システム</a>
+    <a href="https://appadaycreator.com/cosmetic-finder/" class="related-link">パーソナル化粧品レコメンダー</a>
+    <a href="https://appadaycreator.com/goal-roadmap-maker/" class="related-link">目標達成ロードマップ</a>
   </div>
 </section>
 
