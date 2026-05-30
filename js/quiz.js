@@ -13,8 +13,9 @@ class QuizSystem {
         this.timerStartTimestamp = null; // 精度向上のため開始時刻を記録
         this.instantFeedback = true; // 即時フィードバックモード
         this.answeredQuestions = new Set(); // 解答済み問題ID
-        this.touchStartX = 0; // スワイプ検出用
+        this.touchStartX = 0;
         this.touchStartY = 0;
+        this._setupSwipe();
 
         this.initializeEventListeners();
         this.loadQuizHistory();
@@ -111,7 +112,7 @@ class QuizSystem {
                 } else {
                     this.nextQuestion();
                 }
-            } else if (['1','2','3','4'].includes(e.key)) {
+            } else if (['1','2','3','4','5'].includes(e.key)) {
                 const idx = parseInt(e.key) - 1;
                 const radios = document.querySelectorAll('input[name="answer"]');
                 if (radios[idx] && !radios[idx].disabled) {
@@ -712,6 +713,34 @@ class QuizSystem {
         } else {
             wrongAnswersContainer.innerHTML = '<p class="text-green-600 text-center">全問正解です！</p>';
         }
+    }
+
+    // モバイルスワイプでナビゲーション
+    _setupSwipe() {
+        document.addEventListener('touchstart', (e) => {
+            this.touchStartX = e.changedTouches[0].clientX;
+            this.touchStartY = e.changedTouches[0].clientY;
+        }, { passive: true });
+
+        document.addEventListener('touchend', (e) => {
+            if (!this.currentQuiz) return;
+            const taking = document.getElementById('quiz-taking');
+            if (!taking || taking.classList.contains('hidden')) return;
+
+            const dx = e.changedTouches[0].clientX - this.touchStartX;
+            const dy = e.changedTouches[0].clientY - this.touchStartY;
+            if (Math.abs(dx) < 50 || Math.abs(dy) > Math.abs(dx)) return;
+
+            if (dx < 0) {
+                // 左スワイプ: 次の問題
+                const isLast = this.currentQuestionIndex === this.currentQuiz.questions.length - 1;
+                if (isLast) this.submitQuiz();
+                else this.nextQuestion();
+            } else {
+                // 右スワイプ: 前の問題
+                this.previousQuestion();
+            }
+        }, { passive: true });
     }
 
     // クイズリセット
