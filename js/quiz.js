@@ -10,7 +10,12 @@ class QuizSystem {
         this.timer = null;
         this.timeLimit = null;
         this.timeRemaining = 0;
-        
+        this.timerStartTimestamp = null; // 精度向上のため開始時刻を記録
+        this.instantFeedback = true; // 即時フィードバックモード
+        this.answeredQuestions = new Set(); // 解答済み問題ID
+        this.touchStartX = 0; // スワイプ検出用
+        this.touchStartY = 0;
+
         this.initializeEventListeners();
         this.loadQuizHistory();
     }
@@ -20,8 +25,12 @@ class QuizSystem {
         // 全科目選択チェックボックス
         const allSubjectsCheckbox = document.getElementById('subject-all');
         const subjectCheckboxes = document.querySelectorAll('.subject-checkbox');
-        
+
+        // デフォルトで全科目を選択済みにする
         if (allSubjectsCheckbox) {
+            allSubjectsCheckbox.checked = true;
+            subjectCheckboxes.forEach(checkbox => { checkbox.checked = true; });
+
             allSubjectsCheckbox.addEventListener('change', (e) => {
                 subjectCheckboxes.forEach(checkbox => {
                     checkbox.checked = e.target.checked;
@@ -87,6 +96,30 @@ class QuizSystem {
             });
         }
 
+        // キーボードナビゲーション（演習中のみ有効）
+        document.addEventListener('keydown', (e) => {
+            if (!this.currentQuiz) return;
+            const taking = document.getElementById('quiz-taking');
+            if (!taking || taking.classList.contains('hidden')) return;
+
+            if (e.key === 'ArrowLeft') {
+                this.previousQuestion();
+            } else if (e.key === 'ArrowRight') {
+                const isLast = this.currentQuestionIndex === this.currentQuiz.questions.length - 1;
+                if (isLast) {
+                    this.submitQuiz();
+                } else {
+                    this.nextQuestion();
+                }
+            } else if (['1','2','3','4'].includes(e.key)) {
+                const idx = parseInt(e.key) - 1;
+                const radios = document.querySelectorAll('input[name="answer"]');
+                if (radios[idx] && !radios[idx].disabled) {
+                    radios[idx].click();
+                }
+            }
+        });
+
         // 新しいクイズ / 再挑戦ボタン
         const newQuizButton = document.getElementById('new-quiz');
         if (newQuizButton) {
@@ -139,28 +172,52 @@ class QuizSystem {
     }
 
     // クイズ履歴の表示
-    displayQuizHistory() {
+    displayQuizHistory(showAll = false) {
         const historyContainer = document.getElementById('quiz-history');
         if (!historyContainer || this.quizHistory.length === 0) return;
 
-        const recentHistory = this.quizHistory.slice(0, 5);
-        historyContainer.innerHTML = recentHistory.map(record => `
-            <div class="bg-gray-50 p-3 rounded-lg">
-                <div class="flex justify-between items-center mb-2">
-                    <span class="font-medium">
-                        ${record.subjects.map(s => QUIZ_DATA[s]?.[0]?.subjectName || s).join(', ')}
-                    </span>
-                    <span class="text-sm text-gray-500">
-                        ${new Date(record.date).toLocaleDateString('ja-JP')}
-                    </span>
+        const limit = showAll ? this.quizHistory.length : 10;
+        const displayHistory = this.quizHistory.slice(0, limit);
+
+        const renderRecord = (record) => {
+            const pct = record.totalQuestions > 0 ? Math.round((record.correctAnswers / record.totalQuestions) * 100) : 0;
+            const barColor = pct >= 70 ? 'bg-green-500' : pct >= 50 ? 'bg-yellow-500' : 'bg-red-500';
+            return `
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="font-medium text-sm">
+                            ${record.subjects.map(s => QUIZ_DATA[s]?.[0]?.subjectName || s).join(', ')}
+                        </span>
+                        <span class="text-xs text-gray-500">
+                            ${new Date(record.date).toLocaleDateString('ja-JP')}
+                        </span>
+                    </div>
+                    <div class="flex justify-between text-xs text-gray-600 mb-2">
+                        <span>${record.totalQuestions}問</span>
+                        <span class="font-semibold">${pct}%</span>
+                        <span>${Math.floor(record.timeSpent / 60)}分${record.timeSpent % 60}秒</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-1.5">
+                        <div class="${barColor} h-1.5 rounded-full" style="width:${pct}%"></div>
+                    </div>
                 </div>
-                <div class="flex justify-between text-sm">
-                    <span>問題数: ${record.totalQuestions}</span>
-                    <span>正答率: ${Math.round((record.correctAnswers / record.totalQuestions) * 100)}%</span>
-                    <span>時間: ${Math.floor(record.timeSpent / 60)}分${record.timeSpent % 60}秒</span>
-                </div>
-            </div>
-        `).join('');
+            `;
+        };
+
+        let html = displayHistory.map(renderRecord).join('');
+
+        if (!showAll && this.quizHistory.length > 10) {
+            html += `<button id="showAllHistory" class="w-full mt-2 text-sm text-blue-600 hover:underline py-2">
+                さらに見る（全${this.quizHistory.length}件）
+            </button>`;
+        }
+
+        historyContainer.innerHTML = html;
+
+        const showAllBtn = document.getElementById('showAllHistory');
+        if (showAllBtn) {
+            showAllBtn.addEventListener('click', () => this.displayQuizHistory(true));
+        }
     }
 
     // クイズ開始
@@ -183,6 +240,10 @@ class QuizSystem {
         // 制限時間の取得（チェックボックス+セレクト）
         const timeLimitEnabled = document.getElementById('timeLimit') && document.getElementById('timeLimit').checked;
         const timeLimit = timeLimitEnabled ? parseInt(document.getElementById('timeLimitSelect')?.value || '60') : 0;
+
+        // 即時フィードバックモードの取得
+        const feedbackModeEl = document.querySelector('input[name="feedbackMode"]:checked');
+        this.instantFeedback = !feedbackModeEl || feedbackModeEl.value === 'instant';
 
         // 選択された科目から問題を取得
         let allQuestions = this.getQuestionsFromSubjects(selectedSubjects);
@@ -315,9 +376,19 @@ class QuizSystem {
 
         // ラジオボタンのイベントリスナー
         const radioButtons = questionContainer.querySelectorAll('input[type="radio"]');
+
+        // 即時フィードバックモードで既回答の場合はフィードバックを再描画
+        if (this.instantFeedback && this.userAnswers.hasOwnProperty(question.id)) {
+            this._applyInstantFeedback(question, questionContainer);
+        }
+
         radioButtons.forEach(radio => {
             radio.addEventListener('change', () => {
-                this.userAnswers[question.id] = parseInt(radio.value);
+                const selected = parseInt(radio.value);
+                this.userAnswers[question.id] = selected;
+                if (this.instantFeedback) {
+                    this._applyInstantFeedback(question, questionContainer);
+                }
             });
         });
 
@@ -332,6 +403,35 @@ class QuizSystem {
 
         // ナビゲーションボタンの更新
         this.updateNavigationButtons();
+    }
+
+    // 即時フィードバック適用
+    _applyInstantFeedback(question, container) {
+        const selected = this.userAnswers[question.id];
+        const correct = question.correctAnswer;
+        const labels = container.querySelectorAll('label');
+        const radios = container.querySelectorAll('input[type="radio"]');
+
+        radios.forEach(r => { r.disabled = true; });
+
+        labels.forEach((label, idx) => {
+            label.classList.remove('bg-green-100', 'border-green-400', 'bg-red-100', 'border-red-400', 'hover:bg-gray-50');
+            if (idx === correct) {
+                label.classList.add('bg-green-100', 'border-green-400');
+            } else if (idx === selected && selected !== correct) {
+                label.classList.add('bg-red-100', 'border-red-400');
+            }
+        });
+
+        // 解説エリアがまだなければ追加
+        let explanation = container.querySelector('.feedback-explanation');
+        if (!explanation) {
+            explanation = document.createElement('div');
+            explanation.className = 'feedback-explanation mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg text-sm text-gray-700';
+            container.querySelector('.space-y-3').after(explanation);
+        }
+        const resultIcon = selected === correct ? '✅ 正解！' : '❌ 不正解';
+        explanation.innerHTML = `<p class="font-semibold mb-1">${resultIcon}</p><p><strong>解説:</strong> ${question.explanation}</p>`;
     }
 
     // 難易度テキストを取得

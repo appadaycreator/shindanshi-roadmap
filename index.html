@@ -446,7 +446,6 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                         </div>
                     </div>
                 </div>
-            </div>
 
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 card-hover">
                     <div class="flex items-center">
@@ -1144,8 +1143,9 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
             const avgProgress = subjects.reduce((sum, subject) => sum + subject.progress, 0) / subjects.length;
             document.getElementById('avgProgressCount').textContent = `${Math.round(avgProgress)}%`;
             
-            // 解答問題数
-            const quizCount = studyData.quizResults.length;
+            // 解答問題数（quizHistoryから集計）
+            const quizHistory = JSON.parse(localStorage.getItem('quizHistory') || '[]');
+            const quizCount = quizHistory.reduce((sum, h) => sum + (h.totalQuestions || 0), 0);
             document.getElementById('quizCount').textContent = quizCount;
 
             // 連続学習日数（ストリーク）
