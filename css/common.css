@@ -242,3 +242,80 @@ html.dark #page-loader { background-color: #1a202c !important; }
     border-radius: 8px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
+
+/* ヒートマップカレンダー */
+.heatmap-cell-0 { background: #ebedf0; }
+.heatmap-cell-1 { background: #9be9a8; }
+.heatmap-cell-2 { background: #40c463; }
+.heatmap-cell-3 { background: #30a14e; }
+.heatmap-cell-4 { background: #216e39; }
+
+.heatmap-cell:hover {
+    outline: 1px solid rgba(0,0,0,0.25);
+    transform: scale(1.2);
+}
+
+html.dark .heatmap-cell-0 { background: #2d333b; }
+html.dark .heatmap-cell-1 { background: #0e4429; }
+html.dark .heatmap-cell-2 { background: #006d32; }
+html.dark .heatmap-cell-3 { background: #26a641; }
+html.dark .heatmap-cell-4 { background: #39d353; }
+
+/* FABボタン（フローティングアクションボタン） */
+.fab-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 20px;
+    z-index: 45;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #2563eb;
+    color: white;
+    font-size: 24px;
+    box-shadow: 0 4px 12px rgba(37,99,235,0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+.fab-btn:hover, .fab-btn:active {
+    transform: scale(1.08);
+    box-shadow: 0 6px 18px rgba(37,99,235,0.55);
+}
+
+@media (min-width: 1024px) {
+    .fab-btn { display: none; }
+}
+
+/* クイック時間ボタン改善 */
+.quick-hours-btn {
+    min-height: 44px;
+    min-width: 52px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.15s;
+}
+.quick-hours-btn.active {
+    background: #dbeafe !important;
+    border-color: #3b82f6 !important;
+    color: #1d4ed8 !important;
+}
+
+/* ヒートマップツールチップ */
+#heatmap-tooltip {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    pointer-events: none;
+    z-index: 100;
+    display: none;
+}

@@ -491,6 +491,32 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                 </div>
             </div>
 
+            <!-- 今日のおすすめ学習 -->
+            <div class="mb-6">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-5">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-base font-semibold text-gray-900">今日のおすすめ学習</h3>
+                        <span class="text-xs text-gray-400">試験日・進捗から自動算出</span>
+                    </div>
+                    <div id="todayPlanSection">
+                        <div class="text-center py-4 text-gray-400 text-sm">試験日を設定すると表示されます</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 学習ヒートマップ -->
+            <div class="mb-8">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-5">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-base font-semibold text-gray-900">学習カレンダー</h3>
+                        <span id="heatmapStats" class="text-xs text-gray-500"></span>
+                    </div>
+                    <div id="studyHeatmap"></div>
+                    <!-- モバイル tooltip -->
+                    <div id="heatmap-tooltip"></div>
+                </div>
+            </div>
+
             <!-- 学習計画作成セクション -->
             <div class="mb-8">
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
@@ -721,15 +747,18 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                     <!-- タブ切り替え -->
                     <div class="sticky top-16 sm:top-20 bg-white z-10 -mx-6 px-6 pt-4 pb-4">
                         <div class="border-b border-gray-200">
-                            <nav class="-mb-px flex space-x-8">
-                            <button onclick="switchDetailTab('subject')" class="detail-tab-btn border-b-2 border-blue-500 py-2 px-1 text-sm font-medium text-blue-600" data-tab="subject">
+                            <nav class="-mb-px flex space-x-4 overflow-x-auto">
+                            <button onclick="switchDetailTab('subject')" class="detail-tab-btn border-b-2 border-blue-500 py-2 px-1 text-sm font-medium text-blue-600 whitespace-nowrap" data-tab="subject">
                                 科目別分析
                             </button>
-                            <button onclick="switchDetailTab('timeline')" class="detail-tab-btn border-b-2 border-transparent py-2 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="timeline">
+                            <button onclick="switchDetailTab('timeline')" class="detail-tab-btn border-b-2 border-transparent py-2 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap" data-tab="timeline">
                                 学習履歴
                             </button>
-                            <button onclick="switchDetailTab('weekly')" class="detail-tab-btn border-b-2 border-transparent py-2 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="weekly">
+                            <button onclick="switchDetailTab('weekly')" class="detail-tab-btn border-b-2 border-transparent py-2 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap" data-tab="weekly">
                                 週次推移
+                            </button>
+                            <button onclick="switchDetailTab('weakpoints'); generateWeakPointsReport();" class="detail-tab-btn border-b-2 border-transparent py-2 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap" data-tab="weakpoints">
+                                弱点分析
                             </button>
                             </nav>
                         </div>
@@ -772,6 +801,13 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                             <div id="weeklySummaryList" class="space-y-2">
                                 <!-- 動的に生成 -->
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- 弱点分析 -->
+                    <div id="weakpointsDetailTab" class="detail-tab-content hidden">
+                        <div id="weakPointsTab">
+                            <!-- generateWeakPointsReport() で動的生成 -->
                         </div>
                     </div>
                 </div>
@@ -819,6 +855,11 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
         </div>
     </div>
 
+    <!-- FAB: モバイル学習記録ボタン -->
+    <button class="fab-btn lg:hidden" onclick="document.getElementById('studySubject').scrollIntoView({behavior:'smooth',block:'center'}); setTimeout(()=>document.getElementById('studySubject').focus(), 400);" title="学習を記録する" aria-label="学習を記録する">
+        ✏️
+    </button>
+
     <!-- 通知・モーダル -->
     <div id="notification" class="fixed top-4 right-4 z-50 hidden">
         <div class="bg-white rounded-lg shadow-lg border p-4 max-w-sm">
@@ -837,6 +878,7 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
     <script src="js/services/StudyDataService.js"></script>
     <script src="js/components/DashboardComponent.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/calendar.js"></script>
     
     <div id="errorContainer" class="hidden"></div>
     <div id="messageContainer" class="fixed top-4 right-4 z-50"></div>
@@ -1543,9 +1585,10 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
             updateExamDateWarning();
             updateTodayGoal();
             updateOnboarding();
+            if (typeof generateTodayPlan !== 'undefined') generateTodayPlan(studyData);
             showNotification('成功', `${diffDays}日間の学習計画を作成しました！`, 'success');
         }
-        
+
         // 学習記録追加
         function addStudyRecord() {
             const subject = document.getElementById('studySubject').value;
@@ -1588,6 +1631,21 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                 progressChart.data.datasets[0].data = Object.values(studyData.subjects).map(s => s.progress);
                 progressChart.update();
             }
+
+            // ヒートマップ・今日のプランを更新
+            if (window._heatmapInstance) {
+                window._heatmapInstance.render(studyData.studyRecords || []);
+                var dailyMap2 = new Map();
+                studyData.studyRecords.forEach(function(r) {
+                    if (!r.date) return;
+                    dailyMap2.set(r.date, (dailyMap2.get(r.date) || 0) + (r.hours || 0));
+                });
+                var totalDays2 = 0;
+                dailyMap2.forEach(function(h) { if (h > 0) totalDays2++; });
+                var statsEl2 = document.getElementById('heatmapStats');
+                if (statsEl2) statsEl2.textContent = '累計 ' + totalDays2 + '日学習';
+            }
+            if (typeof generateTodayPlan !== 'undefined') generateTodayPlan(studyData);
 
             // フォームリセット
             document.getElementById('studySubject').value = '';
@@ -2221,6 +2279,29 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
 
             // オンボーディング表示
             updateOnboarding();
+
+            // ヒートマップと今日のプランを初期化
+            (function initCalendarFeatures() {
+                if (typeof StudyHeatmap !== 'undefined') {
+                    var hm = new StudyHeatmap('studyHeatmap');
+                    hm.render(studyData.studyRecords || []);
+                    // ヒートマップ統計ラベル
+                    var records = studyData.studyRecords || [];
+                    var dailyMap = new Map();
+                    records.forEach(function(r) {
+                        if (!r.date) return;
+                        dailyMap.set(r.date, (dailyMap.get(r.date) || 0) + (r.hours || 0));
+                    });
+                    var totalDays = 0;
+                    dailyMap.forEach(function(h) { if (h > 0) totalDays++; });
+                    var statsEl = document.getElementById('heatmapStats');
+                    if (statsEl) statsEl.textContent = '累計 ' + totalDays + '日学習';
+                    window._heatmapInstance = hm;
+                }
+                if (typeof generateTodayPlan !== 'undefined') {
+                    generateTodayPlan(studyData);
+                }
+            })();
 
             var createBtn = document.getElementById('createPlanBtn');
             if (createBtn) createBtn.addEventListener('click', createStudyPlan);
