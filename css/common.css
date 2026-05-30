@@ -148,6 +148,77 @@ html.dark textarea {
     border-color: #4a5568 !important;
 }
 
+html.dark .bg-blue-50 { background-color: #1a2744 !important; }
+html.dark .bg-green-50 { background-color: #162320 !important; }
+html.dark .bg-yellow-50 { background-color: #1f1c10 !important; }
+html.dark .bg-purple-50 { background-color: #1e1a2c !important; }
+html.dark .bg-red-50 { background-color: #261515 !important; }
+html.dark .bg-orange-50 { background-color: #261e10 !important; }
+html.dark .bg-blue-100 { background-color: #1e3a5f !important; }
+html.dark .bg-green-100 { background-color: #1a3a30 !important; }
+html.dark .bg-yellow-100 { background-color: #2a2410 !important; }
+html.dark .bg-purple-100 { background-color: #2a1e40 !important; }
+html.dark .bg-red-100 { background-color: #3a1515 !important; }
+html.dark .bg-orange-100 { background-color: #3a2410 !important; }
+html.dark .bg-black.bg-opacity-50 { background-color: rgba(0,0,0,0.75) !important; }
+html.dark .bg-gray-600.bg-opacity-50 { background-color: rgba(0,0,0,0.75) !important; }
+
+html.dark .text-blue-600 { color: #63b3ed !important; }
+html.dark .text-blue-900 { color: #bee3f8 !important; }
+html.dark .text-blue-700 { color: #90cdf4 !important; }
+html.dark .text-green-600 { color: #68d391 !important; }
+html.dark .text-green-900 { color: #c6f6d5 !important; }
+html.dark .text-yellow-600 { color: #fbd38d !important; }
+html.dark .text-yellow-800 { color: #fefcbf !important; }
+html.dark .text-yellow-900 { color: #fefcbf !important; }
+html.dark .text-purple-600 { color: #b794f4 !important; }
+html.dark .text-purple-900 { color: #e9d8fd !important; }
+html.dark .text-red-600 { color: #fc8181 !important; }
+html.dark .text-orange-600 { color: #f6ad55 !important; }
+html.dark .text-blue-200 { color: #bee3f8 !important; }
+html.dark .text-blue-100 { color: #ebf8ff !important; }
+
+html.dark .border-yellow-200 { border-color: #744210 !important; }
+html.dark .border-blue-200 { border-color: #2b4c7e !important; }
+
+html.dark .notification > div,
+html.dark #notification > div { background-color: #2d3748 !important; border-color: #4a5568 !important; }
+
+html.dark .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.6), 0 4px 6px -2px rgba(0,0,0,0.4) !important; }
+html.dark .shadow-xl { box-shadow: 0 20px 25px -5px rgba(0,0,0,0.7), 0 10px 10px -5px rgba(0,0,0,0.5) !important; }
+
+/* モーダル内のダークモード */
+html.dark .fixed.inset-0 > .bg-white,
+html.dark #progressDetailModal .bg-white,
+html.dark #exportImportModal .bg-white { background-color: #2d3748 !important; }
+html.dark #exportImportModal .bg-blue-50,
+html.dark #progressDetailModal .bg-blue-50 { background-color: #1a2744 !important; }
+html.dark #exportImportModal .bg-yellow-50 { background-color: #1f1c10 !important; }
+html.dark #progressDetailModal .bg-gray-50 { background-color: #1a202c !important; }
+html.dark #progressDetailModal .sticky.bg-white { background-color: #2d3748 !important; }
+html.dark #progressDetailModal .border-b { border-color: #4a5568 !important; }
+
+/* スライダー */
+html.dark input[type=range] { background-color: #4a5568 !important; }
+
+/* ナビリンク */
+html.dark .nav-link { color: #a0aec0 !important; }
+html.dark .nav-link:hover,
+html.dark .nav-link.text-blue-600 { color: #63b3ed !important; }
+html.dark .bg-blue-50.rounded-md { background-color: #1a2744 !important; }
+
+/* クイックアクションカード */
+html.dark .card-hover:hover { box-shadow: 0 10px 25px rgba(0,0,0,0.4) !important; }
+
+/* 過去問演習ページ */
+html.dark .answer-option:hover { background-color: #374151 !important; }
+html.dark .answer-option.selected { background-color: #1a2744 !important; border-color: #63b3ed !important; }
+html.dark .answer-option.correct { background-color: #1a3a2a !important; border-color: #48bb78 !important; }
+html.dark .answer-option.incorrect { background-color: #2a1515 !important; border-color: #fc8181 !important; }
+
+/* ページローダー */
+html.dark #page-loader { background-color: #1a202c !important; }
+
 /* ページ固有のスタイル用クラス */
 .feature-card {
     transition: transform 0.2s;

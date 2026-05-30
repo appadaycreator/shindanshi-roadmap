@@ -294,9 +294,8 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                     <div>
                         <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3" data-i18n="nav_data">データ管理</h3>
                         <ul class="space-y-2">
-                            <li><button onclick="openExportModal()" class="w-full flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><span class="mr-3">⬇️</span><span>エクスポート</span></button></li>
-                            <li><button onclick="openImportModal()" class="w-full flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><span class="mr-3">⬆️</span><span>インポート</span></button></li>
-                            <li><button onclick="openExportModal()" class="w-full flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><span class="mr-3">🛡️</span><span>バックアップ</span></button></li>
+                            <li><button onclick="openExportModal()" class="w-full flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><span class="mr-3">⬇️</span><span>バックアップ保存</span></button></li>
+                            <li><button onclick="openImportModal()" class="w-full flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><span class="mr-3">⬆️</span><span>データ復元</span></button></li>
                         </ul>
                     </div>
                 </nav>
@@ -368,9 +367,40 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                             <div class="text-sm text-blue-200" data-i18n="today_date">今日の日付</div>
                             <div id="currentDate" class="text-xl font-semibold"></div>
                             <div id="todayGoalInfo" class="mt-2 hidden">
-                                <div class="text-sm text-blue-200">今日の達成状況</div>
-                                <div id="todayGoalText" class="text-base font-semibold"></div>
+                                <div class="text-xs text-blue-200 mb-1">今日の目標</div>
+                                <div id="todayGoalText" class="text-sm font-bold mb-1"></div>
+                                <div class="w-full bg-blue-800 rounded-full h-2">
+                                    <div id="todayGoalBar" class="h-2 rounded-full transition-all duration-500" style="width:0%"></div>
+                                </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- オンボーディング（初回訪問者向け） -->
+            <div id="onboardingGuide" class="hidden mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-5">
+                <h3 class="text-base font-bold text-blue-900 mb-3">🎉 ようこそ！3ステップではじめましょう</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div id="onboard-step1" class="flex items-start gap-3 p-3 bg-white rounded-lg border border-blue-100">
+                        <div class="w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">1</div>
+                        <div>
+                            <div class="text-sm font-semibold text-gray-900">試験日を設定</div>
+                            <div class="text-xs text-gray-500">下の「学習計画作成」から試験日を入力してください</div>
+                        </div>
+                    </div>
+                    <div id="onboard-step2" class="flex items-start gap-3 p-3 bg-white rounded-lg border border-blue-100">
+                        <div class="w-7 h-7 bg-gray-300 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">2</div>
+                        <div>
+                            <div class="text-sm font-semibold text-gray-900">科目進捗を入力</div>
+                            <div class="text-xs text-gray-500">各科目のスライダーで現在の進捗率を設定</div>
+                        </div>
+                    </div>
+                    <div id="onboard-step3" class="flex items-start gap-3 p-3 bg-white rounded-lg border border-blue-100">
+                        <div class="w-7 h-7 bg-gray-300 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">3</div>
+                        <div>
+                            <div class="text-sm font-semibold text-gray-900">学習記録を追加</div>
+                            <div class="text-xs text-gray-500">毎日の学習内容を記録して進捗を可視化</div>
                         </div>
                     </div>
                 </div>
@@ -443,6 +473,7 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                         <div class="ml-4">
                             <h3 class="text-sm font-medium text-gray-500" data-i18n="stats_quiz_count">解答問題数</h3>
                             <p id="quizCount" class="text-2xl font-bold text-gray-900">0</p>
+                            <p id="quizAccuracy" class="text-xs text-purple-600 font-medium hidden">正答率 <span id="quizAccuracyRate">--%</span></p>
                         </div>
                     </div>
                 </div>
@@ -468,7 +499,10 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="exam_date_label">試験日</label>
-                            <input type="date" id="examDate" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" aria-label="入力フォーム">
+                            <div class="flex gap-2">
+                                <input type="date" id="examDate" class="flex-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" aria-label="入力フォーム">
+                                <button type="button" onclick="setNextExamDate()" title="中小企業診断士1次試験の次回日程を自動入力" class="px-3 py-2 bg-blue-50 text-blue-600 border border-blue-200 rounded-md text-xs font-medium hover:bg-blue-100 transition-colors whitespace-nowrap">来年の<br>試験日</button>
+                            </div>
                         </div>
                         
                         <div>
@@ -525,6 +559,13 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="study_hours_label">学習時間（時間）</label>
                             <input type="number" id="studyHours" min="0.1" max="12" step="0.1" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <div class="flex gap-1 mt-2">
+                                <button type="button" onclick="setQuickHours(0.5)" class="quick-hours-btn flex-1 py-1 text-xs border border-gray-200 rounded hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 transition-colors">0.5h</button>
+                                <button type="button" onclick="setQuickHours(1)" class="quick-hours-btn flex-1 py-1 text-xs border border-gray-200 rounded hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 transition-colors">1h</button>
+                                <button type="button" onclick="setQuickHours(1.5)" class="quick-hours-btn flex-1 py-1 text-xs border border-gray-200 rounded hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 transition-colors">1.5h</button>
+                                <button type="button" onclick="setQuickHours(2)" class="quick-hours-btn flex-1 py-1 text-xs border border-gray-200 rounded hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 transition-colors">2h</button>
+                                <button type="button" onclick="setQuickHours(3)" class="quick-hours-btn flex-1 py-1 text-xs border border-gray-200 rounded hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 transition-colors">3h</button>
+                            </div>
                         </div>
                         
                         <div class="flex items-end">
@@ -1143,10 +1184,18 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
             const avgProgress = subjects.reduce((sum, subject) => sum + subject.progress, 0) / subjects.length;
             document.getElementById('avgProgressCount').textContent = `${Math.round(avgProgress)}%`;
             
-            // 解答問題数（quizHistoryから集計）
+            // 解答問題数・正答率（quizHistoryから集計）
             const quizHistory = JSON.parse(localStorage.getItem('quizHistory') || '[]');
             const quizCount = quizHistory.reduce((sum, h) => sum + (h.totalQuestions || 0), 0);
             document.getElementById('quizCount').textContent = quizCount;
+            const totalCorrect = quizHistory.reduce((sum, h) => sum + (h.correctAnswers || 0), 0);
+            const accuracyEl = document.getElementById('quizAccuracy');
+            const accuracyRateEl = document.getElementById('quizAccuracyRate');
+            if (accuracyEl && accuracyRateEl && quizCount > 0) {
+                const accuracy = Math.round((totalCorrect / quizCount) * 100);
+                accuracyRateEl.textContent = accuracy + '%';
+                accuracyEl.classList.remove('hidden');
+            }
 
             // 連続学習日数（ストリーク）
             const streakEl = document.getElementById('streakCount');
@@ -1239,6 +1288,7 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
             // 1秒後に保存完了通知（連続操作時は最後の操作のみ通知）
             clearTimeout(subjectSaveTimers[subjectKey]);
             subjectSaveTimers[subjectKey] = setTimeout(function() {
+                updateOnboarding();
                 showNotification('保存完了', getSubjectName(subjectKey) + ' の進捗を ' + progress + '% に更新しました', 'success');
             }, 1000);
         }
@@ -1292,6 +1342,7 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
         function updateTodayGoal() {
             var infoDiv = document.getElementById('todayGoalInfo');
             var textEl = document.getElementById('todayGoalText');
+            var barEl = document.getElementById('todayGoalBar');
             if (!infoDiv || !textEl) return;
 
             if (!studyData.dailyHours || !studyData.examDate) {
@@ -1308,10 +1359,43 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
             var rate = Math.min(100, Math.round((todayHours / goal) * 100));
             var achieved = todayHours >= goal;
 
-            textEl.textContent = todayHours.toFixed(1) + 'h / ' + goal + 'h (' + rate + '%)';
+            textEl.textContent = (achieved ? '✓ ' : '') + todayHours.toFixed(1) + 'h / ' + goal + 'h (' + rate + '%)';
             textEl.style.color = achieved ? '#86efac' : '#fde68a';
 
+            if (barEl) {
+                barEl.style.width = rate + '%';
+                barEl.style.background = achieved ? '#86efac' : '#fde68a';
+            }
+
             infoDiv.classList.remove('hidden');
+        }
+
+        // 次回1次試験日（毎年8月第1土曜）を自動設定
+        function setNextExamDate() {
+            var now = new Date();
+            var year = now.getFullYear();
+            // 今年8月第1土曜を計算
+            function getFirstSatOfAugust(y) {
+                var d = new Date(y, 7, 1); // 8月1日
+                var dow = d.getDay(); // 0=日, 6=土
+                var diff = (6 - dow + 7) % 7;
+                d.setDate(1 + diff);
+                return d;
+            }
+            var thisYear = getFirstSatOfAugust(year);
+            var target = thisYear > now ? thisYear : getFirstSatOfAugust(year + 1);
+            var dateStr = target.toISOString().split('T')[0];
+            document.getElementById('examDate').value = dateStr;
+            showNotification('自動設定', target.getFullYear() + '年' + (target.getMonth()+1) + '月' + target.getDate() + '日（1次試験日）を設定しました', 'success');
+        }
+
+        // 学習時間クイックボタン
+        function setQuickHours(h) {
+            document.getElementById('studyHours').value = h;
+            document.querySelectorAll('.quick-hours-btn').forEach(function(btn) {
+                btn.classList.remove('bg-blue-100', 'border-blue-400', 'text-blue-700', 'font-bold');
+            });
+            event.target.classList.add('bg-blue-100', 'border-blue-400', 'text-blue-700', 'font-bold');
         }
 
         // 試験日未設定警告の表示制御
@@ -1323,6 +1407,38 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
             } else {
                 warning.classList.add('hidden');
             }
+        }
+
+        // オンボーディングガイドの更新
+        function updateOnboarding() {
+            var guide = document.getElementById('onboardingGuide');
+            if (!guide) return;
+            var step1Done = !!studyData.examDate;
+            var step2Done = Object.values(studyData.subjects).some(function(s) { return s.progress > 0; });
+            var step3Done = studyData.studyRecords.length > 0;
+
+            if (step1Done && step2Done && step3Done) {
+                guide.classList.add('hidden');
+                return;
+            }
+            guide.classList.remove('hidden');
+
+            function setStep(id, done) {
+                var el = document.getElementById(id);
+                if (!el) return;
+                var numEl = el.querySelector('div:first-child');
+                if (done) {
+                    el.classList.add('opacity-50');
+                    numEl.style.background = '#16a34a';
+                    numEl.textContent = '✓';
+                } else {
+                    el.classList.remove('opacity-50');
+                    numEl.style.background = '';
+                }
+            }
+            setStep('onboard-step1', step1Done);
+            setStep('onboard-step2', step2Done);
+            setStep('onboard-step3', step3Done);
         }
 
         // 最近の学習記録を表示（直近7件）
@@ -1426,6 +1542,7 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
             updateStatistics();
             updateExamDateWarning();
             updateTodayGoal();
+            updateOnboarding();
             showNotification('成功', `${diffDays}日間の学習計画を作成しました！`, 'success');
         }
         
@@ -1476,6 +1593,10 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
             document.getElementById('studySubject').value = '';
             document.getElementById('studyHours').value = '';
             document.getElementById('studyMemo').value = '';
+            document.querySelectorAll('.quick-hours-btn').forEach(function(btn) {
+                btn.classList.remove('bg-blue-100', 'border-blue-400', 'text-blue-700', 'font-bold');
+            });
+            updateOnboarding();
 
             showNotification('成功', '学習記録を追加しました！', 'success');
         }
@@ -2097,6 +2218,9 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
             renderRecentStudyRecords();
             updateTodayGoal();
             updateExamDateWarning();
+
+            // オンボーディング表示
+            updateOnboarding();
 
             var createBtn = document.getElementById('createPlanBtn');
             if (createBtn) createBtn.addEventListener('click', createStudyPlan);
