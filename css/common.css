@@ -287,7 +287,7 @@ html.dark .heatmap-cell-4 { background: #39d353; }
 }
 
 @media (min-width: 1024px) {
-    .fab-btn { display: none; }
+    .fab-btn { display: flex; }
 }
 
 /* クイック時間ボタン改善 */
@@ -302,6 +302,66 @@ html.dark .heatmap-cell-4 { background: #39d353; }
     background: #dbeafe !important;
     border-color: #3b82f6 !important;
     color: #1d4ed8 !important;
+}
+
+/* 学習タイマー */
+.timer-preset-btn {
+    transition: all 0.15s;
+    min-height: 32px;
+    font-size: 0.78rem;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid #d1d5db;
+    background: #fff;
+    cursor: pointer;
+    color: #374151;
+}
+.timer-preset-btn.active {
+    background: #dbeafe;
+    border-color: #3b82f6;
+    color: #1d4ed8;
+    font-weight: 700;
+}
+.timer-ring-progress {
+    transition: stroke-dashoffset 1s linear, stroke 0.5s;
+}
+html.dark .timer-preset-btn {
+    background: #2d3748;
+    border-color: #4a5568;
+    color: #cbd5e0;
+}
+html.dark .timer-preset-btn.active {
+    background: #1a2744;
+    border-color: #63b3ed;
+    color: #90cdf4;
+}
+
+/* クイック記録モーダル */
+#quickLogModal .quick-log-btn {
+    min-height: 44px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.15s;
+    border: 1px solid #d1d5db;
+    background: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #374151;
+}
+#quickLogModal .quick-log-btn.active {
+    background: #dbeafe;
+    border-color: #3b82f6;
+    color: #1d4ed8;
+}
+html.dark #quickLogModal .quick-log-btn {
+    background: #2d3748;
+    border-color: #4a5568;
+    color: #cbd5e0;
+}
+html.dark #quickLogModal .quick-log-btn.active {
+    background: #1a2744;
+    border-color: #63b3ed;
+    color: #90cdf4;
 }
 
 /* ヒートマップツールチップ */
