@@ -3390,6 +3390,4 @@ const QuizDatabase = {
     }
 };
 
-// 問題データの検証
-console.log('過去問データベース初期化完了');
-console.log('統計情報:', QuizDatabase.getStatistics());
+// 問題データの検証は app.js で実行

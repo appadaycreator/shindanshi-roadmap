@@ -17,8 +17,6 @@ class App {
         if (this.initialized) return;
 
         try {
-            console.log('🚀 中小企業診断士合格ロードマップ - 初期化開始');
-
             // Initialize core services
             this.appState = new AppState();
             this.studyDataService = new StudyDataService();
@@ -36,10 +34,9 @@ class App {
 
             // Setup global event listeners
             this.setupGlobalListeners();
-            
+
             this.initialized = true;
-            console.log('✅ アプリケーション初期化完了');
-            
+
         } catch (error) {
             console.error('❌ アプリケーション初期化エラー:', error);
             this.handleInitializationError(error);
@@ -60,11 +57,11 @@ class App {
 
         // Handle app state changes
         this.appState.subscribe('app:initialized', () => {
-            console.log('App state initialized');
+            // State initialized
         });
 
         this.appState.subscribe('studyData:updated', (data) => {
-            console.log('Study data updated');
+            // Study data updated
         });
     }
 
@@ -75,13 +72,12 @@ class App {
         if ('serviceWorker' in navigator) {
             try {
                 const registration = await navigator.serviceWorker.register('./sw.js');
-                console.log('✅ Service Worker registered:', registration);
-                
+
                 // Handle updates
                 registration.addEventListener('updatefound', () => {
-                    console.log('Service Worker update found');
+                    // Update found
                 });
-                
+
             } catch (error) {
                 console.error('❌ Service Worker registration failed:', error);
             }
