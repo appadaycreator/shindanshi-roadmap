@@ -593,11 +593,18 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                                 <input type="date" id="examDate" placeholder="例：2025年6月15日" class="flex-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" aria-label="試験日を選択">
                                 <button type="button" onclick="setNextExamDate()" title="中小企業診断士1次試験の次回日程を自動入力" class="px-3 py-2 bg-blue-50 text-blue-600 border border-blue-200 rounded-md text-xs font-medium hover:bg-blue-100 transition-colors whitespace-nowrap" aria-label="来年の試験日を自動入力">来年の<br>試験日</button>
                             </div>
+                            <div id="examDateError" class="hidden text-sm text-red-600 mt-1 flex items-center gap-1">
+                                <span>⚠️</span><span id="examDateErrorMsg"></span>
+                            </div>
                         </div>
-                        
+
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="daily_hours_label">1日の学習時間（時間）</label>
                             <input type="number" id="dailyHours" min="0.5" max="12" step="0.5" value="2" placeholder="例：2.0" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" aria-label="1日の学習時間を入力">
+                            <p class="text-xs text-gray-500 mt-1">📌 0.5～12時間の範囲で入力してください</p>
+                            <div id="dailyHoursError" class="hidden text-sm text-red-600 mt-1 flex items-center gap-1">
+                                <span>⚠️</span><span id="dailyHoursErrorMsg"></span>
+                            </div>
                         </div>
                     </div>
                     
@@ -624,6 +631,7 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">試験日を指定（比較用）</label>
                                 <input type="date" id="simExamDate" placeholder="試験日を選択" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" aria-label="シミュレーション用試験日">
+                                <p class="text-xs text-gray-500 mt-1">💡 異なる試験日で学習計画を比較できます</p>
                             </div>
                             <div class="flex items-end">
                                 <button onclick="runComparison()" class="w-full bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors font-medium">
@@ -982,10 +990,16 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                     <h3 class="font-semibold text-yellow-900 mb-2">⚠️ インポートの注意事項</h3>
                     <p class="text-sm text-yellow-700">現在のデータは上書きされます。事前にエクスポートをお勧めします。</p>
                 </div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">バックアップJSONファイルを選択</label>
+                <label class="block text-sm font-medium text-gray-700 mb-2">📁 バックアップJSONファイルを選択</label>
                 <input type="file" id="importFileInput" accept=".json" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm mb-2" aria-label="バックアップJSONファイルを選択">
-                <p class="text-xs text-gray-500 mb-4">以前エクスポートしたJSONファイルをアップロードしてください</p>
-                <button onclick="importData()" class="w-full bg-green-600 text-white py-3 rounded-md hover:bg-green-700 transition-colors font-medium">
+                <div id="importFileError" class="hidden text-sm text-red-600 mb-2 flex items-center gap-1">
+                    <span>❌</span><span id="importFileErrorMsg"></span>
+                </div>
+                <div id="importFileSelected" class="hidden text-sm text-green-600 mb-3 flex items-center gap-1">
+                    <span>✅</span><span>選択済み: <strong id="importFileName"></strong></span>
+                </div>
+                <p class="text-xs text-gray-500 mb-4">以前エクスポートしたJSONファイルをアップロードしてください。JSONファイル以外はインポートできません。</p>
+                <button onclick="importData()" class="w-full bg-green-600 text-white py-3 rounded-md hover:bg-green-700 transition-colors font-medium" id="importBtn">
                     データをインポート（上書き）
                 </button>
                 <button onclick="openExportModal()" class="w-full mt-3 border border-gray-300 text-gray-600 py-2 rounded-md hover:bg-gray-50 transition-colors text-sm">
@@ -1131,7 +1145,13 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
             
             // 学習記録追加
             document.getElementById('addStudyRecordBtn').addEventListener('click', addStudyRecord);
-            
+
+            // ファイルインポート入力の検証
+            const importFileInput = document.getElementById('importFileInput');
+            if (importFileInput) {
+                importFileInput.addEventListener('change', validateImportFile);
+            }
+
             // ESCキーでモーダルを閉じる
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
@@ -1767,24 +1787,98 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
         };
 
         // 学習計画作成
-        function createStudyPlan() {
-            const examDate = document.getElementById('examDate').value;
-            const dailyHours = parseFloat(document.getElementById('dailyHours').value);
+        // ファイル入力バリデーション関数
+        function validateImportFile(e) {
+            const fileInput = e.target;
+            const errorElement = document.getElementById('importFileError');
+            const errorMsgElement = document.getElementById('importFileErrorMsg');
+            const selectedElement = document.getElementById('importFileSelected');
+            const fileNameElement = document.getElementById('importFileName');
 
-            if (!examDate) {
-                showNotification('エラー', '試験日を入力してください', 'error');
+            // エラーをリセット
+            if (errorElement) errorElement.classList.add('hidden');
+            if (selectedElement) selectedElement.classList.add('hidden');
+
+            if (fileInput.files.length === 0) return;
+
+            const file = fileInput.files[0];
+            const fileName = file.name;
+
+            // ファイル拡張子チェック
+            if (!fileName.endsWith('.json')) {
+                if (errorMsgElement) errorMsgElement.textContent = 'JSONファイル（.json）を選択してください';
+                if (errorElement) errorElement.classList.remove('hidden');
                 return;
             }
+
+            // ファイル名を表示
+            if (fileNameElement && selectedElement) {
+                fileNameElement.textContent = fileName;
+                selectedElement.classList.remove('hidden');
+            }
+        }
+
+        // フォームバリデーション関数
+        function validatePlanForm() {
+            const examDate = document.getElementById('examDate').value;
+            const dailyHours = parseFloat(document.getElementById('dailyHours').value);
+            let isValid = true;
+
+            // エラー表示をリセット
+            document.getElementById('examDateError').classList.add('hidden');
+            document.getElementById('dailyHoursError').classList.add('hidden');
+
+            // 試験日のバリデーション
+            if (!examDate) {
+                showFormError('examDate', '試験日を選択してください');
+                isValid = false;
+            } else {
+                const today = new Date();
+                const exam = new Date(examDate);
+                const diffTime = exam - today;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                if (diffDays <= 0) {
+                    showFormError('examDate', '試験日は今日以降の日付を選択してください');
+                    isValid = false;
+                }
+            }
+
+            // 学習時間のバリデーション
+            if (!dailyHours || isNaN(dailyHours)) {
+                showFormError('dailyHours', '学習時間を入力してください');
+                isValid = false;
+            } else if (dailyHours < 0.5 || dailyHours > 12) {
+                showFormError('dailyHours', '学習時間は0.5～12時間の範囲で入力してください');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        // フォームエラー表示関数
+        function showFormError(fieldId, message) {
+            const errorElement = document.getElementById(fieldId + 'Error');
+            const errorMsgElement = document.getElementById(fieldId + 'ErrorMsg');
+            if (errorElement && errorMsgElement) {
+                errorMsgElement.textContent = message;
+                errorElement.classList.remove('hidden');
+            }
+        }
+
+        function createStudyPlan() {
+            // フォームバリデーション
+            if (!validatePlanForm()) {
+                return;
+            }
+
+            const examDate = document.getElementById('examDate').value;
+            const dailyHours = parseFloat(document.getElementById('dailyHours').value);
 
             const today = new Date();
             const exam = new Date(examDate);
             const diffTime = exam - today;
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-            if (diffDays <= 0) {
-                showNotification('エラー', '試験日は今日より後の日付を選択してください', 'error');
-                return;
-            }
 
             studyData.examDate = examDate;
             studyData.dailyHours = dailyHours;
