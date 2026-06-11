@@ -70,6 +70,26 @@ class DashboardComponent {
             });
         }
 
+        // Study record button
+        const addStudyRecordBtn = document.getElementById('addStudyRecordBtn');
+        if (addStudyRecordBtn) {
+            addStudyRecordBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.addStudyRecord();
+            });
+        }
+
+        // Study hours input validation
+        const studyHoursInput = document.getElementById('studyHours');
+        if (studyHoursInput) {
+            studyHoursInput.addEventListener('input', (e) => {
+                this.validateStudyHours(parseFloat(e.target.value));
+            });
+            studyHoursInput.addEventListener('change', (e) => {
+                this.validateStudyHours(parseFloat(e.target.value));
+            });
+        }
+
         // Subject progress sliders
         const progressSliders = document.querySelectorAll('.progress-slider');
         progressSliders.forEach(slider => {
@@ -129,15 +149,59 @@ class DashboardComponent {
     }
 
     /**
+     * Validate study hours input
+     */
+    validateStudyHours(value) {
+        const hoursError = document.getElementById('studyHoursError');
+        const hoursErrorMsg = document.getElementById('studyHoursErrorMsg');
+        const studyHoursInput = document.getElementById('studyHours');
+
+        if (!value || isNaN(value)) {
+            hoursError?.classList.add('hidden');
+            studyHoursInput?.classList.remove('border-red-500');
+            return true;
+        }
+
+        if (value < 0.1 || value > 12) {
+            hoursErrorMsg.textContent = '学習時間は0.1～12時間で入力してください。';
+            hoursError?.classList.remove('hidden');
+            studyHoursInput?.classList.add('border-red-500');
+            return false;
+        }
+
+        hoursError?.classList.add('hidden');
+        studyHoursInput?.classList.remove('border-red-500');
+        return true;
+    }
+
+    /**
      * Add study record
      */
     addStudyRecord() {
         const subject = document.getElementById('studySubject').value;
         const hours = parseFloat(document.getElementById('studyHours').value);
         const memo = document.getElementById('studyMemo').value;
+        const hoursError = document.getElementById('studyHoursError');
+        const hoursErrorMsg = document.getElementById('studyHoursErrorMsg');
 
-        if (!subject || !hours || hours <= 0) {
-            alert('科目と学習時間を正しく入力してください。');
+        // Clear previous errors
+        hoursError?.classList.add('hidden');
+
+        // Validation
+        if (!subject) {
+            this.showMessage('科目を選択してください。', 'error');
+            return;
+        }
+
+        if (!hours || isNaN(hours)) {
+            hoursErrorMsg.textContent = '学習時間を入力してください。';
+            hoursError?.classList.remove('hidden');
+            return;
+        }
+
+        if (hours < 0.1 || hours > 12) {
+            hoursErrorMsg.textContent = '学習時間は0.1～12時間で入力してください。';
+            hoursError?.classList.remove('hidden');
             return;
         }
 
@@ -149,15 +213,17 @@ class DashboardComponent {
         });
 
         this.appState.updateStudyData(studyData);
-        
+
         // Update UI
         this.renderSubjectProgress();
         this.updateProgressChart();
         this.renderStudyHistory();
-        
+
         // Reset form
-        document.getElementById('studyForm').reset();
-        
+        document.getElementById('studySubject').value = '';
+        document.getElementById('studyHours').value = '';
+        document.getElementById('studyMemo').value = '';
+
         // Show success message
         this.showMessage('学習記録を追加しました！', 'success');
     }
