@@ -209,3 +209,49 @@
 - **改善**: 演習履歴表示を5件→10件に拡張（10件超の場合「さらに見る」ボタン表示）
 - **改善**: 演習履歴に正答率プログレスバーを追加（70%以上:緑/50%以上:黄/50%未満:赤）
 - **新機能**: 演習中のキーボードナビゲーション実装（← → で問題移動、1〜4で選択肢選択）
+
+### v1.6.0 (2026-06-12) - M2 UX改善
+#### フェーズ1：バリデーション強化＆エラーメッセージ改善
+- **新機能**: シミュレーション用試験日（`simExamDate`）のリアルタイムバリデーション
+  - 過去日付チェック（今日以降の日付を必須化）
+  - 最小日数チェック（7日以上先の日付を推奨）
+  - 変更イベント時に即座にエラー表示
+  - エラーメッセージを具体的に（「理由」「正しい形式」）
+
+- **新機能**: クイックログメモの文字数制限と即座のバリデーション
+  - 最大200字の制限（超過時は自動カット）
+  - 入力時リアルタイムカウント（inputイベント）
+  - 送信前の文字数チェック
+
+- **改善**: 学習時間スライダー（`dailyHoursSlider`）と数値入力（`dailyHours`）の同期
+  - スライダー変更時に数値入力を即座に更新
+  - 数値入力変更時にスライダーを即座に更新
+  - 0.5～12時間の範囲チェック
+
+- **改善**: `runComparison()`関数にバリデーション強化
+  - 新しい`validateSimExamDate()`関数を活用
+  - 比較実行前のバリデーション厳密化
+
+- **改善**: `submitQuickLog()`関数のバリデーション強化
+  - 学習時間の範囲チェック（0.1～12時間）
+  - メモ文字数チェック（200字以内）
+  - エラーメッセージの具体化（入力値を表示）
+
+#### 仕様変更
+- **バリデーション時のエラー表示**: 具体的なメッセージに統一
+  - 「何が間違っているか」
+  - 「何が正しいか」
+  - 「具体的な例」（条件を満たす値など）
+
+### v1.12.0 (2026-06-12) — M2 UX改善（aria-describedby・role="alert"・blurバリデーション追加）
+- examDate/dailyHours/simExamDateにaria-describedby追加、エラーdivにrole="alert"追加（スクリーンリーダー対応）
+- examDate onchange・dailyHours onblur・quickHoursInput onblurバリデーション追加
+- validateExamDateField() / validateDailyHoursField() / validateQuickHoursField() 関数追加
+- quickHoursInputにaria-label・aria-describedby追加
+
+### v1.11.0 (2026-06-12) — M2 UX改善（インラインバリデーション・文字数カウンター強化）
+- 学習記録フォーム: studySubjectにインラインエラー表示div追加、addStudyRecord()バリデーション強化（科目・時間・メモ個別エラー）
+- studyMemo・quickMemoにリアルタイム文字数カウンター追加（200字上限、残り少ない場合オレンジ/赤変色）
+- クイックログモーダル: quickSubject・quickHoursにインラインエラー表示div追加、submitQuickLog()インライン表示対応
+- studyHoursにblurバリデーション（入力フォーカスアウト時に即時エラー表示）追加
+- ヘルパー関数追加: clearFieldError(), updateMemoCounter(), validateStudyHoursField(), showQuickFieldError(), clearQuickFieldError()
