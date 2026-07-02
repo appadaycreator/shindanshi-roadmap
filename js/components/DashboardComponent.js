@@ -53,11 +53,27 @@ class DashboardComponent {
             });
         }
 
-        // Daily hours input
+        // Simulation exam date input
+        const simExamDateInput = document.getElementById('simExamDate');
+        if (simExamDateInput) {
+            simExamDateInput.addEventListener('change', (e) => {
+                this.validateSimExamDate(e.target.value);
+            });
+        }
+
+        // Daily hours input and slider sync
         const dailyHoursInput = document.getElementById('dailyHours');
+        const dailyHoursSlider = document.getElementById('dailyHoursSlider');
         if (dailyHoursInput) {
             dailyHoursInput.addEventListener('input', (e) => {
                 this.updateDailyHours(parseFloat(e.target.value));
+                if (dailyHoursSlider) dailyHoursSlider.value = e.target.value;
+            });
+        }
+        if (dailyHoursSlider) {
+            dailyHoursSlider.addEventListener('input', (e) => {
+                this.updateDailyHours(parseFloat(e.target.value));
+                if (dailyHoursInput) dailyHoursInput.value = e.target.value;
             });
         }
 
@@ -130,12 +146,43 @@ class DashboardComponent {
      * Update exam date
      */
     updateExamDate(date) {
+        this.validateExamDate(date);
         const studyData = this.appState.getState('studyData');
         studyData.examDate = date;
         this.appState.updateStudyData(studyData);
         this.studyDataService.saveStudyData(studyData);
-        
+
         this.updateRemainingDays();
+    }
+
+    /**
+     * Validate exam date
+     */
+    validateExamDate(date) {
+        const examDateError = document.getElementById('examDateError');
+        const examDateErrorMsg = document.getElementById('examDateErrorMsg');
+        const examDateInput = document.getElementById('examDate');
+
+        if (!date) {
+            examDateError?.classList.add('hidden');
+            examDateInput?.classList.remove('border-red-500', 'ring-2', 'ring-red-300');
+            return true;
+        }
+
+        const selectedDate = new Date(date);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        if (selectedDate < today) {
+            examDateErrorMsg.textContent = '試験日は今日以降を選択してください。';
+            examDateError?.classList.remove('hidden');
+            examDateInput?.classList.add('border-red-500', 'ring-2', 'ring-red-300');
+            return false;
+        }
+
+        examDateError?.classList.add('hidden');
+        examDateInput?.classList.remove('border-red-500', 'ring-2', 'ring-red-300');
+        return true;
     }
 
     /**

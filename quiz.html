@@ -90,6 +90,12 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        /* チェックボックス・ラジオボタン選択時のカードハイライト */
+        label:has(input[type="checkbox"]:checked),
+        label:has(input[type="radio"]:checked) {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
     </style>
     
     <!-- Google Tag Manager -->
@@ -220,38 +226,39 @@
                     
                     <!-- 科目選択 -->
                     <div class="mb-6">
-                        <label class="block text-sm font-semibold text-gray-700 mb-3">科目選択</label>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
-                                <input type="checkbox" value="all" id="subject-all" class="mr-3 text-blue-600">
+                        <label id="subjectGroupLabel" class="block text-sm font-semibold text-gray-700 mb-1">科目選択 <span class="text-red-500">*</span></label>
+                        <p class="text-xs text-gray-500 mb-3">💡 1科目以上を選択してください。「全科目」にチェックすると7科目全ての問題が出題されます</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3" role="group" aria-labelledby="subjectGroupLabel">
+                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                                <input type="checkbox" value="all" id="subject-all" class="mr-3 text-blue-600" aria-label="全科目を選択">
                                 <span class="font-medium">全科目</span>
                             </label>
-                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
-                                <input type="checkbox" value="economics" class="subject-checkbox mr-3 text-blue-600">
+                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                                <input type="checkbox" value="economics" class="subject-checkbox mr-3 text-blue-600" aria-label="経済学・経済政策">
                                 <span>経済学・経済政策</span>
                             </label>
-                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
-                                <input type="checkbox" value="finance" class="subject-checkbox mr-3 text-blue-600">
+                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                                <input type="checkbox" value="finance" class="subject-checkbox mr-3 text-blue-600" aria-label="財務・会計">
                                 <span>財務・会計</span>
                             </label>
-                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
-                                <input type="checkbox" value="management" class="subject-checkbox mr-3 text-blue-600">
+                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                                <input type="checkbox" value="management" class="subject-checkbox mr-3 text-blue-600" aria-label="企業経営理論">
                                 <span>企業経営理論</span>
                             </label>
-                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
-                                <input type="checkbox" value="operations" class="subject-checkbox mr-3 text-blue-600">
+                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                                <input type="checkbox" value="operations" class="subject-checkbox mr-3 text-blue-600" aria-label="運営管理">
                                 <span>運営管理</span>
                             </label>
-                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
-                                <input type="checkbox" value="legal" class="subject-checkbox mr-3 text-blue-600">
+                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                                <input type="checkbox" value="legal" class="subject-checkbox mr-3 text-blue-600" aria-label="経営法務">
                                 <span>経営法務</span>
                             </label>
-                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
-                                <input type="checkbox" value="it" class="subject-checkbox mr-3 text-blue-600">
+                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                                <input type="checkbox" value="it" class="subject-checkbox mr-3 text-blue-600" aria-label="経営情報システム">
                                 <span>経営情報システム</span>
                             </label>
-                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
-                                <input type="checkbox" value="policy" class="subject-checkbox mr-3 text-blue-600">
+                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                                <input type="checkbox" value="policy" class="subject-checkbox mr-3 text-blue-600" aria-label="中小企業経営・政策">
                                 <span>中小企業経営・政策</span>
                             </label>
                         </div>
@@ -259,21 +266,21 @@
 
                     <!-- 問題数設定 -->
                     <div class="mb-6">
-                        <label class="block text-sm font-semibold text-gray-700 mb-3">問題数</label>
-                        <div class="flex flex-wrap gap-3">
-                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                        <label id="questionCountLabel" class="block text-sm font-semibold text-gray-700 mb-3">問題数</label>
+                        <div class="flex flex-wrap gap-3" role="radiogroup" aria-labelledby="questionCountLabel">
+                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
                                 <input type="radio" name="questionCount" value="10" class="mr-3 text-blue-600" checked>
                                 <span>10問</span>
                             </label>
-                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
                                 <input type="radio" name="questionCount" value="20" class="mr-3 text-blue-600">
                                 <span>20問</span>
                             </label>
-                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
                                 <input type="radio" name="questionCount" value="50" class="mr-3 text-blue-600">
                                 <span>50問</span>
                             </label>
-                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
                                 <input type="radio" name="questionCount" value="all" class="mr-3 text-blue-600">
                                 <span>全問</span>
                             </label>
@@ -282,32 +289,32 @@
 
                     <!-- 出題モード -->
                     <div class="mb-6">
-                        <label class="block text-sm font-semibold text-gray-700 mb-3">出題モード</label>
-                        <div class="flex flex-wrap gap-3">
-                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                        <label id="quizModeLabel" class="block text-sm font-semibold text-gray-700 mb-3">出題モード</label>
+                        <div class="flex flex-wrap gap-3" role="radiogroup" aria-labelledby="quizModeLabel">
+                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
                                 <input type="radio" name="quizMode" value="random" class="mr-3 text-blue-600" checked>
                                 <span><i class="fas fa-random mr-2"></i>ランダム出題</span>
                             </label>
-                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
                                 <input type="radio" name="quizMode" value="sequential" class="mr-3 text-blue-600">
                                 <span><i class="fas fa-list-ol mr-2"></i>順番出題</span>
                             </label>
-                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
                                 <input type="radio" name="quizMode" value="wrong" class="mr-3 text-blue-600">
-                                <span><i class="fas fa-redo mr-2"></i>間違えた問題のみ</span>
+                                <span><i class="fas fa-redo mr-2"></i>間違えた問題のみ<span class="block text-xs text-gray-400 mt-0.5">※過去の演習履歴が必要</span></span>
                             </label>
                         </div>
                     </div>
 
                     <!-- 即時フィードバック設定 -->
                     <div class="mb-6">
-                        <label class="block text-sm font-semibold text-gray-700 mb-3">学習モード</label>
-                        <div class="flex flex-wrap gap-3">
-                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer bg-blue-50 border-blue-200">
+                        <label id="feedbackModeLabel" class="block text-sm font-semibold text-gray-700 mb-3">学習モード</label>
+                        <div class="flex flex-wrap gap-3" role="radiogroup" aria-labelledby="feedbackModeLabel">
+                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
                                 <input type="radio" name="feedbackMode" value="instant" class="mr-3 text-blue-600" checked>
                                 <span><span class="mr-1">⚡</span>即時フィードバック</span>
                             </label>
-                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
                                 <input type="radio" name="feedbackMode" value="exam" class="mr-3 text-blue-600">
                                 <span><span class="mr-1">📝</span>試験モード（最後に採点）</span>
                             </label>
@@ -322,13 +329,19 @@
                             <span class="text-sm font-semibold text-gray-700">制限時間を設定</span>
                         </label>
                         <div id="timeLimitOptions" class="hidden">
-                            <select id="timeLimitSelect" class="border border-gray-300 rounded px-3 py-2 text-sm">
+                            <select id="timeLimitSelect" class="border border-gray-300 rounded px-3 py-2 text-sm" aria-label="制限時間を選択">
                                 <option value="30">30分</option>
                                 <option value="60">60分</option>
                                 <option value="90">90分</option>
                                 <option value="120">120分</option>
                             </select>
                         </div>
+                    </div>
+
+                    <!-- バリデーションエラー表示 -->
+                    <div id="quizStartError" class="hidden mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600 flex items-start gap-2" role="alert">
+                        <span class="flex-shrink-0 text-base leading-none">⚠️</span>
+                        <span id="quizStartErrorMsg" class="flex-1"></span>
                     </div>
 
                     <!-- 開始ボタン -->

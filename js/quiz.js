@@ -36,6 +36,7 @@ class QuizSystem {
                 subjectCheckboxes.forEach(checkbox => {
                     checkbox.checked = e.target.checked;
                 });
+                this.clearQuizError();
             });
         }
 
@@ -46,6 +47,7 @@ class QuizSystem {
                 if (allSubjectsCheckbox) {
                     allSubjectsCheckbox.checked = checkedCount === subjectCheckboxes.length;
                 }
+                this.clearQuizError();
             });
         });
 
@@ -222,10 +224,27 @@ class QuizSystem {
     }
 
     // クイズ開始
+    // インラインエラー表示ヘルパー
+    showQuizError(msg) {
+        const el = document.getElementById('quizStartError');
+        const msgEl = document.getElementById('quizStartErrorMsg');
+        if (el && msgEl) {
+            msgEl.textContent = msg;
+            el.classList.remove('hidden');
+            el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }
+
+    clearQuizError() {
+        const el = document.getElementById('quizStartError');
+        if (el) el.classList.add('hidden');
+    }
+
     startQuiz() {
+        this.clearQuizError();
         const selectedSubjects = this.getSelectedSubjects();
         if (selectedSubjects.length === 0) {
-            alert('少なくとも1つの科目を選択してください。');
+            this.showQuizError('少なくとも1つの科目を選択してください。');
             return;
         }
 
@@ -256,13 +275,13 @@ class QuizSystem {
             );
             allQuestions = allQuestions.filter(q => wrongIds.has(q.id));
             if (allQuestions.length === 0) {
-                alert('間違えた問題の記録がありません。別のモードを選択してください。');
+                this.showQuizError('間違えた問題の記録がありません。別のモードを選択してください。');
                 return;
             }
         }
 
         if (allQuestions.length === 0) {
-            alert('選択された科目に問題がありません。');
+            this.showQuizError('選択された科目に問題がありません。');
             return;
         }
 
