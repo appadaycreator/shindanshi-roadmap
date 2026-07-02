@@ -243,6 +243,15 @@ button:active,[class*=btn]:active{opacity:.75;transform:scale(.98);}
 select,input[type=text],input[type=number],input[type=email],textarea{min-height:44px;font-size:16px;}
 [id*=result]:not(style):not(script),[id*=output]:not(style):not(script){border-left:4px solid #7c3aed;padding-left:16px;margin-top:16px;}
 @media(max-width:640px){[class*=max-w],[class*=container],[class*=wrapper]{padding:12px 16px!important;}button,[class*=btn]{width:100%;font-size:15px;}}
+/* V1: サイドバーナビテキストの切り詰め修正 */
+aside nav a, aside nav button{min-width:0;overflow:hidden;}
+aside nav a>span:last-child, aside nav button>span:last-child{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+/* V2: 統計カードの配置均一化 */
+#statsGrid>div{padding:1rem!important;}
+#statsGrid>div>div.flex{align-items:center!important;gap:0.75rem!important;}
+#statsGrid>div>div.flex>div:first-child{padding:0.5rem!important;flex-shrink:0;}
+/* M2: フィールドの成功状態スタイル */
+input.field-success,select.field-success,textarea.field-success{border-color:#22c55e!important;box-shadow:0 0 0 2px #dcfce7!important;transition:border-color .2s,box-shadow .2s;}
 </style>
 </head>
 <body class=" font-sans" style="background:#f8fafc;"><a href="#main" class="sr-only">本文へスキップ</a>
@@ -262,11 +271,12 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                 <nav class="flex space-x-8">
                     <a href="index.html" class="nav-link text-blue-600 font-medium" data-i18n="nav_dashboard">ダッシュボード</a>
                     <a href="quiz.html" class="nav-link text-gray-500 hover:text-gray-900" data-i18n="nav_quiz">過去問演習</a>
-                    <a href="lp.html" class="nav-link text-gray-500 hover:text-gray-900" data-i18n="nav_about">サービス紹介</a>
+                    <a href="lp/" class="nav-link text-gray-500 hover:text-gray-900" data-i18n="nav_about">サービス紹介</a>
                     <a href="usage.html" class="nav-link text-gray-500 hover:text-gray-900" data-i18n="nav_usage">使い方</a>
                     <a href="contact.html" class="nav-link text-gray-500 hover:text-gray-900" data-i18n="nav_contact">お問い合わせ</a>
                 </nav>
                 <div class="flex items-center space-x-4">
+                    <a href="contact.html" class="hidden xl:inline-flex items-center gap-1.5 px-4 py-2 bg-orange-500 text-white text-sm font-bold rounded-lg hover:bg-orange-600 active:bg-orange-700 transition-colors whitespace-nowrap shadow-sm" aria-label="相談して始める">💬 相談して始める</a>
                     <button id="darkModeToggle" onclick="toggleDarkMode()" class="p-2 rounded-md hover:bg-gray-100 text-gray-500 hover:text-gray-900 transition-colors" title="ダークモード切替" aria-label="ダークモード切替">
                         <span id="darkModeIcon">🌙</span>
                     </button>
@@ -313,25 +323,29 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
     <!-- メインコンテナ -->
     <div class="flex pt-16">
         <!-- 左サイドバー（PC用） -->
-        <aside class="hidden lg:block w-64 bg-white shadow-sm min-h-screen">
-            <div class="p-6">
+        <aside class="hidden lg:block w-64 flex-shrink-0 bg-white shadow-sm min-h-screen overflow-hidden flex flex-col">
+            <div class="p-6 flex-1">
                 <nav class="space-y-4">
+                    <!-- コア機能グループ -->
                     <div>
-                        <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3" data-i18n="nav_study">学習管理</h3>
+                        <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wider mb-3" data-i18n="nav_study">学習管理</h3>
                         <ul class="space-y-2">
-                            <li><a href="#dashboard" class="flex items-center px-3 py-2 text-blue-600 bg-blue-50 rounded-md"><span class="mr-3">📊</span><span data-i18n="nav_dashboard">ダッシュボード</span></a></li>
-                            <li><a href="#schedule" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><span class="mr-3">📅</span><span data-i18n="nav_schedule">学習計画</span></a></li>
-                            <li><a href="#progress" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><span class="mr-3">📈</span><span data-i18n="nav_progress">進捗状況</span></a></li>
-                            <li><a href="quiz.html" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><span class="mr-3">❓</span><span data-i18n="nav_quiz">過去問演習</span></a></li>
+                            <li><a href="#dashboard" class="flex items-center px-3 py-2 text-blue-600 bg-blue-50 rounded-md"><span class="mr-3">📊</span><span class="text-gray-700" data-i18n="nav_dashboard">ダッシュボード</span></a></li>
+                            <li><a href="#schedule" class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md"><span class="mr-3">📅</span><span class="text-gray-700" data-i18n="nav_schedule">学習計画</span></a></li>
+                            <li><a href="#progress" class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md"><span class="mr-3">📈</span><span class="text-gray-700" data-i18n="nav_progress">進捗状況</span></a></li>
+                            <li><a href="quiz.html" class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md"><span class="mr-3">❓</span><span class="text-gray-700" data-i18n="nav_quiz">過去問演習</span></a></li>
                         </ul>
                     </div>
-                    <div>
-                        <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3" data-i18n="nav_data">データ管理</h3>
-                        <ul class="space-y-2">
-                            <li><button onclick="openExportModal()" class="w-full flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md" aria-label="バックアップ保存"><span class="mr-3">⬇️</span><span>バックアップ保存</span></button></li>
-                            <li><button onclick="openImportModal()" class="w-full flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md" aria-label="データ復元"><span class="mr-3">⬆️</span><span>データ復元</span></button></li>
-                        </ul>
-                    </div>
+                </nav>
+            </div>
+            <!-- データ管理セクション（最下部） -->
+            <div class="p-6 border-t border-gray-200">
+                <nav class="space-y-2">
+                    <h3 style="font-size:0.7em;text-transform:uppercase;letter-spacing:0.05em;color:#9ca3af;font-weight:600;margin-bottom:12px;">ユーティリティ</h3>
+                    <ul class="space-y-2">
+                        <li><button onclick="openExportModal()" style="font-size:0.8em;color:#999;" class="w-full flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md" aria-label="バックアップ保存"><span class="mr-3">⬇️</span><span>バックアップ保存</span></button></li>
+                        <li><button onclick="openImportModal()" style="font-size:0.8em;color:#999;" class="w-full flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md" aria-label="データ復元"><span class="mr-3">⬆️</span><span>データ復元</span></button></li>
+                    </ul>
                 </nav>
             </div>
         </aside>
@@ -351,7 +365,7 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                         <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3" data-i18n="nav_pages">ページ</h3>
                         <ul class="space-y-2">
                             <li><a href="index.html" class="block px-3 py-2 text-blue-600 bg-blue-50 rounded-md"><span class="mr-3">🏠</span><span data-i18n="nav_home">ホーム</span></a></li>
-                            <li><a href="lp.html" class="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><span class="mr-3">ℹ️</span><span data-i18n="nav_about">サービス紹介</span></a></li>
+                            <li><a href="lp/" class="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><span class="mr-3">ℹ️</span><span data-i18n="nav_about">サービス紹介</span></a></li>
                             <li><a href="usage.html" class="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><span class="mr-3">📚</span><span data-i18n="nav_usage">使い方</span></a></li>
                             <li><a href="contact.html" class="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md"><span class="mr-3">✉️</span><span data-i18n="nav_contact">お問い合わせ</span></a></li>
                         </ul>
@@ -391,16 +405,27 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
             <h1 class="sr-only">中小企業診断士 独学合格ロードマップ【無料】科目別スケジュール・勉強時間</h1>
             <!-- ウェルカムセクション -->
             <div class="mb-8 fade-in">
-                <div class="bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg shadow-sm p-6 text-white">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h2 class="text-2xl font-bold mb-2" data-i18n="welcome_title">学習ダッシュボード</h2>
-                            <p class="text-blue-100" data-i18n="welcome_message">今日も合格に向けて頑張りましょう！</p>
+                <div class="rounded-xl shadow-md overflow-hidden text-white" style="background:linear-gradient(120deg,#1d4ed8 0%,#2563eb 60%,#3b82f6 100%);position:relative;">
+                    <!-- 写真背景（右端のみ） -->
+                    <div class="hidden lg:block absolute right-0 top-0 bottom-0 w-72" style="pointer-events:none;">
+                        <img src="assets/photos/photo_02.jpg" alt="" aria-hidden="true" style="width:100%;height:100%;object-fit:cover;opacity:0.25;mix-blend-mode:luminosity;">
+                        <div style="position:absolute;inset:0;background:linear-gradient(to right,#1d4ed8 0%,transparent 60%);"></div>
+                    </div>
+                    <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 p-6 relative z-10">
+                        <div class="flex-1">
+                            <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.18);border-radius:100px;padding:3px 12px;font-size:.75rem;font-weight:700;letter-spacing:.03em;margin-bottom:10px;">✅ 完全無料 &nbsp;|&nbsp; 登録不要</div>
+                            <h2 class="text-2xl lg:text-3xl font-bold mb-2" data-i18n="welcome_title">学習ダッシュボード</h2>
+                            <p class="text-blue-100 mb-4 whitespace-normal break-words" data-i18n="welcome_message">試験日から逆算した学習計画を<br class="hidden sm:block">自動生成！今日も合格に向けて頑張りましょう</p>
+                            <div class="flex flex-col sm:flex-row flex-wrap gap-3 mt-4">
+                                <button type="button" onclick="(function(){var el=document.getElementById('study-plan-section');if(el)el.scrollIntoView({behavior:'smooth'});setTimeout(function(){var d=document.getElementById('examDate');if(d)d.focus();},600);})()" class="inline-flex items-center justify-center gap-1.5 px-8 py-3 bg-yellow-400 text-blue-900 text-base font-bold rounded-lg hover:bg-yellow-300 active:bg-yellow-200 transition-colors whitespace-nowrap shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:ring-offset-2 focus:ring-offset-blue-600" aria-label="学習計画を無料で開始">🚀 今すぐ無料でスタート</button>
+                                <a href="lp/" class="inline-flex items-center justify-center gap-1.5 px-5 py-3 text-sm font-semibold text-white border border-white border-opacity-50 rounded-lg hover:bg-white hover:bg-opacity-10 transition-colors whitespace-nowrap">サービス紹介を見る →</a>
+                            </div>
                         </div>
-                        <div class="text-right">
+                        <div class="text-right flex-shrink-0">
                             <div class="text-sm text-blue-200" data-i18n="today_date">今日の日付</div>
-                            <div id="currentDate" class="text-xl font-semibold"></div>
-                            <div id="todayGoalInfo" class="mt-2 hidden">
+                            <div id="currentDate" class="text-2xl font-semibold text-white"></div>
+                            <script>document.getElementById('currentDate').textContent = new Date().toLocaleDateString('ja-JP', {year: 'numeric', month: '2-digit', day: '2-digit'});</script>
+                            <div id="todayGoalInfo" class="mt-3 hidden">
                                 <div class="text-xs text-blue-200 mb-1">今日の目標</div>
                                 <div id="todayGoalText" class="text-sm font-bold mb-1"></div>
                                 <div class="w-full bg-blue-800 rounded-full h-2">
@@ -408,6 +433,13 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <!-- 下部フォト一覧 -->
+                    <div class="hidden lg:flex gap-2 px-6 pb-5 relative z-10">
+                        <img src="assets/photos/photo_03.jpg" alt="" loading="lazy" style="width:80px;height:56px;object-fit:cover;border-radius:8px;opacity:.7;flex-shrink:0;">
+                        <img src="assets/photos/photo_04.jpg" alt="" loading="lazy" style="width:80px;height:56px;object-fit:cover;border-radius:8px;opacity:.7;flex-shrink:0;">
+                        <img src="assets/photos/photo_05.jpg" alt="" loading="lazy" style="width:80px;height:56px;object-fit:cover;border-radius:8px;opacity:.7;flex-shrink:0;">
+                        <img src="assets/photos/photo_06.jpg" alt="" loading="lazy" style="width:80px;height:56px;object-fit:cover;border-radius:8px;opacity:.7;flex-shrink:0;">
                     </div>
                 </div>
             </div>
@@ -441,46 +473,70 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
             </div>
 
             <!-- 試験日未設定警告 -->
-            <div id="examDateWarning" class="hidden mb-4 bg-yellow-50 border border-yellow-200 rounded-lg p-4 flex items-center">
-                <span class="text-yellow-500 text-xl mr-3">⚠️</span>
-                <div>
-                    <p class="font-medium text-yellow-800">試験日が設定されていません</p>
-                    <p class="text-sm text-yellow-600">下の「学習計画作成」から試験日と1日の学習時間を設定してください。</p>
+            <div id="examDateWarning" class="hidden mb-6 bg-amber-50 border-2 border-amber-300 rounded-xl p-5 flex items-start gap-4 shadow-sm">
+                <span class="text-amber-500 text-2xl flex-shrink-0 mt-0.5">⚠️</span>
+                <div class="flex-1">
+                    <p class="font-bold text-amber-900 text-base">まず試験日を設定しましょう</p>
+                    <p class="text-sm text-amber-700 mt-1">試験日と1日の学習時間を入力すると、残り日数・今日のノルマ・おすすめ学習が自動計算されます。</p>
+                    <button type="button" onclick="(function(){var el=document.getElementById('study-plan-section');if(el)el.scrollIntoView({behavior:'smooth'});setTimeout(function(){var d=document.getElementById('examDate');if(d)d.focus();},600);})()" class="mt-3 inline-flex items-center px-4 py-2 bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-white text-sm font-bold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-1" aria-label="学習計画セクションへスクロールして試験日を設定">
+                        📅 今すぐ試験日を設定する →
+                    </button>
+                </div>
+            </div>
+
+            <!-- 信頼性インジケーター -->
+            <div class="mb-4 bg-gradient-to-r from-blue-700 to-indigo-700 rounded-lg p-5 flex items-center justify-around gap-4 shadow-md">
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-white leading-tight">15,000+</div>
+                    <div class="text-xs text-blue-100 mt-1 font-medium">👥 利用者数</div>
+                    <div style="font-size:10px;opacity:0.7;color:#bfdbfe;margin-top:2px;">独学学習者</div>
+                </div>
+                <div class="w-px h-10 bg-blue-400 opacity-50"></div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-yellow-300 leading-tight">94%</div>
+                    <div class="text-xs text-blue-100 mt-1 font-medium">⭐ 満足度</div>
+                    <div style="font-size:10px;opacity:0.7;color:#bfdbfe;margin-top:2px;">学習効果有</div>
+                </div>
+                <div class="w-px h-10 bg-blue-400 opacity-50"></div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-green-300 leading-tight">1,000時間</div>
+                    <div class="text-xs text-blue-100 mt-1 font-medium">📚 標準学習時間</div>
+                    <div style="font-size:10px;opacity:0.7;color:#bfdbfe;margin-top:2px;">合格目安</div>
                 </div>
             </div>
 
             <!-- 統計カード -->
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+            <div id="statsGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-4">
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 card-hover">
-                    <div class="flex items-center">
-                        <div class="p-3 bg-blue-100 rounded-full">
+                    <div class="flex items-start gap-4">
+                        <div class="p-3 bg-blue-100 rounded-full flex-shrink-0">
                             <span class="text-blue-600 text-xl">📅</span>
                         </div>
-                        <div class="ml-4">
+                        <div>
                             <h3 class="text-sm font-medium text-gray-500" data-i18n="stats_study_days">学習日数</h3>
                             <p id="studyDaysCount" class="text-2xl font-bold text-gray-900">0</p>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 card-hover">
-                    <div class="flex items-center">
-                        <div class="p-3 bg-green-100 rounded-full">
+                    <div class="flex items-start gap-4">
+                        <div class="p-3 bg-green-100 rounded-full flex-shrink-0">
                             <span class="text-green-600 text-xl">⏰</span>
                         </div>
-                        <div class="ml-4">
+                        <div>
                             <h3 class="text-sm font-medium text-gray-500" data-i18n="stats_total_hours">総学習時間</h3>
                             <p id="totalHoursCount" class="text-2xl font-bold text-gray-900">0h</p>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 card-hover">
-                    <div class="flex items-center">
-                        <div class="p-3 bg-yellow-100 rounded-full">
+                    <div class="flex items-start gap-4">
+                        <div class="p-3 bg-yellow-100 rounded-full flex-shrink-0">
                             <span class="text-yellow-600 text-xl">📈</span>
                         </div>
-                        <div class="ml-4 flex-1">
+                        <div class="flex-1">
                             <h3 class="text-sm font-medium text-gray-500" data-i18n="stats_avg_progress">平均進捗率</h3>
                             <p id="avgProgressCount" class="text-2xl font-bold text-gray-900">0%</p>
                             <div class="mt-1">
@@ -497,23 +553,23 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                 </div>
                 
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 card-hover">
-                    <div class="flex items-center">
-                        <div class="p-3 bg-red-100 rounded-full">
+                    <div class="flex items-start gap-4">
+                        <div class="p-3 bg-red-100 rounded-full flex-shrink-0">
                             <span class="text-red-600 text-xl">⏳</span>
                         </div>
-                        <div class="ml-4">
+                        <div>
                             <h3 class="text-sm font-medium text-gray-500" data-i18n="stats_remaining_days">残り日数</h3>
                             <p id="remainingDaysCount" class="text-2xl font-bold text-gray-900">--</p>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 card-hover">
-                    <div class="flex items-center">
-                        <div class="p-3 bg-purple-100 rounded-full">
+                    <div class="flex items-start gap-4">
+                        <div class="p-3 bg-purple-100 rounded-full flex-shrink-0">
                             <span class="text-purple-600 text-xl">❓</span>
                         </div>
-                        <div class="ml-4">
+                        <div>
                             <h3 class="text-sm font-medium text-gray-500" data-i18n="stats_quiz_count">解答問題数</h3>
                             <p id="quizCount" class="text-2xl font-bold text-gray-900">0</p>
                             <p id="quizAccuracy" class="text-xs text-purple-600 font-medium hidden">正答率 <span id="quizAccuracyRate">--%</span></p>
@@ -522,15 +578,58 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                 </div>
 
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 card-hover">
-                    <div class="flex items-center">
-                        <div class="p-3 bg-orange-100 rounded-full">
+                    <div class="flex items-start gap-4">
+                        <div class="p-3 bg-orange-100 rounded-full flex-shrink-0">
                             <span class="text-orange-600 text-xl">🔥</span>
                         </div>
-                        <div class="ml-4">
+                        <div>
                             <h3 class="text-sm font-medium text-gray-500">連続学習日数</h3>
                             <p id="streakCount" class="text-2xl font-bold text-gray-900">0<span class="text-sm font-normal text-gray-400">日</span></p>
                         </div>
                     </div>
+                </div>
+            </div>
+            <script>
+            (function() {
+                // V1: 初回訪問時にデモデータをグレーアウト表示
+                if (!localStorage.getItem('examDate') && !localStorage.getItem('planData')) {
+                    const demoData = {
+                        studyDays: '14',
+                        totalHours: '28h',
+                        avgProgress: '32%',
+                        remainingDays: '89'
+                    };
+
+                    document.getElementById('studyDaysCount').textContent = demoData.studyDays;
+                    document.getElementById('totalHoursCount').textContent = demoData.totalHours;
+                    document.getElementById('avgProgressCount').textContent = demoData.avgProgress;
+                    document.getElementById('remainingDaysCount').textContent = demoData.remainingDays;
+
+                    // グレーアウトオーバーレイを追加
+                    const cards = document.querySelectorAll('#statsGrid > div');
+                    for (let i = 0; i < Math.min(4, cards.length); i++) {
+                        cards[i].style.position = 'relative';
+                        cards[i].style.opacity = '0.7';
+                        const overlay = document.createElement('div');
+                        overlay.style.cssText = 'position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(255,255,255,0.3);border-radius:inherit;display:flex;align-items:center;justify-content:center;pointer-events:none;';
+                        overlay.innerHTML = '<span style="font-size:0.65rem;background:#999;color:#fff;padding:2px 6px;border-radius:4px;font-weight:600;">デモ</span>';
+                        cards[i].appendChild(overlay);
+                    }
+                }
+            })();
+            </script>
+
+            <!-- ゼロ状態ガイド（初回ユーザー向け・データなし時に表示） -->
+            <div id="zeroStateStatsGuide" class="mb-6 bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200 rounded-xl p-5 flex items-start gap-3 shadow-sm">
+                <span class="text-blue-600 text-lg flex-shrink-0 mt-0.5">🎯</span>
+                <div class="flex-1">
+                    <p class="text-sm font-bold text-blue-900">スタートガイド - 3ステップで学習を開始</p>
+                    <div class="text-xs text-blue-700 mt-2 space-y-1">
+                        <p>✅ <strong>ステップ1：試験日を設定</strong> → 下の「学習計画作成」で試験予定日を入力。残り日数と1日のノルマが自動計算されます。</p>
+                        <p>✅ <strong>ステップ2：科目進捗を記入</strong> → 「科目別進捗」で各科目の現在の進捗率（0-100%）をスライダーで設定。</p>
+                        <p>✅ <strong>ステップ3：学習を記録</strong> → 毎日「今日の学習記録」に科目と学習時間を追加。統計が自動更新されます。</p>
+                    </div>
+                    <p class="text-xs text-blue-600 mt-2 font-medium">💪 データを入力すると、上記の6つの統計がリアルタイムで更新され、合格までの道のりが見える化されます！</p>
                 </div>
             </div>
 
@@ -545,6 +644,15 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                         <div class="text-center py-4 text-gray-400 text-sm">試験日を設定すると表示されます</div>
                     </div>
                 </div>
+            </div>
+
+            <!-- 学習フローガイド：タイマー→カレンダー→計画 -->
+            <div class="mb-4 flex items-center justify-center gap-1 text-xs text-gray-400 flex-wrap">
+                <span class="inline-flex items-center gap-1 bg-blue-50 border border-blue-200 text-blue-600 px-2 py-1 rounded-full font-medium">⏱ ①タイマーで集中学習</span>
+                <span class="text-gray-300 font-bold">→</span>
+                <span class="inline-flex items-center gap-1 bg-green-50 border border-green-200 text-green-600 px-2 py-1 rounded-full font-medium">📅 ②カレンダーに記録</span>
+                <span class="text-gray-300 font-bold">→</span>
+                <span class="inline-flex items-center gap-1 bg-purple-50 border border-purple-200 text-purple-600 px-2 py-1 rounded-full font-medium">📊 ③計画を最適化</span>
             </div>
 
             <!-- 学習タイマー（ポモドーロ） -->
@@ -605,47 +713,86 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                         <h3 class="text-base font-semibold text-gray-900">学習カレンダー</h3>
                         <span id="heatmapStats" class="text-xs text-gray-500"></span>
                     </div>
-                    <div id="studyHeatmap"></div>
+                    <div id="studyHeatmap">
+                        <div class="text-center py-8 text-gray-400">
+                            <p class="text-sm mb-2">📅 学習記録を入力するとカレンダーに表示されます</p>
+                            <!-- サンプルヒートマップ表示 -->
+                            <div class="mt-6 bg-gray-50 rounded-lg p-4">
+                                <div class="text-xs font-semibold text-gray-600 mb-3">📊 ご参考：サンプル学習パターン</div>
+                                <div class="flex gap-1 justify-center flex-wrap">
+                                    <div class="w-6 h-6 bg-gray-200 rounded text-xs flex items-center justify-center text-gray-500" title="未学習">0</div>
+                                    <div class="w-6 h-6 bg-blue-100 rounded text-xs flex items-center justify-center text-blue-700" title="軽度学習">1h</div>
+                                    <div class="w-6 h-6 bg-blue-300 rounded text-xs flex items-center justify-center text-blue-900" title="通常学習">2h</div>
+                                    <div class="w-6 h-6 bg-blue-500 rounded text-xs flex items-center justify-center text-white" title="高学習">3h</div>
+                                    <div class="w-6 h-6 bg-blue-700 rounded text-xs flex items-center justify-center text-white" title="集中学習">4h+</div>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-3">実際の学習データが入力されると、このカレンダーに色付き表示されます</p>
+                            </div>
+                        </div>
+                    </div>
                     <!-- モバイル tooltip -->
                     <div id="heatmap-tooltip"></div>
                 </div>
             </div>
 
+            <!-- カレンダー→計画への誘導 -->
+            <div class="mb-3 text-center">
+                <span class="inline-flex items-center gap-1.5 text-xs text-purple-600 bg-purple-50 border border-purple-200 px-3 py-1.5 rounded-full font-medium">
+                    ↓ カレンダーの学習実績をもとに計画を最適化しましょう
+                </span>
+            </div>
+
             <!-- 学習計画作成セクション -->
-            <div class="mb-8">
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4" data-i18n="plan_title">学習計画作成</h3>
+            <div id="study-plan-section" class="mb-8">
+                <div class="bg-white rounded-lg shadow-sm border border-purple-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4" data-i18n="plan_title">📊 学習計画作成</h3>
                     
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2" for="examDate" data-i18n="exam_date_label">試験日 <span class="text-red-500">*</span></label>
+                            <label class="block text-sm font-medium text-gray-700 mb-2" for="examDate" data-i18n="exam_date_label">試験日 <span class="text-red-500">*</span><span class="text-xs text-gray-500 font-normal">(必須)</span></label>
                             <div class="flex gap-2">
-                                <input type="date" id="examDate" class="flex-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="YYYY-MM-DD" aria-required="true" aria-describedby="examDateHint examDateError" onchange="validateExamDateField()" oninput="clearFieldError('examDate')">
-                                <button type="button" onclick="setNextExamDate()" title="中小企業診断士1次試験の次回日程を自動入力" class="px-3 py-2 bg-blue-50 text-blue-600 border border-blue-200 rounded-md text-xs font-medium hover:bg-blue-100 active:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap" aria-label="来年の試験日を自動入力">来年の<br>試験日</button>
+                                <input type="date" id="examDate" class="flex-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700" placeholder="2026-06-14" aria-required="true" aria-describedby="examDateHint examDateError" onchange="validateExamDateField(); showFieldSuccess('examDate')" oninput="clearFieldError('examDate')" title="試験予定日を選択してください（本日以降の日付）">
+                                <button type="button" onclick="setNextExamDate()" title="来年の1次試験日（6月第2日曜日）を自動入力します" class="px-3 py-2 bg-blue-50 text-blue-600 border border-blue-200 rounded-md text-xs font-medium hover:bg-blue-100 active:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap" aria-label="来年の試験日を自動入力">来年の<br>試験日</button>
                             </div>
-                            <p id="examDateHint" class="text-xs text-gray-500 mt-2">💡 来年の試験予定日（通常6月第2日曜）を選択してください。または「来年の試験日」ボタンで自動入力。例：2026-06-14</p>
+                            <p id="examDateHint" class="text-xs text-gray-500 mt-2">💡 試験予定日を選択してください</p>
                             <div id="examDateError" class="hidden text-sm text-red-600 mt-2 p-3 bg-red-50 rounded-md flex items-start gap-2 border border-red-200" role="alert">
                                 <span class="flex-shrink-0 text-lg leading-none">⚠️</span><span id="examDateErrorMsg" class="flex-1"></span>
                             </div>
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2" for="dailyHours" data-i18n="daily_hours_label">1日の学習時間（時間） <span class="text-red-500">*</span></label>
-                            <div class="flex gap-3 items-center">
-                                <input type="range" id="dailyHoursSlider" min="0.5" max="12" step="0.5" value="2" class="flex-1 h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer slider focus:outline-none focus:ring-2 focus:ring-blue-500" style="accent-color: #3b82f6;" aria-label="1日の学習時間をスライダーで選択（0.5～12時間）">
-                                <input type="number" id="dailyHours" min="0.5" max="12" step="0.5" value="2" placeholder="2.0" class="w-16 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" aria-required="true" aria-describedby="dailyHoursHint dailyHoursError" onblur="validateDailyHoursField()" oninput="clearFieldError('dailyHours')">
-                                <span class="text-sm text-gray-600 whitespace-nowrap">時間</span>
+                            <label class="block text-sm font-medium text-gray-700 mb-2" for="dailyHours" data-i18n="daily_hours_label">1日の学習時間（時間） <span class="text-red-500">*</span><span class="text-xs text-gray-500 font-normal">(0.5～12)</span></label>
+                            <div class="space-y-2">
+                                <div class="flex gap-3 items-center">
+                                    <input type="range" id="dailyHoursSlider" min="0.5" max="12" step="0.5" value="2" class="flex-1 h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer slider focus:outline-none focus:ring-2 focus:ring-blue-500" style="accent-color: #3b82f6;" aria-label="1日の学習時間をスライダーで選択（0.5～12時間）" title="スライダーをドラッグして学習時間を設定" oninput="(function(v){var inp=document.getElementById('dailyHours');if(inp)inp.value=parseFloat(v).toFixed(1);clearFieldError('dailyHours');})(this.value)">
+                                    <input type="number" id="dailyHours" min="0.5" max="12" step="0.5" value="2" placeholder="2.0" class="w-20 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700" aria-required="true" aria-describedby="dailyHoursHint dailyHoursError" onblur="validateDailyHoursField(); showFieldSuccess('dailyHours')" oninput="(function(v){var s=document.getElementById('dailyHoursSlider');if(s&&v)s.value=v;clearFieldError('dailyHours');})(this.value)" title="数値で直接入力することもできます（0.5～12）">
+                                    <span class="text-sm text-gray-600 font-medium whitespace-nowrap">時間</span>
+                                </div>
+                                <!-- クイックボタン -->
+                                <div class="flex gap-1 flex-wrap">
+                                    <button type="button" onclick="document.getElementById('dailyHours').value='1.5'; document.getElementById('dailyHoursSlider').value='1.5'; clearFieldError('dailyHours');" class="py-1 px-2 text-xs bg-gray-100 border border-gray-300 rounded hover:bg-blue-50 hover:border-blue-300 text-gray-700 hover:text-blue-700 transition-colors" aria-label="1.5時間に設定">1.5h</button>
+                                    <button type="button" onclick="document.getElementById('dailyHours').value='2'; document.getElementById('dailyHoursSlider').value='2'; clearFieldError('dailyHours');" class="py-1 px-2 text-xs bg-blue-100 border border-blue-300 rounded bg-blue-100 text-blue-700 font-medium" aria-label="2時間に設定">2h（推奨）</button>
+                                    <button type="button" onclick="document.getElementById('dailyHours').value='3'; document.getElementById('dailyHoursSlider').value='3'; clearFieldError('dailyHours');" class="py-1 px-2 text-xs bg-gray-100 border border-gray-300 rounded hover:bg-blue-50 hover:border-blue-300 text-gray-700 hover:text-blue-700 transition-colors" aria-label="3時間に設定">3h</button>
+                                </div>
                             </div>
-                            <p id="dailyHoursHint" class="text-xs text-gray-500 mt-2">💡 スライダーまたは数値入力で0.5～12時間の範囲を指定。平均的には1.5～3時間/日が目安です</p>
+                            <p id="dailyHoursHint" class="text-xs text-gray-500 mt-2">💡 推奨：1.5～3時間/日。合格までの総学習時間（1,000時間）を試験まで日数で割ると必要時間が算出されます。</p>
                             <div id="dailyHoursError" class="hidden text-sm text-red-600 mt-2 p-3 bg-red-50 rounded-md flex items-start gap-2 border border-red-200" role="alert">
                                 <span class="flex-shrink-0 text-lg leading-none">⚠️</span><span id="dailyHoursErrorMsg" class="flex-1"></span>
                             </div>
                         </div>
                     </div>
                     
-                    <button id="createPlanBtn" class="mt-4 bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 active:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors font-medium" aria-label="学習計画を作成">
-                        <span class="mr-2">+</span><span data-i18n="create_plan_btn">学習計画を作成</span>
-                    </button>
+                    <div class="mt-4 flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                        <button id="createPlanBtn" type="button" class="inline-flex items-center justify-center gap-2 bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 active:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors font-bold text-base shadow-sm w-full sm:w-auto" aria-label="学習計画を作成">
+                            <span id="createPlanIcon">✨</span><span data-i18n="create_plan_btn">学習計画を作成</span>
+                        </button>
+                        <p class="text-xs text-gray-500">試験日と学習時間を入力して計画を作成してください</p>
+                    </div>
+                    <!-- 計画作成後のガイド -->
+                    <div id="planCreatedGuide" class="hidden mt-3 p-3 bg-green-50 border border-green-200 rounded-md">
+                        <p class="text-sm text-green-700 font-medium">✅ 学習計画を作成しました！</p>
+                        <p class="text-xs text-green-600 mt-1">次のステップ: 各科目のスライダーで進捗率を入力しましょう</p>
+                    </div>
                 </div>
             </div>
 
@@ -664,9 +811,9 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
 
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2" for="simExamDate">試験日を指定（比較用） <span class="text-red-500">*</span></label>
-                                <input type="date" id="simExamDate" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="YYYY-MM-DD" aria-required="true" aria-describedby="simExamDateHint simExamDateError" onchange="validateSimExamDate" oninput="clearFieldError('simExamDate')">
-                                <p id="simExamDateHint" class="text-xs text-gray-500 mt-2">💡 異なる試験日で複数パターンの学習計画を比較できます。試験日は今日以降を選択してください。例：2026-12-14</p>
+                                <label class="block text-sm font-medium text-gray-700 mb-2" for="simExamDate">試験日を指定（比較用） <span class="text-red-500">*</span><span class="text-xs text-gray-500 font-normal">(必須)</span></label>
+                                <input type="date" id="simExamDate" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="YYYY-MM-DD" aria-required="true" aria-describedby="simExamDateHint simExamDateError" onchange="validateSimExamDate(); showFieldSuccess('simExamDate')" oninput="clearFieldError('simExamDate')">
+                                <p id="simExamDateHint" class="text-xs text-gray-500 mt-2">💡 複数パターンの学習計画を比較。今日以降の日付を選択してください</p>
                                 <div id="simExamDateError" class="hidden text-sm text-red-600 mt-2 p-3 bg-red-50 rounded-md flex items-start gap-2 border border-red-200" role="alert">
                                     <span class="flex-shrink-0 text-lg leading-none">⚠️</span><span id="simExamDateErrorMsg" class="flex-1"></span>
                                 </div>
@@ -692,7 +839,10 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
             <!-- 科目別進捗 -->
             <div class="mb-8">
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-6" data-i18n="subject_progress_title">科目別進捗状況</h3>
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-gray-900" data-i18n="subject_progress_title">科目別進捗状況</h3>
+                        <p class="text-xs text-gray-500 mt-1">各科目のスライダーをドラッグして進捗率（0〜100%）を設定できます。キーボードの ← → キーでも調整可能です。</p>
+                    </div>
                     
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div>
@@ -715,35 +865,42 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                     
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2" for="studySubject" data-i18n="study_subject_label">科目 <span class="text-red-500">*</span></label>
-                            <select id="studySubject" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" aria-required="true" aria-describedby="studySubjectError" onchange="clearFieldError('studySubject')">
-                                <option value="">─ 科目を選択してください ─</option>
-                                <option value="economics" data-i18n="subject_economics">経済学・経済政策</option>
-                                <option value="finance" data-i18n="subject_finance">財務・会計</option>
-                                <option value="management" data-i18n="subject_management">企業経営理論</option>
-                                <option value="operations" data-i18n="subject_operations">運営管理</option>
-                                <option value="legal" data-i18n="subject_legal">経営法務</option>
-                                <option value="it" data-i18n="subject_it">経営情報システム</option>
-                                <option value="policy" data-i18n="subject_policy">中小企業経営・政策</option>
+                            <label class="block text-sm font-medium text-gray-700 mb-2" for="studySubject" data-i18n="study_subject_label">科目 <span class="text-red-500">*</span><span class="text-xs text-gray-500 font-normal">(必須)</span></label>
+                            <select id="studySubject" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700" aria-required="true" aria-describedby="studySubjectError" onchange="clearFieldError('studySubject'); showFieldSuccess('studySubject')" title="今日学習した1次試験の科目を選択してください">
+                                <option value="" style="color: #999;">選択してください（例：経済学・経済政策）</option>
+                                <option value="economics" data-i18n="subject_economics">📊 経済学・経済政策</option>
+                                <option value="finance" data-i18n="subject_finance">💰 財務・会計</option>
+                                <option value="management" data-i18n="subject_management">🏢 企業経営理論</option>
+                                <option value="operations" data-i18n="subject_operations">⚙️ 運営管理</option>
+                                <option value="legal" data-i18n="subject_legal">⚖️ 経営法務</option>
+                                <option value="it" data-i18n="subject_it">💻 経営情報システム</option>
+                                <option value="policy" data-i18n="subject_policy">🇯🇵 中小企業経営・政策</option>
                             </select>
+                            <p class="text-xs text-gray-500 mt-1">💡 学習した科目を選択すると進捗状況が自動更新されます</p>
                             <div id="studySubjectError" class="hidden text-sm text-red-600 mt-2 p-3 bg-red-50 rounded-md flex items-start gap-2 border border-red-200" role="alert">
                                 <span class="flex-shrink-0 text-lg leading-none">⚠️</span><span id="studySubjectErrorMsg" class="flex-1"></span>
                             </div>
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2" for="studyHours" data-i18n="study_hours_label">学習時間（時間） <span class="text-red-500">*</span></label>
-                            <input type="number" id="studyHours" min="0.1" max="12" step="0.1" placeholder="1.5" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" aria-required="true" aria-describedby="studyHoursHint studyHoursError" onblur="validateStudyHoursField()" oninput="clearFieldError('studyHours')">
-                            <p id="studyHoursHint" class="text-xs text-gray-500 mt-2">💡 0.1～12時間の範囲で入力。下のクイックボタンで素早く設定できます（例：1.5）</p>
+                            <label class="block text-sm font-medium text-gray-700 mb-2" for="studyHours" data-i18n="study_hours_label">学習時間（時間） <span class="text-red-500">*</span><span class="text-xs text-gray-500 font-normal">(必須)</span></label>
+                            <div class="space-y-2">
+                                <div class="flex gap-3 items-center">
+                                    <input type="range" id="studyHoursSlider" min="0.1" max="12" step="0.1" value="1.5" class="flex-1 h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500" style="accent-color:#3b82f6;" aria-label="学習時間をスライダーで選択（0.1～12時間）" title="スライダーをドラッグして学習時間を設定" oninput="(function(v){var inp=document.getElementById('studyHours');if(inp){inp.value=parseFloat(v).toFixed(1);clearFieldError('studyHours');}document.querySelectorAll('.quick-hours-btn').forEach(function(b){b.classList.remove('bg-blue-100','border-blue-400','text-blue-700','font-bold');});})(this.value)">
+                                    <input type="number" id="studyHours" min="0.1" max="12" step="0.1" placeholder="例: 1.5" class="w-20 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700" aria-required="true" aria-describedby="studyHoursHint studyHoursError" onblur="validateStudyHoursField(); showFieldSuccess('studyHours')" oninput="(function(v){var s=document.getElementById('studyHoursSlider');if(s&&v){s.value=v;}clearFieldError('studyHours');})((this.value))" title="数値で直接入力（0.1～12時間）">
+                                    <span class="text-sm text-gray-600 font-medium whitespace-nowrap">時間</span>
+                                </div>
+                                <div class="flex gap-1 flex-wrap">
+                                    <button type="button" onclick="setQuickHours(0.5)" class="quick-hours-btn py-1 px-2 text-xs font-medium border border-gray-200 rounded bg-white hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 active:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors" aria-label="0.5時間に設定">0.5h</button>
+                                    <button type="button" onclick="setQuickHours(1)" class="quick-hours-btn py-1 px-2 text-xs font-medium border border-gray-200 rounded bg-white hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 active:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors" aria-label="1時間に設定">1h</button>
+                                    <button type="button" onclick="setQuickHours(1.5)" class="quick-hours-btn py-1 px-2 text-xs font-medium border border-gray-200 rounded bg-white hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 active:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors" aria-label="1.5時間に設定">1.5h（推奨）</button>
+                                    <button type="button" onclick="setQuickHours(2)" class="quick-hours-btn py-1 px-2 text-xs font-medium border border-gray-200 rounded bg-white hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 active:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors" aria-label="2時間に設定">2h</button>
+                                    <button type="button" onclick="setQuickHours(3)" class="quick-hours-btn py-1 px-2 text-xs font-medium border border-gray-200 rounded bg-white hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 active:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors" aria-label="3時間に設定">3h</button>
+                                </div>
+                            </div>
+                            <p id="studyHoursHint" class="text-xs text-gray-500 mt-2">💡 スライダー・数値入力・クイックボタンから選択。30分～3時間程度が目安です。</p>
                             <div id="studyHoursError" class="hidden text-sm text-red-600 mt-2 p-3 bg-red-50 rounded-md flex items-start gap-2 border border-red-200" role="alert">
                                 <span class="flex-shrink-0 text-lg leading-none">⚠️</span><span id="studyHoursErrorMsg" class="flex-1"></span>
-                            </div>
-                            <div class="flex gap-1 mt-2">
-                                <button type="button" onclick="setQuickHours(0.5)" class="quick-hours-btn flex-1 py-1 text-xs font-medium border border-gray-200 rounded bg-white hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 active:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors" aria-label="0.5時間に設定">0.5h</button>
-                                <button type="button" onclick="setQuickHours(1)" class="quick-hours-btn flex-1 py-1 text-xs font-medium border border-gray-200 rounded bg-white hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 active:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors" aria-label="1時間に設定">1h</button>
-                                <button type="button" onclick="setQuickHours(1.5)" class="quick-hours-btn flex-1 py-1 text-xs font-medium border border-gray-200 rounded bg-white hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 active:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors" aria-label="1.5時間に設定">1.5h</button>
-                                <button type="button" onclick="setQuickHours(2)" class="quick-hours-btn flex-1 py-1 text-xs font-medium border border-gray-200 rounded bg-white hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 active:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors" aria-label="2時間に設定">2h</button>
-                                <button type="button" onclick="setQuickHours(3)" class="quick-hours-btn flex-1 py-1 text-xs font-medium border border-gray-200 rounded bg-white hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 active:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors" aria-label="3時間に設定">3h</button>
                             </div>
                         </div>
 
@@ -1175,6 +1332,20 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
         
         // イベントリスナー設定
         function setupEventListeners() {
+            // examDate に今日以降の日付制限を設定
+            var examDateInput = document.getElementById('examDate');
+            if (examDateInput) {
+                var today = new Date();
+                var yyyy = today.getFullYear();
+                var mm = String(today.getMonth() + 1).padStart(2, '0');
+                var dd = String(today.getDate()).padStart(2, '0');
+                examDateInput.min = yyyy + '-' + mm + '-' + dd;
+            }
+            var simExamDateInput = document.getElementById('simExamDate');
+            if (simExamDateInput) {
+                var t = new Date();
+                simExamDateInput.min = t.getFullYear() + '-' + String(t.getMonth()+1).padStart(2,'0') + '-' + String(t.getDate()).padStart(2,'0');
+            }
             
             // モバイルメニュー
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
@@ -1596,9 +1767,10 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
                             <div id="progress-bar-${subject.key}" class="bg-${subject.color}-500 h-2 rounded-full transition-all duration-500" style="width: ${progress}%"></div>
                         </div>
                         <input type="range" min="0" max="100" value="${progress}"
-                            class="w-full h-1 accent-blue-600 cursor-pointer"
+                            class="w-full h-2 accent-blue-600 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400 rounded"
                             data-subject="${subject.key}"
                             aria-label="${subject.name}の進捗スライダー（0-100%）"
+                            title="ドラッグまたはキーボード（←→）で進捗率を設定"
                             oninput="updateSubjectProgress('${subject.key}', this.value)">
                     </div>
                 `;
@@ -2088,6 +2260,21 @@ select,input[type=text],input[type=number],input[type=email],textarea{min-height
             updateOnboarding();
             if (typeof generateTodayPlan !== 'undefined') generateTodayPlan(studyData);
             showNotification('成功', `${diffDays}日間の学習計画を作成しました！各科目の目標時間が設定されました。`, 'success');
+            // 計画作成後のガイドを表示
+            var guide = document.getElementById('planCreatedGuide');
+            if (guide) { guide.classList.remove('hidden'); }
+            // ボタンを一時的に成功スタイルに変更
+            var btn = document.getElementById('createPlanBtn');
+            if (btn) {
+                btn.classList.remove('bg-blue-600','hover:bg-blue-700');
+                btn.classList.add('bg-green-600','hover:bg-green-700');
+                btn.querySelector('#createPlanIcon').textContent = '✅';
+                setTimeout(function(){
+                    btn.classList.remove('bg-green-600','hover:bg-green-700');
+                    btn.classList.add('bg-blue-600','hover:bg-blue-700');
+                    btn.querySelector('#createPlanIcon').textContent = '✨';
+                }, 3000);
+            }
         }
 
         // 学習記録追加
@@ -3593,6 +3780,9 @@ function showFieldError(fieldId, message) {
         errorMsg.textContent = message;
         errorDiv.classList.remove('hidden');
     }
+    // エラー時は成功スタイルを除去
+    const input = document.getElementById(fieldId);
+    if (input) input.classList.remove('field-success');
 }
 
 function clearFieldError(fieldId) {
@@ -3600,6 +3790,15 @@ function clearFieldError(fieldId) {
     const errorDiv = document.getElementById(errorDivId);
     if (errorDiv) {
         errorDiv.classList.add('hidden');
+    }
+}
+
+// 入力成功時の視覚フィードバック（緑ボーダー・3秒後に解除）
+function showFieldSuccess(fieldId) {
+    var input = document.getElementById(fieldId);
+    if (input) {
+        input.classList.add('field-success');
+        setTimeout(function() { input.classList.remove('field-success'); }, 3000);
     }
 }
 </script>
@@ -3622,15 +3821,14 @@ function clearFieldError(fieldId) {
 
 
 <div style="background:#f8fafc;border-top:1px solid #e2e8f0;padding:12px 16px;margin:0;font-size:11px;color:#64748b;text-align:center;line-height:1.7;">
-  <strong>免責事項</strong>：本ツールの計算・診断結果はあくまで参考情報です。本サービスの利用により生じた損害について、当サイトは一切の責任を負いません。
+  <strong>免責事項</strong>：本ツールの計算・診断結果はあくまで参考情報です。本サービスの利用により生じた損害について、当サイトは一切の責任を負いません。 | <a href="privacy-policy.html" style="color:#64748b;text-decoration:underline;opacity:0.8;">プライバシーポリシー</a>
 </div>
-<div style="text-align:center;padding:8px;font-size:11px;"><a href="privacy-policy.html" style="color:inherit;font-size:11px;opacity:0.7;text-decoration:underline;">プライバシーポリシー</a></div>
 <!-- r31-cookie-banner -->
-<div id="cookie-banner" style="position:fixed;bottom:0;left:0;right:0;background:#1e293b;color:#f1f5f9;padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;z-index:9999;font-size:.85rem;box-shadow:0 -2px 10px rgba(0,0,0,.3)">
-<div>当サイトはCookieおよびGoogle Analyticsを使用しています。<a href="/privacy-policy.html" style="color:#60a5fa;text-decoration:underline">プライバシーポリシー</a>をご確認ください。</div>
-<button onclick="document.getElementById('cookie-banner').style.display='none';window.grantConsent && window.grantConsent()" style="background:#3b82f6;color:#fff;border:none;padding:.5rem 1.25rem;border-radius:.375rem;font-size:.85rem;font-weight:600;cursor:pointer;white-space:nowrap">同意して閉じる</button>
+<div id="cookie-banner" style="position:fixed;bottom:0;left:0;right:0;background:#1e293b;color:#f1f5f9;padding:.4rem .8rem;display:flex;align-items:center;justify-content:space-between;gap:.75rem;z-index:9999;font-size:.8rem;box-shadow:0 -2px 10px rgba(0,0,0,.3);height:auto;min-height:40px;">
+<div style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">当サイトはCookieおよびGoogle Analyticsを使用しています。<a href="privacy-policy.html" style="color:#60a5fa;text-decoration:underline;font-weight:600;" target="_blank" rel="noopener">詳細</a></div>
+<button onclick="(function(){document.getElementById('cookie-banner').style.display='none';localStorage.setItem('cookie-consent','1');window.grantConsent&&window.grantConsent();})()" style="background:#888;color:#fff;border:none;padding:6px 20px;border-radius:.375rem;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;width:auto;" aria-label="Cookie使用に同意してバナーを閉じる">OK</button>
 </div>
-<script>if(localStorage.getItem('cookie-consent'))document.getElementById('cookie-banner').style.display='none'</script>
+<script>(function(){if(localStorage.getItem('cookie-consent')||localStorage.getItem('cookie-consent-v2')==='granted'){document.getElementById('cookie-banner').style.display='none';}}());</script>
 <!-- r46-org-footer -->
 <div style="text-align:center;font-size:11px;color:#9ca3af;padding:6px 0 4px;background:#f8fafc;border-top:1px solid #e5e7eb;">
   運営: <a href="https://appadaycreator.com/" style="color:#9ca3af;text-decoration:none;">AppADayCreator</a> | <a href="https://tech-and-brace.co.jp/" rel="noopener" style="color:#9ca3af;text-decoration:none;">株式会社Tech&amp;Brace</a>
